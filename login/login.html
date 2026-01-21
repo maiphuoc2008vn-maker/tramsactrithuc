@@ -3,95 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trung Tâm Giải Trí - STEAM 12A4</title>
+    <title>Đăng nhập - 12A4 Squad</title>
+    <!-- Font chữ Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Icon FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style_hub.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
-    <div class="app-container">
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <div class="sidebar-top">
-                <div class="logo-section">
-                    <h2>STEAM 12A4</h2>
-                </div>
-                <nav class="nav-menu">
-                    <button class="nav-item active"><i class="fas fa-gamepad"></i> Kho Game</button>
-                    <button class="nav-item" onclick="location.href='../index.html'"><i class="fas fa-home"></i> Trang Chủ</button>
-                    <button class="nav-item" onclick="window.location.href='vinhdanh.html'"><i class="fas fa-trophy"></i> Bảng Xếp Hạng</button>
-                </nav>
-            </div>
 
-            <div class="sidebar-footer">
-                <div class="user-profile-card" id="user-info-area" style="display: none;">
-                    <div class="avatar-wrapper">
-                        <img id="user-avatar-display" src="" alt="Avatar" style="width:40px; height:40px; border-radius:50%;">
-                    </div>
-                    <div class="user-info" style="margin-left:10px;">
-                        <h4 id="display-username" style="font-size:14px; margin:0;">User</h4>
-                        <span style="font-size:12px; color:green;">● Online</span>
-                    </div>
-                    <button onclick="logout()" style="margin-left:auto; background:none; border:none; color:red; cursor:pointer;"><i class="fas fa-sign-out-alt"></i></button>
-                </div>
-            </div>
-        </aside>
+    <!-- HIỆU ỨNG 1: HẠT BAY LẤP LÁNH (PARTICLES) -->
+    <ul class="circles">
+        <li></li><li></li><li></li><li></li><li></li>
+        <li></li><li></li><li></li><li></li><li></li>
+    </ul>
 
-        <!-- MAIN CONTENT -->
-        <main class="main-content">
-            <div class="hub-header">
-                <h1>🎮 KHO GAME GIẢI TRÍ</h1>
+    <!-- KHUNG CHÍNH -->
+    <div class="container" id="container">
+        
+        <!-- FORM ĐĂNG KÝ -->
+        <div class="form-container sign-up-container">
+            <form action="#">
+                <h1>Tạo Tài Khoản</h1>
+                <div class="social-container">
+                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google"></i></a>
+                    <a href="#" class="social"><i class="fab fa-tiktok"></i></a>
+                </div>
+                <span>hoặc đăng ký bằng email</span>
+                
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="reg-name" placeholder="Tên hiển thị (Nickname)" required />
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="reg-email" placeholder="Email" required />
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="reg-pass" placeholder="Mật khẩu (trên 6 ký tự)" required />
+                </div>
+                
+                <button id="btn-register">Đăng Ký Ngay</button>
+            </form>
+        </div>
+
+        <!-- FORM ĐĂNG NHẬP -->
+        <div class="form-container sign-in-container">
+            <form action="#">
+                <h1>Chào bạn! 👋</h1>
+                <div class="social-container">
+                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google"></i></a>
+                    <a href="#" class="social"><i class="fab fa-tiktok"></i></a>
+                </div>
+                <span>Đăng nhập để vào "Trạm Sạc"</span>
+                
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <!-- ID login-name giữ nguyên để khớp code cũ, nhưng placeholder nhắc nhập Email -->
+                    <input type="email" id="login-name" placeholder="Nhập Email của bạn" required />
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="login-pass" placeholder="Mật khẩu" required />
+                </div>
+                
+                <a href="#" class="forgot-pass">Quên mật khẩu?</a>
+                <button id="btn-login">Vào Lớp Ngay</button>
+            </form>
+        </div>
+
+        <!-- LỚP PHỦ CHUYỂN ĐỔI (OVERLAY) -->
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Thành viên cũ?</h1>
+                    <p>Quay lại để tiếp tục leo Rank bảng xếp hạng nào!</p>
+                    <button class="ghost" id="signIn">Đăng Nhập</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Thành viên mới?</h1>
+                    <p>Gia nhập biệt đội 12A4 để cùng học, cùng chơi nhé!</p>
+                    <button class="ghost" id="signUp">Đăng Ký</button>
+                </div>
             </div>
-            
-            <div class="game-grid">
-                <!-- GAME 1 -->
-                <div class="game-card card-dhbc" onclick="window.location.href='game.html'">
-                    <div class="card-icon"><i class="fas fa-search"></i></div>
-                    <div class="card-info"><h3>Đuổi Hình Bắt Chữ</h3><span class="btn-play">Chơi Ngay</span></div>
-                </div>
-                <!-- GAME 2 -->
-                <div class="game-card card-altp" onclick="window.location.href='ailatrieuphu.html'">
-                    <div class="card-icon"><i class="fas fa-sack-dollar"></i></div>
-                    <div class="card-info"><h3>Ai Là Triệu Phú</h3><span class="btn-play">Chơi Ngay</span></div>
-                </div>
-                <!-- GAME 3 -->
-                <div class="game-card card-gmc" onclick="window.location.href='giaimacode.html'">
-                    <div class="card-icon"><i class="fas fa-laptop-code"></i></div>
-                    <div class="card-info"><h3>Giải Mã Code</h3><span class="btn-play">Debug Ngay</span></div>
-                </div> 
-                <!-- GAME 4 -->
-                <div class="game-card card-nv" onclick="window.location.href='ngheviet.html'">
-                    <div class="card-icon"><i class="fas fa-headphones-alt"></i></div>
-                    <div class="card-info"><h3>Nghe và Viết</h3><span class="btn-play">Nghe Ngay</span></div>
-                </div>
-            </div>
-        </main>
+        </div>
     </div>
 
-    <!-- SCRIPT KIỂM TRA ĐĂNG NHẬP -->
-    <script type="module">
-        import { auth } from "../firebase-config.js";
-        
-        document.addEventListener("DOMContentLoaded", () => {
-            const userStr = localStorage.getItem('user_info_sql');
-            
-            if (!userStr) {
-                alert("Bạn cần đăng nhập để chơi game!");
-                window.location.href = '../login/login.html';
-            } else {
-                const user = JSON.parse(userStr);
-                document.getElementById('user-info-area').style.display = 'flex';
-                document.getElementById('display-username').textContent = user.username;
-                document.getElementById('user-avatar-display').src = user.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-            }
-        });
-
-        window.logout = function() {
-            if(confirm("Bạn muốn đăng xuất?")) {
-                localStorage.removeItem('user_info_sql');
-                auth.signOut();
-                window.location.href = '../login/login.html';
-            }
-        }
-    </script>
+    <!-- SCRIPT FIREBASE & HIỆU ỨNG -->
+    <script type="module" src="login.js"></script>
 </body>
 </html>
