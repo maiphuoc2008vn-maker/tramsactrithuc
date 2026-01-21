@@ -4,218 +4,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vinh Danh - STEAM 12A4</title>
-    
-    <!-- Kết nối style chung -->
-    <link rel="stylesheet" href="vinhdanh.css">
-    <!-- Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="vinhdanh.css">
 </head>
 <body>
 
-    <!-- 1. HEADER -->
     <header class="main-header">
         <div class="logo-container">
-            <img src="../images/logotruong.jpg" alt="Logo" class="header-logo" onerror="this.src='https://via.placeholder.com/40'">
-            <h1 class="brand-name">THPT ĐẠM RI - 12A4</h1>
+            <h1 class="brand-name">STEAM 12A4</h1>
         </div>
-        
         <nav class="main-nav">
-            <a href="../trangchu/index.html" class="nav-item"><i class="fas fa-home"></i> Trang chủ</a>
-            <a href="#" class="nav-item active"><i class="fas fa-trophy"></i> Vinh danh</a>
-            <a href="../game/hub.html" class="nav-item"><i class="fas fa-gamepad"></i> Game</a>
-            
-            <button id="theme-toggle" class="theme-btn" title="Chế độ Sáng/Tối">
-                <i class="fas fa-moon"></i>
-            </button>
+            <a href="hub.html" class="nav-item"><i class="fas fa-arrow-left"></i> Quay lại</a>
         </nav>
     </header>
 
-    <!-- 2. MAIN CONTENT -->
     <main class="vinhdanh-container">
-        
         <div class="page-title">
-            <h1><i class="fas fa-crown text-warning"></i> BẢNG PHONG THẦN <i class="fas fa-crown text-warning"></i></h1>
-            <p>Vinh danh những chiến thần tri thức (Dữ liệu thực tế)</p>
+            <h1><i class="fas fa-crown text-warning"></i> BẢNG PHONG THẦN</h1>
+            <p>Dữ liệu cập nhật thời gian thực từ máy chủ</p>
         </div>
 
-        <!-- BỤC VINH QUANG (PODIUM) -->
+        <!-- BỤC VINH QUANG (TOP 3) -->
         <div class="podium-section" id="podium-area" style="opacity: 0; transition: opacity 1s;">
-            
-            <!-- TOP 2 -->
+            <!-- Hạng 2 -->
             <div class="podium-col rank-2">
-                <div class="avatar-wrapper">
-                    <!-- Thêm ID cho Avatar Top 2 -->
-                    <img id="top2-avatar" src="https://via.placeholder.com/100" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
-                    <div class="badge-rank silver">2</div>
-                </div>
-                <div class="podium-stand">
-                    <!-- Thêm ID cho Tên và Điểm Top 2 -->
-                    <div class="rank-name" id="top2-name">Đang tải...</div>
-                    <div class="rank-score" id="top2-score">-- XP</div>
-                </div>
+                <div class="avatar-wrapper"><img id="top2-avatar" src=""><div class="badge-rank silver">2</div></div>
+                <div class="podium-stand"><div class="rank-name" id="top2-name">--</div><div class="rank-score" id="top2-score">--</div></div>
             </div>
-
-            <!-- TOP 1 -->
+            <!-- Hạng 1 -->
             <div class="podium-col rank-1">
-                <div class="floating-reward">
-                    <i class="fas fa-trophy trophy-anim"></i>
-                    <div class="shine-effect"></div>
-                </div>
-                <div class="avatar-wrapper">
-                    <!-- Thêm ID cho Avatar Top 1 -->
-                    <img id="top1-avatar" src="https://via.placeholder.com/100" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
-                    <div class="badge-rank gold">1</div>
-                </div>
-                <div class="podium-stand">
-                    <div class="winner-label">👑 HỌC BÁ 👑</div>
-                    <!-- Thêm ID cho Tên và Điểm Top 1 -->
-                    <div class="rank-name" id="top1-name">Đang tải...</div>
-                    <div class="rank-score" id="top1-score">-- XP</div>
-                </div>
+                <div class="floating-reward"><i class="fas fa-trophy trophy-anim"></i></div>
+                <div class="avatar-wrapper"><img id="top1-avatar" src=""><div class="badge-rank gold">1</div></div>
+                <div class="podium-stand"><div class="winner-label">👑 HỌC BÁ 👑</div><div class="rank-name" id="top1-name">--</div><div class="rank-score" id="top1-score">--</div></div>
             </div>
-
-            <!-- TOP 3 -->
+            <!-- Hạng 3 -->
             <div class="podium-col rank-3">
-                <div class="avatar-wrapper">
-                    <!-- Thêm ID cho Avatar Top 3 -->
-                    <img id="top3-avatar" src="https://via.placeholder.com/100" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
-                    <div class="badge-rank bronze">3</div>
-                </div>
-                <div class="podium-stand">
-                    <!-- Thêm ID cho Tên và Điểm Top 3 -->
-                    <div class="rank-name" id="top3-name">Đang tải...</div>
-                    <div class="rank-score" id="top3-score">-- XP</div>
-                </div>
+                <div class="avatar-wrapper"><img id="top3-avatar" src=""><div class="badge-rank bronze">3</div></div>
+                <div class="podium-stand"><div class="rank-name" id="top3-name">--</div><div class="rank-score" id="top3-score">--</div></div>
             </div>
-
         </div>
 
-        <!-- BẢNG CHI TIẾT (TOP 4+) -->
+        <!-- DANH SÁCH TOP 4 TRỞ ĐI -->
         <section class="leaderboard-section">
             <div class="table-container">
                 <table>
                     <thead>
-                        <tr>
-                            <th width="10%">#</th>
-                            <th>Thành viên</th>
-                            <th>Danh hiệu</th>
-                            <th>Điểm tích lũy</th>
-                        </tr>
+                        <tr><th>#</th><th>Thành viên</th><th>Danh hiệu</th><th>Điểm XP</th></tr>
                     </thead>
                     <tbody id="leaderboard-body">
-                        <!-- Dữ liệu sẽ được JS thêm vào đây -->
-                        <tr><td colspan="4" style="text-align:center;">Đang tải dữ liệu...</td></tr>
+                        <tr><td colspan="4" style="text-align:center">Đang tải dữ liệu...</td></tr>
                     </tbody>
                 </table>
             </div>
         </section>
-
     </main>
 
-    <!-- SCRIPT XỬ LÝ GỌI API SQL -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            fetchLeaderboard();
-        });
+    <!-- SCRIPT GỌI FIREBASE -->
+    <script type="module">
+        import { db } from "../firebase-config.js";
+        import { collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        async function fetchLeaderboard() {
+        async function loadLeaderboard() {
             try {
-                // Gọi API PHP để lấy dữ liệu
-                const response = await fetch('../api/get_leaderboard.php');
+                // Truy vấn: Lấy collection 'users', sắp xếp giảm dần theo 'score', lấy 50 người
+                const q = query(collection(db, "users"), orderBy("score", "desc"), limit(50));
+                const querySnapshot = await getDocs(q);
                 
-                if (!response.ok) {
-                    throw new Error('Lỗi kết nối mạng');
-                }
+                let users = [];
+                querySnapshot.forEach((doc) => {
+                    users.push(doc.data());
+                });
 
-                const users = await response.json();
-
-                // Nếu không có dữ liệu
-                if (users.length === 0) {
-                    document.getElementById('leaderboard-body').innerHTML = '<tr><td colspan="4" style="text-align:center;">Chưa có thành viên nào.</td></tr>';
+                if(users.length === 0) {
+                    document.getElementById('leaderboard-body').innerHTML = "<tr><td colspan='4' style='text-align:center'>Chưa có dữ liệu.</td></tr>";
                     return;
                 }
 
-                // 1. CẬP NHẬT PODIUM (TOP 1, 2, 3)
-                const podiumArea = document.getElementById('podium-area');
+                // Cập nhật Podium
+                if(users[0]) updateRank('top1', users[0]);
+                if(users[1]) updateRank('top2', users[1]); else document.querySelector('.rank-2').style.visibility = 'hidden';
+                if(users[2]) updateRank('top3', users[2]); else document.querySelector('.rank-3').style.visibility = 'hidden';
+
+                // Cập nhật Bảng (Từ người thứ 4 trở đi)
+                const tbody = document.getElementById('leaderboard-body');
+                tbody.innerHTML = "";
                 
-                // --- TOP 1 ---
-                if (users[0]) {
-                    document.getElementById('top1-name').innerText = users[0].username;
-                    document.getElementById('top1-score').innerText = parseInt(users[0].score).toLocaleString() + " XP";
-                    document.getElementById('top1-avatar').src = users[0].avatar_url || "../images/default-avatar.png";
-                }
-
-                // --- TOP 2 ---
-                if (users[1]) {
-                    document.getElementById('top2-name').innerText = users[1].username;
-                    document.getElementById('top2-score').innerText = parseInt(users[1].score).toLocaleString() + " XP";
-                    document.getElementById('top2-avatar').src = users[1].avatar_url || "../images/default-avatar.png";
-                } else {
-                    // Nếu không có Top 2 thì ẩn cột này đi hoặc để trống
-                    document.querySelector('.rank-2').style.visibility = 'hidden';
-                }
-
-                // --- TOP 3 ---
-                if (users[2]) {
-                    document.getElementById('top3-name').innerText = users[2].username;
-                    document.getElementById('top3-score').innerText = parseInt(users[2].score).toLocaleString() + " XP";
-                    document.getElementById('top3-avatar').src = users[2].avatar_url || "../images/default-avatar.png";
-                } else {
-                    document.querySelector('.rank-3').style.visibility = 'hidden';
-                }
-
-                // Hiển thị podium sau khi load xong
-                podiumArea.style.opacity = 1;
-
-                // 2. CẬP NHẬT BẢNG (TOP 4 TRỞ ĐI)
-                const tableBody = document.getElementById('leaderboard-body');
-                tableBody.innerHTML = ""; // Xóa dòng "Đang tải..."
-
-                // Duyệt từ người thứ 4 (index 3) đến hết
                 for (let i = 3; i < users.length; i++) {
                     const u = users[i];
-                    
-                    // Logic danh hiệu vui vẻ
-                    let title = "Thành Viên";
-                    if (u.score > 5000) title = "Chiến Binh";
-                    if (u.score > 8000) title = "Thánh Học";
-
                     let row = `
                         <tr>
                             <td>${i + 1}</td>
                             <td style="display:flex; align-items:center; gap:10px;">
-                                <img src="${u.avatar_url}" style="width:30px; height:30px; border-radius:50%; object-fit:cover;" onerror="this.src='../images/default-avatar.png'">
+                                <img src="${u.avatar}" style="width:30px; height:30px; border-radius:50%; object-fit:cover;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
                                 ${u.username}
                             </td>
-                            <td><span class="tag-title">${title}</span></td>
-                            <td>${parseInt(u.score).toLocaleString()} XP</td>
+                            <td><span class="tag-title">${u.title || "Thành viên"}</span></td>
+                            <td>${u.score.toLocaleString()} XP</td>
                         </tr>
                     `;
-                    tableBody.innerHTML += row;
+                    tbody.innerHTML += row;
                 }
+                
+                // Hiện giao diện
+                document.getElementById('podium-area').style.opacity = 1;
 
-                // Nếu ít hơn 4 người thì báo trống trong bảng
-                if (users.length < 4) {
-                    tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Hết danh sách.</td></tr>';
-                }
-
-            } catch (error) {
-                console.error("Lỗi:", error);
-                document.getElementById('leaderboard-body').innerHTML = '<tr><td colspan="4" style="text-align:center; color:red;">Lỗi tải dữ liệu bảng xếp hạng.</td></tr>';
+            } catch (err) {
+                console.error(err);
+                document.getElementById('leaderboard-body').innerHTML = "<tr><td colspan='4' style='text-align:center; color:red'>Lỗi tải dữ liệu!</td></tr>";
             }
         }
-        
-        // Logic Darkmode đơn giản
-        const themeBtn = document.getElementById('theme-toggle');
-        themeBtn.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            const icon = themeBtn.querySelector('i');
-            if(document.body.classList.contains('light-mode')){
-                icon.classList.replace('fa-moon', 'fa-sun');
-            } else {
-                icon.classList.replace('fa-sun', 'fa-moon');
-            }
-        });
+
+        function updateRank(id, user) {
+            document.getElementById(`${id}-name`).innerText = user.username;
+            document.getElementById(`${id}-score`).innerText = user.score.toLocaleString();
+            document.getElementById(`${id}-avatar`).src = user.avatar;
+        }
+
+        loadLeaderboard();
     </script>
 </body>
 </html>
