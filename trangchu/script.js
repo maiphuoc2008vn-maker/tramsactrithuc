@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 setTimeout(() => heroBg.classList.remove('fading'), 100);
 
-            }, 400); // Mờ 0.4s
+            }, 4000); // Mờ 0.4s
 
         }, 50000); // Đổi sau 1.5s
     }
