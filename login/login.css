@@ -5,35 +5,45 @@
 body {
     display: flex; justify-content: center; align-items: center;
     min-height: 100vh;
-    background: #0f0c29; /* Màu nền đen tím thẫm */
-    background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
     color: white; overflow: hidden; position: relative;
 }
+
+/* --- NÚT BACK HOME --- */
+.back-home-btn {
+    position: absolute; top: 30px; left: 30px;
+    color: rgba(255,255,255,0.7); text-decoration: none;
+    font-weight: 600; font-size: 16px; z-index: 100;
+    padding: 10px 20px; border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 30px; transition: 0.3s;
+    background: rgba(0,0,0,0.2); backdrop-filter: blur(5px);
+}
+.back-home-btn:hover { background: white; color: #333; transform: translateX(-5px); }
 
 /* --- NỀN ĐỘNG --- */
 .bg-animation { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
 .orb {
-    position: absolute; width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(118,75,162,0.4) 0%, rgba(0,0,0,0) 70%);
-    border-radius: 50%; top: -10%; left: -10%; animation: floatOrb 10s infinite alternate;
+    position: absolute; width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(67, 97, 238, 0.25) 0%, rgba(0,0,0,0) 70%);
+    border-radius: 50%; top: -10%; right: -10%; animation: floatOrb 10s infinite alternate;
 }
 .icon-float {
-    position: absolute; color: rgba(255,255,255,0.05); font-size: 80px;
-    animation: floatIcon 15s infinite linear;
+    position: absolute; color: rgba(255,255,255,0.03); font-size: 80px;
+    animation: floatIcon 20s infinite linear;
 }
-.icon-float:nth-child(1) { top: 10%; right: 10%; animation-duration: 20s; }
-.icon-float:nth-child(2) { bottom: 20%; left: 10%; animation-duration: 25s; font-size: 100px; }
-.icon-float:nth-child(3) { top: 40%; left: 40%; animation-duration: 30s; font-size: 60px; opacity: 0.1; }
-.icon-float:nth-child(4) { bottom: 10%; right: 30%; animation-duration: 18s; }
+.icon-float:nth-child(1) { top: 15%; left: 10%; }
+.icon-float:nth-child(2) { bottom: 20%; right: 10%; font-size: 120px; animation-duration: 25s; }
+.icon-float:nth-child(3) { top: 40%; left: 40%; font-size: 60px; }
+.icon-float:nth-child(4) { bottom: 10%; left: 20%; }
 
-@keyframes floatOrb { 0% { transform: translate(0,0); } 100% { transform: translate(50px, 50px); } }
-@keyframes floatIcon { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(-50px) rotate(20deg); } }
+@keyframes floatOrb { 0% { transform: translate(0,0); } 100% { transform: translate(-50px, 50px); } }
+@keyframes floatIcon { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(-100px) rotate(20deg); } }
 
-/* --- THẺ CHÍNH (CARD) --- */
+/* --- CARD --- */
 .main-card {
-    width: 900px; height: 550px;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    width: 900px; height: 580px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 24px;
     display: flex; overflow: hidden;
@@ -41,77 +51,79 @@ body {
     z-index: 10; position: relative;
 }
 
-/* --- CỘT TRÁI (INFO) --- */
+/* --- LEFT SIDE --- */
 .info-side {
-    width: 40%; background: rgba(0,0,0,0.2);
-    padding: 40px; display: flex; flex-direction: column; justify-content: space-between;
-    position: relative; overflow: hidden;
+    width: 40%; background: rgba(0,0,0,0.3);
+    padding: 50px 40px; display: flex; flex-direction: column; justify-content: space-between;
+    position: relative;
 }
-.info-side::before {
-    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px;
-    background: linear-gradient(90deg, #00f260, #0575e6);
+.logo-area img { 
+    width: 70px; height: 70px; border-radius: 50%; 
+    border: 3px solid rgba(255,255,255,0.2); margin-bottom: 15px; 
+    box-shadow: 0 0 20px rgba(67, 97, 238, 0.5);
 }
-.logo-area img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); margin-bottom: 15px; }
-.logo-area h2 { font-size: 24px; font-weight: 800; letter-spacing: 1px; }
-.welcome-text h3 { font-size: 32px; font-weight: 700; margin-bottom: 15px; background: linear-gradient(to right, #fff, #a8c0ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.welcome-text p { font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.7); }
+.logo-area h2 { font-size: 26px; font-weight: 800; letter-spacing: 0.5px; }
+.welcome-text h3 { 
+    font-size: 32px; font-weight: 800; margin-bottom: 15px; 
+    background: linear-gradient(to right, #4cc9f0, #4361ee); 
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+}
+.welcome-text p { font-size: 15px; line-height: 1.6; color: rgba(255,255,255,0.7); }
 
-/* --- CỘT PHẢI (FORM) --- */
+/* --- RIGHT SIDE (FORM) --- */
 .form-side { width: 60%; position: relative; padding: 40px; display: flex; align-items: center; justify-content: center; }
 
 .auth-form {
-    width: 100%; max-width: 320px;
-    position: absolute; transition: all 0.4s ease;
-    opacity: 0; visibility: hidden; transform: translateX(50px);
+    width: 100%; max-width: 340px;
+    position: absolute; transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    opacity: 0; visibility: hidden; transform: translateX(100px) scale(0.9);
 }
-.auth-form.active { opacity: 1; visibility: visible; transform: translateX(0); }
+.auth-form.active { opacity: 1; visibility: visible; transform: translateX(0) scale(1); }
 
-.auth-form h2 { font-size: 28px; margin-bottom: 5px; }
-.sub-h { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 30px; }
+.auth-form h2 { font-size: 30px; margin-bottom: 5px; font-weight: 800; }
+.sub-h { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 35px; }
 
-/* INPUT */
-.input-box {
-    position: relative; margin-bottom: 20px;
-    border-bottom: 2px solid rgba(255,255,255,0.1);
-}
-.input-box i { position: absolute; left: 0; top: 12px; color: rgba(255,255,255,0.5); transition: 0.3s; }
+/* INPUT STYLES */
+.input-box { position: relative; margin-bottom: 25px; }
 .input-box input {
-    width: 100%; background: transparent; border: none; outline: none;
-    color: #fff; padding: 10px 10px 10px 30px; font-size: 16px;
+    width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 15px 45px 15px 45px;
+    color: #fff; font-size: 16px; outline: none; transition: 0.3s;
 }
-.input-box:focus-within { border-color: #00f260; }
-.input-box:focus-within i { color: #00f260; }
+.input-box input:focus { border-color: #4361ee; background: rgba(67, 97, 238, 0.1); }
+.icon-left { position: absolute; left: 15px; top: 18px; color: rgba(255,255,255,0.4); font-size: 18px; }
+.toggle-pass { 
+    position: absolute; right: 15px; top: 18px; 
+    color: rgba(255,255,255,0.4); cursor: pointer; transition: 0.3s; 
+}
+.toggle-pass:hover { color: #fff; }
 
-/* OPTIONS */
-.options { display: flex; justify-content: space-between; font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 30px; }
-.options a { color: #fff; text-decoration: none; font-weight: 600; }
-.options a:hover { text-decoration: underline; }
+/* OPTIONS & BUTTONS */
+.options { display: flex; justify-content: space-between; font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 30px; }
+.options a { color: #4cc9f0; text-decoration: none; font-weight: 600; }
 
-/* BUTTON */
 .btn-glow {
-    width: 100%; padding: 14px; border: none; border-radius: 30px;
-    background: linear-gradient(90deg, #00f260, #0575e6);
-    color: white; font-weight: 800; font-size: 15px; cursor: pointer;
-    box-shadow: 0 5px 20px rgba(0, 242, 96, 0.4);
-    transition: 0.3s; text-transform: uppercase;
+    width: 100%; padding: 16px; border: none; border-radius: 12px;
+    background: linear-gradient(90deg, #4361ee, #3f37c9);
+    color: white; font-weight: 800; font-size: 16px; cursor: pointer;
+    box-shadow: 0 5px 20px rgba(67, 97, 238, 0.4);
+    transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
 }
-.btn-glow:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0, 242, 96, 0.6); }
+.btn-glow:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(67, 97, 238, 0.6); }
 
 .btn-glow.purple {
-    background: linear-gradient(90deg, #8e2de2, #4a00e0);
-    box-shadow: 0 5px 20px rgba(142, 45, 226, 0.4);
+    background: linear-gradient(90deg, #7209b7, #3a0ca3);
+    box-shadow: 0 5px 20px rgba(114, 9, 183, 0.4);
 }
-.btn-glow.purple:hover { box-shadow: 0 10px 30px rgba(142, 45, 226, 0.6); }
 
-/* SWITCH TEXT */
-.switch-text { text-align: center; margin-top: 25px; font-size: 13px; color: rgba(255,255,255,0.5); }
-.switch-text span { color: #fff; font-weight: 700; cursor: pointer; margin-left: 5px; }
-.switch-text span:hover { text-decoration: underline; color: #00f260; }
+.switch-text { text-align: center; margin-top: 25px; font-size: 14px; color: rgba(255,255,255,0.5); }
+.switch-text span { color: #4cc9f0; font-weight: 700; cursor: pointer; margin-left: 5px; }
+.switch-text span:hover { text-decoration: underline; }
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-    .main-card { width: 100%; height: 100vh; border-radius: 0; flex-direction: column; }
-    .info-side { display: none; } /* Ẩn cột thông tin trên mobile */
+    .main-card { width: 100%; height: 100vh; border-radius: 0; }
+    .info-side { display: none; }
     .form-side { width: 100%; padding: 20px; }
-    .bg-animation { display: none; }
+    .back-home-btn { top: 20px; left: 20px; padding: 8px 15px; font-size: 14px; }
 }
