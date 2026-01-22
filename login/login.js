@@ -1,99 +1,162 @@
-// File: login/login.js
+// ================================================================
+// FILE: login.js
+// ================================================================
 
-// Import từ file cấu hình ở thư mục gốc
-import { auth, db } from "../firebase-config.js"; 
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+// 1. IMPORT CẤU HÌNH VÀ THƯ VIỆN
+// Lấy auth và db từ file cấu hình bạn đã tạo
+import { auth, db } from './firebase-config.js';
 
-// --- XỬ LÝ ĐĂNG KÝ ---
-const btnRegister = document.getElementById('btn-register');
-if (btnRegister) {
-    btnRegister.addEventListener('click', async (e) => {
+// Các hàm xác thực (Authentication)
+import { 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    updateProfile,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+// Các hàm cơ sở dữ liệu (Firestore)
+import { 
+    doc, 
+    setDoc, 
+    getDoc 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+// ================================================================
+// 2. KIỂM TRA TRẠNG THÁI ĐĂNG NHẬP (TÙY CHỌN)
+// Nếu người dùng đã đăng nhập rồi thì chuyển thẳng vào trang chủ
+// ================================================================
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        console.log("Người dùng đã đăng nhập:", user.email);
+        // Nếu bạn muốn tự động chuyển trang khi đã login rồi thì bỏ comment dòng dưới:
+        // window.location.href = "index.html";
+    }
+});
+
+// ================================================================
+// 3. XỬ LÝ SỰ KIỆN ĐĂNG NHẬP
+// ================================================================
+const loginForm = document.getElementById('loginForm');
+
+if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Ngăn trình duyệt load lại trang
+
+        // Lấy dữ liệu từ form (ID khớp với file HTML của bạn)
+        const email = document.getElementById('login-name').value;
+        const password = document.getElementById('login-pass').value;
+        const btnLogin = document.getElementById('btn-login');
+
+        // Hiệu ứng nút bấm (Loading)
+        const originalText = btnLogin.innerHTML;
+        btnLogin.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+        btnLogin.disabled = true;
+        btnLogin.style.opacity = "0.7";
+
+        try {
+            // Gửi yêu cầu đăng nhập lên Firebase
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // Thông báo thành công
+            alert(Chào mừng chiến binh ${user.displayName || "ẩn danh"} quay trở lại!);
+            
+            // Chuyển hướng sang trang chủ (Trang nội dung chính)
+            window.location.href = "index.html"; 
+
+        } catch (error) {
+            console.error("Lỗi Login:", error);
+            
+            // Xử lý thông báo lỗi tiếng Việt cho thân thiện
+            let message = "Đăng nhập thất bại. Vui lòng thử lại.";
+            
+            switch (error.code) {
+                case 'auth/invalid-credential':
+                case 'auth/user-not-found':
+                case 'auth/wrong-password':
+                case 'auth/invalid-email':
+                    message = "Sai email hoặc mật khẩu rồi!";
+                    break;
+                case 'auth/too-many-requests':
+                    message = "Bạn nhập sai quá nhiều lần. Hãy đợi lát nữa rồi thử lại.";
+                    break;
+                case 'auth/network-request-failed':
+                    message = "Lỗi mạng! Vui lòng kiểm tra kết nối Internet.";
+                    break;
+            }
+            alert(message);
+        } finally {
+            // Khôi phục nút bấm về ban đầu
+            btnLogin.innerHTML = originalText;
+            btnLogin.disabled = false;
+            btnLogin.style.opacity = "1";
+        }
+    });
+}
+
+// ================================================================
+// 4. XỬ LÝ SỰ KIỆN ĐĂNG KÝ
+// ================================================================
+const registerForm = document.getElementById('registerForm');
+
+if (registerForm) {
+    registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
-        const originalText = btnRegister.innerHTML;
-        btnRegister.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
-        btnRegister.disabled = true;
 
-        const email = document.getElementById('reg-email').value.trim();
-        const pass = document.getElementById('reg-pass').value.trim();
-        const name = document.getElementById('reg-name').value.trim();
+        // Lấy dữ liệu từ form
+        const name = document.getElementById('reg-name').value;
+        const email = document.getElementById('reg-email').value;
+        const password = document.getElementById('reg-pass').value;
+        const btnRegister = document.getElementById('btn-register');
 
-        if (!email || !pass || !name) {
-            alert("Vui lòng điền đủ thông tin!");
-            btnRegister.innerHTML = originalText;
-            btnRegister.disabled = false;
+        // Validate cơ bản
+        if (password.length < 6) {
+            alert("Mật khẩu phải có ít nhất 6 ký tự!");
             return;
         }
 
+        // Hiệu ứng nút bấm
+        const originalText = btnRegister.innerHTML;
+        btnRegister.innerHTML = '<i class="fas fa-rocket fa-spin"></i> Đang khởi tạo...';
+        btnRegister.disabled = true;
+        btnRegister.style.opacity = "0.7";
+
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+            // BƯỚC 1: Tạo tài khoản Authentication
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-            
-            // Lưu thông tin user vào Firestore
-            await setDoc(doc(db, "users", user.uid), {
-                username: name,
-                email: email,
-                score: 0,
-                role: "member", // Vai trò mặc định
-                avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
-                createdAt: new Date()
+
+            // BƯỚC 2: Cập nhật Tên hiển thị (DisplayName)
+            await updateProfile(user, {
+                displayName: name
             });
 
-            alert("Đăng ký thành công! Hãy đăng nhập.");
-            
-            // Chuyển sang form đăng nhập (nếu có hàm switchForm trong HTML)
-            if(window.switchForm) window.switchForm('login');
-            
-        } catch (error) {
-            let msg = error.message;
-            if (error.code === 'auth/email-already-in-use') msg = "Email này đã được đăng ký!";
-            if (error.code === 'auth/weak-password') msg = "Mật khẩu quá yếu (cần trên 6 ký tự)!";
-            alert("Lỗi: " + msg);
-        } finally {
-            btnRegister.innerHTML = originalText;
-            btnRegister.disabled = false;
-        }
-    });
-}
+            // BƯỚC 3: Lưu thông tin người dùng vào Firestore
+            // (Quan trọng để sau này làm tính năng lưu điểm, xếp hạng)
+            await setDoc(doc(db, "users", user.uid), {
+                uid: user.uid,
+                displayName: name,
+                email: email,
+                photoURL: user.photoURL || "",
+                createdAt: new Date().toISOString(),
+                role: "student",   // Phân quyền: student
+                score: 0,          // Điểm số khởi tạo
+                class: "12A4"      // Lớp mặc định (theo tên dự án của bạn)
+            });
 
-// --- XỬ LÝ ĐĂNG NHẬP ---
-const btnLogin = document.getElementById('btn-login');
-if (btnLogin) {
-    btnLogin.addEventListener('click', async (e) => {
-        e.preventDefault();
-        
-        const originalText = btnLogin.innerHTML;
-        btnLogin.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang vào lớp...';
-        btnLogin.disabled = true;
+            // Thông báo thành công
+            alert("Đăng ký tài khoản thành công! Hãy đăng nhập ngay.");
 
-        const email = document.getElementById('login-name').value.trim();
-        const pass = document.getElementById('login-pass').value.trim();
-
-        try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, pass);
-            const user = userCredential.user;
-
-            // Lấy thông tin chi tiết từ Database
-            const docSnap = await getDoc(doc(db, "users", user.uid));
-            
-            if (docSnap.exists()) {
-                const userData = docSnap.data();
-                
-                // 1. Lưu vào LocalStorage để các trang khác (Trang chủ, Tài liệu) nhận diện
-                localStorage.setItem('user_info_sql', JSON.stringify(userData));
-                
-                // 2. Chuyển hướng về TRANG CHỦ
-                window.location.href = "../trangchu/index.html";
+            // Chuyển form về tab Đăng nhập
+            if (window.switchForm) {
+                window.switchForm('login');
             } else {
-                alert("Không tìm thấy dữ liệu người dùng này!");
+                // Fallback nếu hàm switchForm chưa load kịp
+                location.reload(); 
             }
+            
+            // Xóa trắng các ô nhập liệu
+            registerForm.reset();
+
         } catch (error) {
-            console.error(error);
-            alert("Đăng nhập thất bại: Sai email hoặc mật khẩu.");
-        } finally {
-            btnLogin.innerHTML = originalText;
-            btnLogin.disabled = false;
-        }
-    });
-}
+            console.error("Lỗi Register:", error);
