@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             }, 400); // Mờ 0.4s
 
-        }, 1500); // Đổi sau 1.5s
+        }, 50000); // Đổi sau 1.5s
     }
 
     // 
