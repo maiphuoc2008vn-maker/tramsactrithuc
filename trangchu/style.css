@@ -45,6 +45,7 @@ body {
     transition: background 0.4s ease;
     line-height: 1.6;
     font-size: 16px;
+    -webkit-tap-highlight-color: transparent;
 }
 
 h1, h2, h3, h4, h5, h6, button, .btn-primary-glow { font-family: var(--font-heading); }
@@ -57,86 +58,106 @@ h1, h2, h3, h4, h5, h6, button, .btn-primary-glow { font-family: var(--font-head
     background: linear-gradient(135deg, #050505, #1a1a2e, #16213e);
     z-index: 99999; display: flex; justify-content: center; align-items: center;
     text-align: center; transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+    padding: 20px;
 }
 #intro-overlay.hidden { transform: translateY(-100%); opacity: 0; pointer-events: none; }
-.intro-content { animation: fadeInUp 1s ease-out; padding: 20px; }
+.intro-content { animation: fadeInUp 1s ease-out; width: 100%; max-width: 600px; }
 
-.logo-box-intro { position: relative; width: 160px; height: 160px; margin: 0 auto 30px; }
+.logo-box-intro { position: relative; width: 120px; height: 120px; margin: 0 auto 20px; }
+@media (min-width: 768px) { .logo-box-intro { width: 160px; height: 160px; margin-bottom: 30px; } }
+
 .intro-logo {
     width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
     border: 3px solid rgba(255,255,255,0.2); 
     box-shadow: 0 0 40px rgba(67, 97, 238, 0.5);
 }
 
-.intro-title { font-size: 2.2rem; color: white; margin-bottom: 10px; font-weight: 700; letter-spacing: -1px; }
+.intro-title { font-size: 1.8rem; color: white; margin-bottom: 10px; font-weight: 700; letter-spacing: -1px; }
+@media (min-width: 768px) { .intro-title { font-size: 2.2rem; } }
+
 .intro-title span { 
-    font-family: var(--font-script); font-size: 4rem; 
-    font-weight: 700; color: #4cc9f0; display: block; margin-top: 5px; 
+    font-family: var(--font-script); font-size: 3rem; 
+    font-weight: 700; color: #4cc9f0; display: block; margin-top: 5px; line-height: 1.2;
 }
-.intro-subtitle { color: #a8dadc; font-size: 1rem; margin-bottom: 40px; text-transform: uppercase; }
+@media (min-width: 768px) { .intro-title span { font-size: 4rem; } }
+
+.intro-subtitle { color: #a8dadc; font-size: 0.9rem; margin-bottom: 30px; text-transform: uppercase; }
 
 .btn-enter {
     background: linear-gradient(45deg, #4361ee, #3f37c9);
-    color: white; border: none; padding: 14px 45px; border-radius: 50px;
-    font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.3s;
+    color: white; border: none; padding: 12px 30px; border-radius: 50px;
+    font-size: 1rem; font-weight: 700; cursor: pointer; transition: 0.3s;
     box-shadow: 0 10px 30px rgba(67, 97, 238, 0.4);
+    width: 100%; max-width: 280px;
 }
+@media (min-width: 768px) { .btn-enter { padding: 14px 45px; font-size: 1.1rem; width: auto; } }
+
 .btn-enter:hover { transform: scale(1.05); }
 
 /* ==========================================================================
    3. HEADER & CONTROLS
    ========================================================================== */
 .top-controls {
-    position: fixed; top: 25px; right: 30px;
-    display: flex; align-items: center; gap: 15px;
+    position: fixed; top: 15px; right: 15px;
+    display: flex; align-items: center; gap: 10px;
     z-index: 1000;
 }
+@media (min-width: 768px) { .top-controls { top: 25px; right: 30px; gap: 15px; } }
 
 .btn-float {
-    width: 45px; height: 45px; border-radius: 50%;
+    width: 40px; height: 40px; border-radius: 50%;
     border: 1px solid rgba(255, 255, 255, 0.3);
     background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px);
-    color: white; cursor: pointer; font-size: 20px;
+    color: white; cursor: pointer; font-size: 18px;
     display: flex; justify-content: center; align-items: center;
     transition: all 0.3s ease;
 }
+@media (min-width: 768px) { .btn-float { width: 45px; height: 45px; font-size: 20px; } }
+
 .btn-float:hover { background: var(--primary); transform: rotate(30deg) scale(1.1); border-color: var(--primary); }
 
-/* --- CSS AVATAR TRÒN --- */
 .float-avatar {
-    width: 45px; height: 45px; border-radius: 50%;
+    width: 40px; height: 40px; border-radius: 50%;
     overflow: hidden; border: 2px solid rgba(255,255,255,0.9);
     cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     transition: 0.3s; background: transparent;
 }
+@media (min-width: 768px) { .float-avatar { width: 45px; height: 45px; } }
+
 .float-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .float-avatar:hover { transform: scale(1.15); border-color: var(--success); }
 
 .status-dot { 
-    width: 12px; height: 12px; background: #00b894; border-radius: 50%; 
+    width: 10px; height: 10px; background: #00b894; border-radius: 50%; 
     position: absolute; bottom: 0; right: 0; border: 2px solid white; z-index: 2;
 }
 
 /* ==========================================================================
-   4. HERO SECTION (ĐÃ CẬP NHẬT MÀU CHỮ)
+   4. HERO SECTION (TỐI ƯU MOBI/PC)
    ========================================================================== */
 .background-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; overflow: hidden; pointer-events: none; }
-.blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.25; animation: float 10s infinite alternate; }
-.blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: #4361ee; }
-.blob-2 { bottom: -10%; right: -10%; width: 600px; height: 600px; background: #3f37c9; animation-delay: 2s; }
-.blob-3 { top: 40%; left: 40%; width: 400px; height: 400px; background: #4895ef; animation-delay: 4s; }
+.blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.25; animation: float 10s infinite alternate; }
+.blob-1 { top: -10%; left: -10%; width: 250px; height: 250px; background: #4361ee; }
+.blob-2 { bottom: -10%; right: -10%; width: 300px; height: 300px; background: #3f37c9; animation-delay: 2s; }
+.blob-3 { top: 40%; left: 30%; width: 200px; height: 200px; background: #4895ef; animation-delay: 4s; }
+
+@media (min-width: 768px) {
+    .blob { filter: blur(80px); }
+    .blob-1 { width: 500px; height: 500px; }
+    .blob-2 { width: 600px; height: 600px; }
+    .blob-3 { width: 400px; height: 400px; }
+}
 @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, 50px) scale(1.1); } }
 
 .hero-section {
     position: relative; width: 100%; min-height: 100vh;
     display: flex; align-items: center; justify-content: center;
-    padding-top: 0; overflow: hidden;
+    padding-top: 0; overflow: hidden; padding-bottom: 40px;
 }
 .hero-bg-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
 .hero-bg-img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); transition: 0.4s; transform: scale(1); }
 .hero-bg-img.fading { opacity: 0.8; transform: scale(1.05); }
 
-/* Lớp phủ đen để nổi bật chữ trắng */
 .overlay-gradient {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%);
@@ -145,46 +166,59 @@ h1, h2, h3, h4, h5, h6, button, .btn-primary-glow { font-family: var(--font-head
 
 .hero-content.centered-content { 
     position: relative; z-index: 3; text-align: center; max-width: 950px; padding: 0 20px; 
-    text-shadow: 0 5px 15px rgba(0,0,0,0.8); /* Bóng đổ cho toàn bộ chữ */
+    text-shadow: 0 5px 15px rgba(0,0,0,0.8);
+    display: flex; flex-direction: column; align-items: center;
 }
 
 .big-hero-logo {
-    width: 150px; height: 150px; border-radius: 50%; border: 5px solid rgba(255,255,255,0.95);
-    box-shadow: 0 0 40px rgba(67, 97, 238, 0.6); animation: floatLogo 6s infinite ease-in-out;
+    width: 100px; height: 100px; border-radius: 50%; border: 4px solid rgba(255,255,255,0.95);
+    box-shadow: 0 0 30px rgba(67, 97, 238, 0.6); animation: floatLogo 6s infinite ease-in-out;
+    margin-bottom: 20px;
 }
+@media (min-width: 768px) { .big-hero-logo { width: 150px; height: 150px; border-width: 5px; } }
 @keyframes floatLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
 
-/* Tiêu đề chính màu trắng */
+/* Tiêu đề Responsive */
 .hero-title.big-title { 
-    font-size: 3.5rem; line-height: 1.1; color: #ffffff; 
-    margin-bottom: 25px; text-transform: uppercase; font-weight: 900; 
+    font-size: 2rem; line-height: 1.1; color: #ffffff; 
+    margin-bottom: 15px; text-transform: uppercase; font-weight: 900; 
 }
-/* Chữ nghệ thuật sáng màu */
+@media (min-width: 768px) { .hero-title.big-title { font-size: 3.5rem; margin-bottom: 25px; } }
+
 .gradient-text-bright {
-    font-family: var(--font-script); font-size: 4.8rem; display: block; margin-top: 5px;
-    background: linear-gradient(to right, #00f260, #4cc9f0); /* Màu xanh lá mạ + xanh ngọc */
+    font-family: var(--font-script); font-size: 3rem; display: block; margin-top: 5px;
+    background: linear-gradient(to right, #00f260, #4cc9f0); 
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)); /* Bóng để tách nền */
-    padding-bottom: 10px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)); padding-bottom: 10px;
 }
-/* Mô tả trắng đậm */
+@media (min-width: 768px) { .gradient-text-bright { font-size: 4.8rem; } }
+
 .hero-desc.white-text {
     font-family: var(--font-body); font-weight: 600;
-    color: #ffffff; font-size: 1.25rem;
-    max-width: 700px; margin: 0 auto 40px;
+    color: #ffffff; font-size: 1rem;
+    max-width: 700px; margin: 0 auto 30px;
     text-shadow: 0 2px 5px rgba(0,0,0,0.9);
 }
+@media (min-width: 768px) { .hero-desc.white-text { font-size: 1.25rem; margin-bottom: 40px; } }
 
-.hero-btns { display: flex; justify-content: center; gap: 20px; }
+/* Nút bấm Responsive */
+.hero-btns { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 320px; }
+@media (min-width: 768px) { .hero-btns { flex-direction: row; width: auto; max-width: none; gap: 20px; } }
+
+.btn-primary-glow, .btn-glass-light {
+    padding: 14px 30px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: 0.3s;
+    font-size: 1rem; width: 100%;
+}
+@media (min-width: 768px) { .btn-primary-glow, .btn-glass-light { padding: 16px 40px; width: auto; } }
+
 .btn-primary-glow {
-    background: linear-gradient(45deg, #4361ee, #3f37c9); color: white; padding: 16px 40px; border: none;
-    border-radius: 50px; font-weight: 700; cursor: pointer; box-shadow: 0 0 25px rgba(67, 97, 238, 0.6); transition: 0.3s;
+    background: linear-gradient(45deg, #4361ee, #3f37c9); color: white; border: none;
+    box-shadow: 0 0 25px rgba(67, 97, 238, 0.6);
 }
 .btn-primary-glow:hover { transform: translateY(-5px); box-shadow: 0 10px 40px rgba(67, 97, 238, 0.8); }
 
 .btn-glass-light {
     background: rgba(255, 255, 255, 0.15); border: 2px solid rgba(255, 255, 255, 0.8); color: white;
-    padding: 16px 35px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: 0.3s;
     backdrop-filter: blur(5px);
 }
 .btn-glass-light:hover { background: white; color: #333; }
@@ -193,19 +227,42 @@ h1, h2, h3, h4, h5, h6, button, .btn-primary-glow { font-family: var(--font-head
    5. FEATURES
    ========================================================================== */
 .features-section {
-    padding: 80px 5%; position: relative; z-index: 2; margin-top: -60px;
-    background: linear-gradient(to bottom, rgba(248, 249, 250, 0.95), rgba(248, 249, 250, 0));
-    border-top-left-radius: 40px; border-top-right-radius: 40px; backdrop-filter: blur(10px);
+    padding: 60px 20px; position: relative; z-index: 2; margin-top: -40px;
+    background: linear-gradient(to bottom, rgba(248, 249, 250, 0.98), rgba(248, 249, 250, 0));
+    border-top-left-radius: 30px; border-top-right-radius: 30px; backdrop-filter: blur(10px);
 }
-.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+@media (min-width: 768px) { 
+    .features-section { padding: 80px 5%; margin-top: -60px; border-radius: 40px 40px 0 0; }
+}
+
+/* Grid Layout: 1 cột trên mobile, 3 cột trên PC */
+.cards-grid { 
+    display: grid; 
+    grid-template-columns: 1fr; 
+    gap: 20px; max-width: 1200px; margin: 0 auto; 
+}
+@media (min-width: 650px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .cards-grid { grid-template-columns: repeat(3, 1fr); gap: 30px; } }
 
 .tilt-card {
-    background: var(--glass-bg); border-radius: 25px; border: 1px solid var(--glass-border);
-    padding: 40px 30px; position: relative; overflow: hidden; cursor: pointer;
+    background: var(--glass-bg); border-radius: 20px; border: 1px solid var(--glass-border);
+    padding: 30px 25px; position: relative; overflow: hidden; cursor: pointer;
     box-shadow: var(--card-shadow); transition: transform 0.1s; transform-style: preserve-3d;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
 }
-.card-content { transform: translateZ(40px); }
-.card-icon { width: 70px; height: 70px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 25px; }
+@media (min-width: 768px) { 
+    .tilt-card { padding: 40px 30px; border-radius: 25px; align-items: flex-start; text-align: left; }
+}
+
+.card-content { transform: translateZ(20px); width: 100%; }
+.card-icon { 
+    width: 60px; height: 60px; border-radius: 15px; display: flex; align-items: center; justify-content: center; 
+    font-size: 24px; margin-bottom: 20px; margin-left: auto; margin-right: auto;
+}
+@media (min-width: 768px) { 
+    .card-icon { width: 70px; height: 70px; font-size: 28px; margin-bottom: 25px; margin-left: 0; }
+}
+
 .color-1 { background: rgba(67, 97, 238, 0.1); color: var(--primary); }
 .color-2 { background: rgba(72, 149, 239, 0.1); color: var(--accent); }
 .color-3 { background: rgba(76, 201, 240, 0.1); color: var(--success); }
@@ -214,36 +271,37 @@ h1, h2, h3, h4, h5, h6, button, .btn-primary-glow { font-family: var(--font-head
 .tilt-card:hover .shine { left: 150%; transition: 0.7s; }
 
 /* ==========================================================================
-   6. MODAL & CHATBOT (GIAO DIỆN MỚI SIÊU ĐẸP)
+   6. MODAL & CHATBOT
    ========================================================================== */
 .chatbot-float {
-    position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px;
+    position: fixed; bottom: 20px; right: 20px; width: 55px; height: 55px;
     background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    color: white; font-size: 28px; cursor: pointer; box-shadow: 0 10px 30px rgba(67, 97, 238, 0.5); z-index: 999;
+    color: white; font-size: 24px; cursor: pointer; box-shadow: 0 10px 30px rgba(67, 97, 238, 0.5); z-index: 999;
 }
+@media (min-width: 768px) { .chatbot-float { bottom: 30px; right: 30px; width: 65px; height: 65px; font-size: 28px; } }
 .chatbot-float:hover { transform: scale(1.1); }
 
-/* --- MODAL STYLE MỚI --- */
+/* --- MODAL STYLE --- */
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
     background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(12px);
     z-index: 10000; display: none; justify-content: center; align-items: center;
-    opacity: 0; transition: opacity 0.4s ease;
+    opacity: 0; transition: opacity 0.4s ease; padding: 20px;
 }
 .modal-overlay.active { display: flex; opacity: 1; }
 
 .modal-content {
-    background: rgba(255, 255, 255, 0.95); padding: 40px 30px;
-    border-radius: 35px; width: 90%; max-width: 380px; text-align: center;
+    background: rgba(255, 255, 255, 0.95); padding: 30px 20px;
+    border-radius: 25px; width: 100%; max-width: 380px; text-align: center;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); 
     transform: scale(0.8) translateY(20px);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: 2px solid rgba(255, 255, 255, 1);
     position: relative; overflow: hidden;
 }
+@media (min-width: 768px) { .modal-content { padding: 40px 30px; border-radius: 35px; } }
 .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
 
-/* Vệt sáng trang trí Modal */
 .modal-content::after {
     content: ''; position: absolute; top: -50%; left: -50%;
     width: 200%; height: 200%;
@@ -254,38 +312,38 @@ h1, h2, h3, h4, h5, h6, button, .btn-primary-glow { font-family: var(--font-head
 @keyframes shineModal { 0% {top: -150%; left: -150%;} 100% {top: 150%; left: 150%;} }
 
 .modal-icon {
-    width: 90px; height: 90px;
+    width: 70px; height: 70px;
     background: linear-gradient(135deg, #e0e7ff 0%, #ffffff 100%);
     color: #4361ee; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 40px; margin: 0 auto 20px;
+    font-size: 30px; margin: 0 auto 15px;
     box-shadow: 0 10px 25px rgba(67, 97, 238, 0.25); border: 4px solid white;
     animation: floatIcon 3s ease-in-out infinite;
 }
+@media (min-width: 768px) { .modal-icon { width: 90px; height: 90px; font-size: 40px; margin-bottom: 20px; } }
 @keyframes floatIcon { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-8px);} }
 
 .modal-content h3 {
     font-family: 'Montserrat', sans-serif; margin: 0 0 10px;
-    color: #1a1a2e; font-size: 1.5rem; font-weight: 800;
+    color: #1a1a2e; font-size: 1.3rem; font-weight: 800;
 }
 .modal-content p {
     font-family: 'Nunito', sans-serif; color: #6c757d;
-    margin-bottom: 30px; font-size: 1rem; line-height: 1.5;
+    margin-bottom: 25px; font-size: 0.95rem; line-height: 1.5;
 }
 
-.modal-actions { display: flex; gap: 12px; justify-content: center; }
+.modal-actions { display: flex; flex-direction: column; gap: 10px; justify-content: center; }
+@media (min-width: 400px) { .modal-actions { flex-direction: row; gap: 12px; } }
 
 .btn-cancel {
     padding: 12px 20px; border-radius: 50px; border: none; background: #f1f3f5;
-    color: #868e96; font-weight: 700; cursor: pointer; transition: 0.2s;
+    color: #868e96; font-weight: 700; cursor: pointer; transition: 0.2s; width: 100%;
 }
-.btn-cancel:hover { background: #e9ecef; color: #495057; }
-
 .btn-confirm {
     padding: 12px 28px; border-radius: 50px; border: none;
     background: linear-gradient(90deg, #4361ee, #3f37c9);
     color: white; font-weight: 700; cursor: pointer;
     box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
-    display: flex; align-items: center; gap: 8px; transition: 0.3s;
+    display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; width: 100%;
 }
 .btn-confirm:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(67, 97, 238, 0.6); }
 
@@ -300,11 +358,3 @@ body.dark-mode .btn-cancel:hover { background: #444; color: white; }
 .reveal, .reveal-text { opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out; }
 .reveal.active, .reveal-text.active { opacity: 1; transform: translateY(0); }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-/* Responsive */
-@media (max-width: 768px) {
-    .hero-title.big-title { font-size: 2.5rem; }
-    .gradient-text-bright { font-size: 3rem; }
-    .hero-btns { flex-direction: column; width: 100%; } 
-    .cards-grid { padding: 0 15px; }
-}
