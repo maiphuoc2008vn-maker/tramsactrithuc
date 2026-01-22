@@ -4,12 +4,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap');
 
 :root {
-    /* Font chữ */
     --font-heading: 'Montserrat', sans-serif;
     --font-body: 'Nunito', sans-serif;
     --font-script: 'Dancing Script', cursive;
 
-    /* Màu sắc */
     --primary: #4361ee;
     --secondary: #3f37c9;
     --accent: #4895ef;
@@ -19,13 +17,11 @@
     --text-light: #6c757d;
     --bg-body: #f8f9fa;
     
-    /* Hiệu ứng kính */
     --glass-bg: rgba(255, 255, 255, 0.75);
     --glass-border: rgba(255, 255, 255, 0.6);
     --card-shadow: 0 15px 35px rgba(67, 97, 238, 0.12);
 }
 
-/* CHẾ ĐỘ TỐI */
 body.dark-mode {
     --text-main: #edf2f4;
     --text-light: #a8dadc;
@@ -45,7 +41,7 @@ body {
     transition: background 0.4s ease;
     line-height: 1.6;
     font-size: 16px;
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: transparent; /* Bỏ highlight khi chạm trên mobile */
 }
 
 h1, h2, h3, h4, h5, h6, button, .btn-primary-glow { font-family: var(--font-heading); }
@@ -63,7 +59,7 @@ h1, h2, h3, h4, h5, h6, button, .btn-primary-glow { font-family: var(--font-head
 #intro-overlay.hidden { transform: translateY(-100%); opacity: 0; pointer-events: none; }
 .intro-content { animation: fadeInUp 1s ease-out; width: 100%; max-width: 600px; }
 
-/* LOGO RESPONSIVE (Sửa lỗi logo quá to) */
+/* RESPONSIVE LOGO */
 .logo-box-intro { position: relative; width: 120px; height: 120px; margin: 0 auto 20px; }
 @media (min-width: 768px) { .logo-box-intro { width: 160px; height: 160px; margin-bottom: 30px; } }
 
@@ -89,7 +85,7 @@ h1, h2, h3, h4, h5, h6, button, .btn-primary-glow { font-family: var(--font-head
     color: white; border: none; padding: 12px 30px; border-radius: 50px;
     font-size: 1rem; font-weight: 700; cursor: pointer; transition: 0.3s;
     box-shadow: 0 10px 30px rgba(67, 97, 238, 0.4);
-    width: 100%; max-width: 280px;
+    width: 100%; max-width: 280px; /* Nút to trên mobile */
 }
 @media (min-width: 768px) { .btn-enter { padding: 14px 45px; font-size: 1.1rem; width: auto; } }
 
@@ -114,7 +110,6 @@ h1, h2, h3, h4, h5, h6, button, .btn-primary-glow { font-family: var(--font-head
     transition: all 0.3s ease;
 }
 @media (min-width: 768px) { .btn-float { width: 45px; height: 45px; font-size: 20px; } }
-
 .btn-float:hover { background: var(--primary); transform: rotate(30deg) scale(1.1); border-color: var(--primary); }
 
 .float-avatar {
@@ -134,7 +129,7 @@ h1, h2, h3, h4, h5, h6, button, .btn-primary-glow { font-family: var(--font-head
 }
 
 /* ==========================================================================
-   4. HERO SECTION (TỐI ƯU MOBI/PC)
+   4. HERO SECTION (Responsive)
    ========================================================================== */
 .background-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; overflow: hidden; pointer-events: none; }
 .blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.25; animation: float 10s infinite alternate; }
@@ -171,7 +166,6 @@ h1, h2, h3, h4, h5, h6, button, .btn-primary-glow { font-family: var(--font-head
     display: flex; flex-direction: column; align-items: center;
 }
 
-/* LOGO HERO RESPONSIVE */
 .big-hero-logo {
     width: 100px; height: 100px; border-radius: 50%; border: 4px solid rgba(255,255,255,0.95);
     box-shadow: 0 0 30px rgba(67, 97, 238, 0.6); animation: floatLogo 6s infinite ease-in-out;
@@ -226,7 +220,7 @@ h1, h2, h3, h4, h5, h6, button, .btn-primary-glow { font-family: var(--font-head
 .btn-glass-light:hover { background: white; color: #333; }
 
 /* ==========================================================================
-   5. FEATURES
+   5. FEATURES (Grid Responsive)
    ========================================================================== */
 .features-section {
     padding: 60px 20px; position: relative; z-index: 2; margin-top: -40px;
@@ -237,7 +231,9 @@ h1, h2, h3, h4, h5, h6, button, .btn-primary-glow { font-family: var(--font-head
     .features-section { padding: 80px 5%; margin-top: -60px; border-radius: 40px 40px 0 0; }
 }
 
-/* Grid Layout: 1 cột trên mobile, 3 cột trên PC */
+.section-header { text-align: center; margin-bottom: 30px; }
+
+/* Grid Layout: 1 cột trên mobile, 2 cột Tablet, 3 cột PC */
 .cards-grid { 
     display: grid; 
     grid-template-columns: 1fr; 
@@ -268,6 +264,9 @@ h1, h2, h3, h4, h5, h6, button, .btn-primary-glow { font-family: var(--font-head
 .color-1 { background: rgba(67, 97, 238, 0.1); color: var(--primary); }
 .color-2 { background: rgba(72, 149, 239, 0.1); color: var(--accent); }
 .color-3 { background: rgba(76, 201, 240, 0.1); color: var(--success); }
+
+.tilt-card h4 { font-size: 1.25rem; margin-bottom: 10px; color: var(--text-main); }
+.tilt-card p { color: var(--text-light); font-size: 0.95rem; }
 
 .shine { position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent); transform: skewX(-25deg); pointer-events: none; }
 .tilt-card:hover .shine { left: 150%; transition: 0.7s; }
