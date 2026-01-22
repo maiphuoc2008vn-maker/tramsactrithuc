@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập - Trạm Sạc Tri Thức </title>
+    <title>Đăng nhập - Trạm Sạc Tri Thức</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
+
+    <!-- NÚT QUAY LẠI TRANG CHỦ -->
+    <a href="../trangchu/index.html" class="back-home-btn">
+        <i class="fas fa-arrow-left"></i> Về Trang Chủ
+    </a>
 
     <!-- NỀN ĐỘNG VỚI CÁC ICON BAY -->
     <div class="bg-animation">
@@ -27,8 +32,8 @@
                 <h2>Trạm Sạc Tri Thức</h2>
             </div>
             <div class="welcome-text">
-                <h3>Trạm Sạc Tri Thức</h3>
-                <p>Nơi kết nối đam mê, thử thách trí tuệ và vinh danh những cá nhân xuất sắc nhất.</p>
+                <h3>Kết Nối Đam Mê</h3>
+                <p>Nơi lưu trữ tài liệu, giải trí đỉnh cao và vinh danh những cá nhân xuất sắc nhất lớp 12A4.</p>
             </div>
         </div>
 
@@ -41,12 +46,13 @@
                 <p class="sub-h">Chào mừng chiến binh quay trở lại!</p>
                 
                 <div class="input-box">
-                    <i class="fas fa-envelope"></i>
+                    <i class="fas fa-envelope icon-left"></i>
                     <input type="email" id="login-name" placeholder="Email đăng nhập" required>
                 </div>
                 <div class="input-box">
-                    <i class="fas fa-lock"></i>
+                    <i class="fas fa-lock icon-left"></i>
                     <input type="password" id="login-pass" placeholder="Mật khẩu" required>
+                    <i class="fas fa-eye-slash toggle-pass" onclick="togglePass('login-pass', this)"></i>
                 </div>
                 
                 <div class="options">
@@ -54,7 +60,9 @@
                     <a href="#">Quên mật khẩu?</a>
                 </div>
 
-                <button type="submit" id="btn-login" class="btn-glow">VÀO LỚP NGAY <i class="fas fa-arrow-right"></i></button>
+                <button type="submit" id="btn-login" class="btn-glow">
+                    VÀO LỚP NGAY <i class="fas fa-arrow-right"></i>
+                </button>
                 
                 <div class="switch-text">
                     Chưa có tài khoản? <span onclick="switchForm('register')">Đăng ký ngay</span>
@@ -67,19 +75,22 @@
                 <p class="sub-h">Gia nhập biệt đội 12A4 ngay hôm nay</p>
                 
                 <div class="input-box">
-                    <i class="fas fa-user-astronaut"></i>
+                    <i class="fas fa-user-astronaut icon-left"></i>
                     <input type="text" id="reg-name" placeholder="Tên hiển thị (Nickname)" required>
                 </div>
                 <div class="input-box">
-                    <i class="fas fa-envelope"></i>
+                    <i class="fas fa-envelope icon-left"></i>
                     <input type="email" id="reg-email" placeholder="Email của bạn" required>
                 </div>
                 <div class="input-box">
-                    <i class="fas fa-key"></i>
+                    <i class="fas fa-lock icon-left"></i>
                     <input type="password" id="reg-pass" placeholder="Mật khẩu (Trên 6 ký tự)" required>
+                    <i class="fas fa-eye-slash toggle-pass" onclick="togglePass('reg-pass', this)"></i>
                 </div>
 
-                <button type="submit" id="btn-register" class="btn-glow purple">ĐĂNG KÝ <i class="fas fa-rocket"></i></button>
+                <button type="submit" id="btn-register" class="btn-glow purple">
+                    ĐĂNG KÝ <i class="fas fa-rocket"></i>
+                </button>
                 
                 <div class="switch-text">
                     Đã có tài khoản? <span onclick="switchForm('login')">Đăng nhập</span>
@@ -92,8 +103,9 @@
     <!-- Script kết nối -->
     <script type="module" src="login.js"></script>
     
-    <!-- Script hiệu ứng chuyển form đơn giản -->
+    <!-- Script hiệu ứng giao diện (Không liên quan firebase) -->
     <script>
+        // Chuyển đổi giữa Login/Register
         function switchForm(type) {
             const loginF = document.getElementById('loginForm');
             const regF = document.getElementById('registerForm');
@@ -106,8 +118,21 @@
                 setTimeout(() => loginF.classList.add('active'), 300);
             }
         }
-        // Gán vào window để HTML gọi được
+        
+        // Ẩn hiện mật khẩu
+        function togglePass(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if(input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            }
+        }
+
         window.switchForm = switchForm;
+        window.togglePass = togglePass;
     </script>
 </body>
 </html>
