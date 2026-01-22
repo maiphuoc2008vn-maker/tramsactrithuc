@@ -1,15 +1,50 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- 1. XỬ LÝ INTRO OVERLAY ---
+    // --- 1. XỬ LÝ INTRO OVERLAY (MÀN HÌNH CHÀO) ---
     const overlay = document.getElementById('intro-overlay');
     const enterBtn = document.getElementById('enter-site-btn');
+    
+    // Lấy thông tin user
+    const userInfo = JSON.parse(localStorage.getItem('user_info_sql'));
+    
     if (enterBtn && overlay) {
+        // Nếu đã đăng nhập, đổi chữ nút chào
+        if (userInfo && userInfo.username) {
+            enterBtn.innerHTML = `Chào, ${userInfo.username} <i class="fas fa-arrow-right"></i>`;
+        }
         enterBtn.addEventListener('click', () => {
             overlay.classList.add('hidden');
         });
     }
 
-    // --- 2. SCROLL REVEAL ---
+    // --- 2. HIỆN AVATAR GÓC PHẢI (NẾU ĐÃ ĐĂNG NHẬP) ---
+    const topControls = document.querySelector('.top-controls');
+    if (userInfo && topControls) {
+        // Tạo nút Avatar
+        const userDiv = document.createElement('div');
+        userDiv.className = 'btn-float float-avatar';
+        userDiv.title = "Nhấn để đăng xuất";
+        // Avatar mặc định nếu không có ảnh
+        const avatarUrl = userInfo.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+        
+        userDiv.innerHTML = `
+            <img src="${avatarUrl}" alt="User">
+            <div class="status-dot"></div>
+        `;
+        
+        // Bấm vào Avatar thì hỏi Đăng xuất
+        userDiv.onclick = function() {
+            if(confirm(`Tài khoản: ${userInfo.username}\nEmail: ${userInfo.email}\n\nBạn có muốn đăng xuất không?`)) {
+                localStorage.removeItem('user_info_sql');
+                window.location.reload(); 
+            }
+        };
+
+        // Chèn Avatar vào trước nút Dark Mode
+        topControls.insertBefore(userDiv, topControls.firstChild);
+    }
+
+    // --- 3. HIỆU ỨNG CUỘN (SCROLL REVEAL) ---
     const reveals = document.querySelectorAll('.reveal, .reveal-text');
     const revealOnScroll = () => {
         const windowHeight = window.innerHeight;
@@ -24,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', revealOnScroll);
     revealOnScroll();
 
-    // --- 3. 3D TILT EFFECT ---
+    // --- 4. 3D TILT EFFECT ---
     const cards = document.querySelectorAll('.tilt-card');
     cards.forEach(card => {
         card.addEventListener('mousemove', (e) => {
@@ -42,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- 4. DARK MODE ---
+    // --- 5. DARK MODE ---
     const themeBtn = document.getElementById('theme-toggle');
     const body = document.body;
     const themeIcon = themeBtn ? themeBtn.querySelector('i') : null;
@@ -61,19 +96,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 5. CHATBOT ---
-    const chatBtn = document.getElementById('chatbot-toggle');
-    if(chatBtn) {
-        chatBtn.addEventListener('click', () => {
-            alert("Xin chào! Tôi có thể giúp gì cho bạn?");
-        });
-    }
-
-    // ==========================================
-    // 6. BACKGROUND SLIDESHOW (CHẠY 27 ẢNH)
-    // ==========================================
+    // --- 6. BACKGROUND SLIDESHOW ---
     const bgImages = [];
-    for (let i = 1; i <= 100; i++) {
+    // Giả sử có 10 ảnh từ bg1.jpg đến bg10.jpg
+    for (let i = 1; i <= 10; i++) { 
         bgImages.push(`../images/bg${i}.jpg`);
     }
 
@@ -81,60 +107,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const heroBg = document.getElementById('hero-bg-slider');
 
     if (heroBg && bgImages.length > 0) {
-        // Preload ảnh
-        bgImages.forEach(src => { new Image().src = src; });
-
         setInterval(() => {
-            heroBg.classList.add('fading');
-
+            heroBg.classList.add('fading'); 
             setTimeout(() => {
                 bgIndex = (bgIndex + 1) % bgImages.length;
-                heroBg.src = bgImages[bgIndex];
-
-                heroBg.onload = () => {
+                
+                // Tạo ảnh tạm để preload trước khi gán
+                const tempImg = new Image();
+                tempImg.src = bgImages[bgIndex];
+                tempImg.onload = () => {
+                    heroBg.src = bgImages[bgIndex];
                     heroBg.classList.remove('fading');
                 };
+                // Fallback nếu load lỗi
+                tempImg.onerror = () => heroBg.classList.remove('fading');
                 
-                setTimeout(() => heroBg.classList.remove('fading'), 100);
-
-            }, 4000); // Mờ 0.4s
-
-        }, 5000); // Đổi sau 1.5s
-    }
-
-    // 
-    // 7. XỬ LÝ LOGIC USER
-    // 
-    const userStr = localStorage.getItem('user_info_sql');
-    const headerAvatar = document.getElementById('header-avatar-img');
-
-    if (userStr) {
-        const user = JSON.parse(userStr);
-        const defaultAvatar = "https://cdn-icons-png.flaticon.com/512/4140/4140048.png";
-        const finalAvatar = user.avatar_url || defaultAvatar; 
-
-        // Chỉ cập nhật avatar trên Header
-        if(headerAvatar) headerAvatar.src = finalAvatar;
+            }, 400); 
+        }, 5000); 
     }
 });
 
-// GLOBAL FUNCTIONS
+/* =============================================================
+   HÀM BẢO VỆ (GỌI TỪ HTML)
+   ============================================================= */
+function protectAccess(folder, file) {
+    const userStr = localStorage.getItem('user_info_sql');
+    
+    if (userStr) {
+        // Đã đăng nhập -> Chuyển hướng
+        window.location.href = `../${folder}/${file}`;
+    } else {
+        // Chưa đăng nhập -> Hiện Modal
+        showLoginModal();
+    }
+}
+
 function showLoginModal() {
     const modal = document.getElementById('login-modal');
     if(modal) modal.classList.add('active');
 }
+
 function closeLoginModal() {
     const modal = document.getElementById('login-modal');
     if(modal) modal.classList.remove('active');
-}
-function goToProfile() {
-    const userStr = localStorage.getItem('user_info_sql');
-    if(userStr) window.location.href = '../profile/profile.html';
-    else showLoginModal();
-}
-function checkRedirect() { goToProfile(); }
-function goToHub() {
-    const userStr = localStorage.getItem('user_info_sql');
-    if(userStr) window.location.href = '../game/hub.html';
-    else showLoginModal();
 }
