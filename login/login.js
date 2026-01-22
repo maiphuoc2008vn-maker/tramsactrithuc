@@ -1,13 +1,9 @@
 // File: login/login.js
 
-import { auth, db } from "../firebase-config.js";
-import { 
-    createUserWithEmailAndPassword, 
-    signInWithEmailAndPassword 
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { 
-    doc, setDoc, getDoc 
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+// Import từ file cấu hình ở thư mục gốc
+import { auth, db } from "../firebase-config.js"; 
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // --- XỬ LÝ ĐĂNG KÝ ---
 const btnRegister = document.getElementById('btn-register');
@@ -15,45 +11,48 @@ if (btnRegister) {
     btnRegister.addEventListener('click', async (e) => {
         e.preventDefault();
         
-        // Đổi nút thành loading
         const originalText = btnRegister.innerHTML;
         btnRegister.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
         btnRegister.disabled = true;
 
-        const name = document.getElementById('reg-name').value.trim();
         const email = document.getElementById('reg-email').value.trim();
         const pass = document.getElementById('reg-pass').value.trim();
+        const name = document.getElementById('reg-name').value.trim();
 
-        if (!name || !email || !pass) {
-            alert("Vui lòng điền đầy đủ thông tin!");
-            resetBtn(btnRegister, originalText);
+        if (!email || !pass || !name) {
+            alert("Vui lòng điền đủ thông tin!");
+            btnRegister.innerHTML = originalText;
+            btnRegister.disabled = false;
             return;
         }
 
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
             const user = userCredential.user;
-
+            
+            // Lưu thông tin user vào Firestore
             await setDoc(doc(db, "users", user.uid), {
                 username: name,
                 email: email,
                 score: 0,
-                title: "Tân Binh",
+                role: "member", // Vai trò mặc định
                 avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
                 createdAt: new Date()
             });
 
-            alert("Đăng ký thành công! Hãy đăng nhập ngay.");
-            window.switchForm('login'); // Chuyển sang form đăng nhập
-            document.getElementById('login-name').value = email;
+            alert("Đăng ký thành công! Hãy đăng nhập.");
+            
+            // Chuyển sang form đăng nhập (nếu có hàm switchForm trong HTML)
+            if(window.switchForm) window.switchForm('login');
             
         } catch (error) {
             let msg = error.message;
-            if(error.code === 'auth/email-already-in-use') msg = "Email này đã được sử dụng!";
-            if(error.code === 'auth/weak-password') msg = "Mật khẩu quá yếu!";
+            if (error.code === 'auth/email-already-in-use') msg = "Email này đã được đăng ký!";
+            if (error.code === 'auth/weak-password') msg = "Mật khẩu quá yếu (cần trên 6 ký tự)!";
             alert("Lỗi: " + msg);
         } finally {
-            resetBtn(btnRegister, originalText);
+            btnRegister.innerHTML = originalText;
+            btnRegister.disabled = false;
         }
     });
 }
@@ -63,52 +62,38 @@ const btnLogin = document.getElementById('btn-login');
 if (btnLogin) {
     btnLogin.addEventListener('click', async (e) => {
         e.preventDefault();
-
+        
         const originalText = btnLogin.innerHTML;
         btnLogin.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang vào lớp...';
         btnLogin.disabled = true;
-        
+
         const email = document.getElementById('login-name').value.trim();
         const pass = document.getElementById('login-pass').value.trim();
-
-        if (!email || !pass) {
-            alert("Vui lòng nhập Email và Mật khẩu!");
-            resetBtn(btnLogin, originalText);
-            return;
-        }
 
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, pass);
             const user = userCredential.user;
 
-            const docRef = doc(db, "users", user.uid);
-            const docSnap = await getDoc(docRef);
-
+            // Lấy thông tin chi tiết từ Database
+            const docSnap = await getDoc(doc(db, "users", user.uid));
+            
             if (docSnap.exists()) {
                 const userData = docSnap.data();
-                const userInfo = { uid: user.uid, ...userData };
-                localStorage.setItem('user_info_sql', JSON.stringify(userInfo));
-
-                // Hiệu ứng đẹp khi đăng nhập thành công
-                document.body.style.opacity = '0';
-                document.body.style.transition = 'opacity 1s';
-                setTimeout(() => {
-                    window.location.href = "../game/hub.html";
-                }, 1000);
+                
+                // 1. Lưu vào LocalStorage để các trang khác (Trang chủ, Tài liệu) nhận diện
+                localStorage.setItem('user_info_sql', JSON.stringify(userData));
+                
+                // 2. Chuyển hướng về TRANG CHỦ
+                window.location.href = "../trangchu/index.html";
             } else {
-                alert("Không tìm thấy dữ liệu người dùng!");
+                alert("Không tìm thấy dữ liệu người dùng này!");
             }
-
         } catch (error) {
             console.error(error);
-            alert("Đăng nhập thất bại! Sai thông tin.");
+            alert("Đăng nhập thất bại: Sai email hoặc mật khẩu.");
         } finally {
-            resetBtn(btnLogin, originalText);
+            btnLogin.innerHTML = originalText;
+            btnLogin.disabled = false;
         }
     });
-}
-
-function resetBtn(btn, text) {
-    btn.innerHTML = text;
-    btn.disabled = false;
 }
