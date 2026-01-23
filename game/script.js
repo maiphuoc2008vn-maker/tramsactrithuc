@@ -1,27 +1,44 @@
-/* 1. KHO DỮ LIỆU CÂU HỎI (Đảm bảo tên ảnh phải có thật trong thư mục images) */
+/* 1. KHO DỮ LIỆU CÂU HỎI ĐỒ SỘ */
 const questionDatabase = {
     "10a1": [
-        { image: "../images/5.jpg", answer: "BANPHIM", hint: "Thiết bị nhập dữ liệu (7 ký tự)" },
-        { image: "../images/6.jpg", answer: "CHUOT", hint: "Thiết bị điều khiển con trỏ (5 ký tự)" },
-        { image: "../images/19.jpg", answer: "USB", hint: "Thiết bị lưu trữ di động (3 ký tự)" },
-        { image: "../images/28.jpg", answer: "WEBCAM", hint: "Camera kỹ thuật số (6 ký tự)" },
-        { image: "../images/29.jpg", answer: "TAINGHE", hint: "Thiết bị âm thanh (7 ký tự)" }
+        { image: "../images/10.jpg", answer: "BANPHIM", hint: "Thiết bị nhập liệu chính (7 ký tự)" },
+        { image: "../images/100.jpg", answer: "CHUOT", hint: "Thiết bị điều khiển con trỏ (5 ký tự)" },
+        { image: "../images/101.jpg", answer: "MANHINH", hint: "Thiết bị xuất hình ảnh (7 ký tự)" },
+        { image: "../images/102.jpg", answer: "MAYIN", hint: "Dùng để đưa dữ liệu ra giấy (5 ký tự)" },
+        { image: "../images/110.jpg", answer: "WINDOWS", hint: "Hệ điều hành phổ biến nhất (7 ký tự)" },
+        { image: "../images/111.jpg", answer: "PHANMEM", hint: "Các chương trình chạy trong máy (7 ký tự)" },
+        { image: "../images/112.jpg", answer: "OCUNG", hint: "Nơi lưu trữ dữ liệu lâu dài (5 ký tự)" },
+        { image: "../images/113.jpg", answer: "LOA", hint: "Thiết bị phát âm thanh (3 ký tự)" },
+        { image: "../images/114.jpg", answer: "BONHO", hint: "RAM còn được gọi là gì? (5 ký tự)" },
+        { image: "../images/115.jpg", answer: "CARD", hint: "Thiết bị xử lý đồ họa (4 ký tự)" }
     ],
     "11a1": [
-         { image: "../images/11_python.jpg", answer: "PYTHON", hint: "Ngôn ngữ lập trình (6 ký tự)" },
-         { image: "../images/11_bien.jpg", answer: "BIEN", hint: "Dùng để lưu trữ giá trị (4 ký tự)" },
-         { image: "../images/11_if.jpg", answer: "IF", hint: "Câu lệnh điều kiện (2 ký tự)" },
-         { image: "../images/11_for.jpg", answer: "VONGLAP", hint: "Công việc lặp lại (7 ký tự)" }
+         { image: "../images/103.jpg", answer: "PYTHON", hint: "Ngôn ngữ lập trình dễ học (6 ký tự)" },
+         { image: "../images/104.jpg", answer: "BIEN", hint: "Dùng để lưu trữ giá trị (4 ký tự)" },
+         { image: "../images/105.jpg", answer: "VONGLAP", hint: "Cấu trúc for hoặc while (7 ký tự)" },
+         { image: "../images/116.jpg", answer: "HAM", hint: "Một khối lệnh thực hiện việc cụ thể (3 ký tự)" },
+         { image: "../images/117.jpg", answer: "MANG", hint: "Danh sách các phần tử (4 ký tự)" },
+         { image: "../images/118.jpg", answer: "KIEU", hint: "Số nguyên, số thực gọi là ... dữ liệu (4 ký tự)" },
+         { image: "../images/119.jpg", answer: "BUG", hint: "Lỗi trong chương trình (3 ký tự)" },
+         { image: "../images/120.jpg", answer: "IF", hint: "Câu lệnh rẽ nhánh (2 ký tự)" },
+         { image: "../images/121.jpg", answer: "INPUT", hint: "Lệnh nhập từ bàn phím (5 ký tự)" },
+         { image: "../images/122.jpg", answer: "STRING", hint: "Kiểu dữ liệu xâu ký tự (6 ký tự)" }
     ],
     "12a1": [
-         { image: "../images/12_csdl.jpg", answer: "CSDL", hint: "Cơ sở dữ liệu (4 ký tự)" },
-         { image: "../images/12_access.jpg", answer: "ACCESS", hint: "Hệ quản trị CSDL (6 ký tự)" },
-         { image: "../images/12_sql.jpg", answer: "SQL", hint: "Ngôn ngữ truy vấn (3 ký tự)" },
-         { image: "../images/12_table.jpg", answer: "BANG", hint: "Chứa dữ liệu hàng và cột (4 ký tự)" }
+         { image: "../images/106.jpg", answer: "CSDL", hint: "Cơ sở dữ liệu viết tắt (4 ký tự)" },
+         { image: "../images/107.jpg", answer: "ACCESS", hint: "Phần mềm quản trị CSDL của MS (6 ký tự)" },
+         { image: "../images/108.jpg", answer: "SQL", hint: "Ngôn ngữ truy vấn cấu trúc (3 ký tự)" },
+         { image: "../images/109.jpg", answer: "BANG", hint: "Cấu trúc gồm hàng và cột (4 ký tự)" },
+         { image: "../images/123.jpg", answer: "KHOA", hint: "Dùng để liên kết các bảng (4 ký tự)" },
+         { image: "../images/124.jpg", answer: "TRUYVAN", hint: "Lấy dữ liệu từ bảng (7 ký tự)" },
+         { image: "../images/125.jpg", answer: "BAOCAO", hint: "Kết quả cuối cùng để in ấn (6 ký tự)" },
+         { image: "../images/126.jpg", answer: "SERVER", hint: "Máy chủ lưu trữ trang web (6 ký tự)" },
+         { image: "../images/127.jpg", answer: "WIFI", hint: "Kết nối mạng không dây (4 ký tự)" },
+         { image: "../images/128.jpg", answer: "INTERNET", hint: "Mạng toàn cầu (8 ký tự)" }
     ]
 };
 
-/* 2. BIẾN TOÀN CỤC */
+/* 2. CÁC BIẾN ĐIỀU KHIỂN */
 let currentQuestions = [];
 let currentIndex = 0;
 let userAnswer = [];
@@ -36,34 +53,22 @@ const els = {
     slots: document.getElementById("answer-container"),
     keyboard: document.getElementById("keyboard-container"),
     score: document.getElementById("score-value"),
-    timer: document.getElementById("timer"),
-    spinner: document.querySelector('.loading-spinner')
+    timer: document.getElementById("timer")
 };
 
-/* 3. KHỞI CHẠY */
+/* 3. HÀM KHỞI TẠO */
 function init() {
     score = 0;
     if(els.score) els.score.innerText = score;
-    
-    // Gán sự kiện đổi lớp
     if(els.grade) {
-        els.grade.onchange = (e) => {
-            console.log("Đã đổi sang khối:", e.target.value);
-            loadGrade(e.target.value);
-        };
+        els.grade.onchange = (e) => loadGrade(e.target.value);
     }
-    
     loadGrade("10a1");
 }
 
 function loadGrade(grade) {
-    // Kiểm tra xem dữ liệu khối đó có tồn tại không
-    if (!questionDatabase[grade]) {
-        alert("Dữ liệu khối này đang được cập nhật!");
-        return;
-    }
-    
-    // Xáo trộn câu hỏi
+    if (!questionDatabase[grade]) return;
+    // Xáo trộn thứ tự câu hỏi để mỗi lần chơi mỗi khác
     currentQuestions = [...questionDatabase[grade]].sort(() => Math.random() - 0.5);
     currentIndex = 0;
     loadQuestion();
@@ -84,28 +89,20 @@ function loadQuestion() {
     renderKeyboard();
     startTimer();
 
-    // Reset và hiển thị ảnh
+    // Hiển thị ảnh với hiệu ứng mờ dần
     if(els.img) {
-        if(els.spinner) els.spinner.style.display = 'block';
         els.img.style.opacity = 0;
         els.img.src = q.image;
-        
-        els.img.onload = () => {
-            els.img.style.opacity = 1;
-            if(els.spinner) els.spinner.style.display = 'none';
-        };
-        
+        els.img.onload = () => els.img.style.opacity = 1;
         els.img.onerror = () => {
-            console.error("Không tìm thấy ảnh:", q.image);
-            els.img.src = "https://via.placeholder.com/400x200?text=Chua+Co+Hinh+Anh";
+            els.img.src = "https://via.placeholder.com/400x200?text=Anh+So+" + q.image.split('/').pop();
             els.img.style.opacity = 1;
-            if(els.spinner) els.spinner.style.display = 'none';
         };
     }
 }
 
+/* 4. VẼ GIAO DIỆN */
 function renderSlots() {
-    if(!els.slots) return;
     els.slots.innerHTML = "";
     userAnswer.forEach((char, i) => {
         const div = document.createElement("div");
@@ -117,9 +114,9 @@ function renderSlots() {
 }
 
 function renderKeyboard() {
-    if(!els.keyboard) return;
     els.keyboard.innerHTML = "";
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(c => {
+    const keys = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    keys.forEach(c => {
         const btn = document.createElement("button");
         btn.innerText = c;
         btn.className = "key-btn";
@@ -133,33 +130,33 @@ function renderKeyboard() {
         };
         els.keyboard.appendChild(btn);
     });
-    
-    // Thêm nút xóa (Backspace)
-    const delBtn = document.createElement("button");
-    delBtn.innerHTML = "←";
-    delBtn.className = "key-btn";
-    delBtn.style.background = "#ff7675";
-    delBtn.onclick = () => {
-        for(let i = userAnswer.length-1; i>=0; i--) {
+
+    // Nút Xóa
+    const del = document.createElement("button");
+    del.innerHTML = "Xóa";
+    del.className = "key-btn";
+    del.style.background = "#ff7675";
+    del.onclick = () => {
+        for(let i=userAnswer.length-1; i>=0; i--) {
             if(userAnswer[i] !== "") { userAnswer[i] = ""; renderSlots(); break; }
         }
     };
-    els.keyboard.appendChild(delBtn);
+    els.keyboard.appendChild(del);
 }
 
+/* 5. XỬ LÝ THẮNG/THUA */
 function checkWin() {
     const correct = currentQuestions[currentIndex].answer;
     if (userAnswer.join("") === correct) {
         clearInterval(timerInterval);
         canPlay = false;
         score += 10;
-        if(els.score) els.score.innerText = score;
-        showModal('win', 'CHÍNH XÁC!', `Đáp án là: ${correct}`, 'Câu tiếp', () => {
+        els.score.innerText = score;
+        showModal('win', 'TUYỆT VỜI!', `Đáp án: ${correct}`, 'Tiếp tục', () => {
             currentIndex++;
             loadQuestion();
         });
     } else {
-        // Hiệu ứng rung khi sai (Cần CSS shake)
         els.slots.style.animation = "shake 0.5s";
         setTimeout(() => els.slots.style.animation = "", 500);
     }
@@ -167,21 +164,20 @@ function checkWin() {
 
 function startTimer() {
     timeLeft = 60;
-    if(els.timer) els.timer.innerText = timeLeft;
+    els.timer.innerText = timeLeft;
     timerInterval = setInterval(() => {
         timeLeft--;
-        if(els.timer) els.timer.innerText = timeLeft;
+        els.timer.innerText = timeLeft;
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
             canPlay = false;
-            showModal('lose', 'HẾT GIỜ!', `Bạn được ${score} điểm`, 'Chơi lại', () => location.reload());
+            showModal('lose', 'HẾT GIỜ!', `Bạn đã đạt được ${score} điểm`, 'Chơi lại', () => location.reload());
         }
     }, 1000);
 }
 
 function showModal(type, title, msg, btnText, callback) {
     const modal = document.getElementById('custom-modal');
-    if(!modal) return;
     modal.className = `modal-overlay active type-${type}`;
     document.getElementById('modal-title').innerText = title;
     document.getElementById('modal-msg').innerText = msg;
@@ -196,7 +192,7 @@ window.showCurrentHint = function() {
 }
 
 function endGame() {
-    showModal('win', 'HOÀN THÀNH!', `Tổng điểm: ${score}`, 'Về Menu', () => {
+    showModal('win', 'XUẤT SẮC!', `Bạn đã hoàn thành tất cả câu hỏi với ${score} điểm!`, 'Về Menu', () => {
         window.location.href = 'hub.html';
     });
 }
