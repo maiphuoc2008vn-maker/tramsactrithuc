@@ -75,6 +75,7 @@ function shuffleArray(array) {
 
 /* KHỞI ĐỘNG */
 function init() {
+    console.log("Game đã kết nối!");
     score = parseInt(localStorage.getItem("gameScore")) || 0;
     if(els.score) els.score.innerText = score;
     
@@ -127,22 +128,30 @@ function loadQuestion() {
 
     const q = currentQuestions[currentIndex];
 
-    // FIX LỖI: Vẽ ô chữ trước khi load ảnh
+    // FIX LỖI TREO: Vẽ ô chữ NGAY LẬP TỨC
     userAnswer = Array(q.answer.length).fill("");
     renderSlots();
     renderKeyboard();
     startTimer();
 
+    // XỬ LÝ ẢNH
     if(els.img) {
         els.img.style.opacity = 0.3;
         const spinner = document.querySelector('.loading-spinner');
         if(spinner) spinner.style.display = 'block';
 
         els.img.src = q.image;
-        els.img.onload = () => { els.img.style.opacity = 1; if(spinner) spinner.style.display = 'none'; };
+        
+        els.img.onload = () => { 
+            els.img.style.opacity = 1; 
+            if(spinner) spinner.style.display = 'none'; 
+        };
+        
         els.img.onerror = () => {
+            console.log("Ảnh lỗi, dùng ảnh thay thế");
             els.img.src = `https://via.placeholder.com/400x200?text=${q.answer}`;
-            els.img.style.opacity = 1; if(spinner) spinner.style.display = 'none';
+            els.img.style.opacity = 1; 
+            if(spinner) spinner.style.display = 'none';
         };
     }
 }
@@ -194,7 +203,7 @@ function typeChar(char) {
     }
 }
 
-/* GAMEPLAY LOGIC */
+/* LOGIC THẮNG/THUA */
 function checkWin() {
     const correct = currentQuestions[currentIndex].answer;
     const inputAnswer = userAnswer.join("");
