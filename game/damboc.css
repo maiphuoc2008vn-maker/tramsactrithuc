@@ -1,6 +1,16 @@
-body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: #000; font-family: sans-serif; overflow: hidden; }
-.game-container { width: 100vw; height: 100vh; max-width: 900px; max-height: 650px; background: url('../images/san-dau.jpg') center/cover no-repeat; position: relative; display: flex; flex-direction: column; }
+body { 
+    margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; 
+    height: 100vh; background: #000; font-family: Arial, sans-serif; overflow: hidden; 
+}
 
+.game-container {
+    width: 100vw; height: 100vh; max-width: 900px; max-height: 650px;
+    /* CHÚ Ý: Đổi .jpg thành .jpeg nếu vẫn bị đen */
+    background: url('../images/san-dau.jpeg') center/cover no-repeat #1a1a1a;
+    position: relative; display: flex; flex-direction: column;
+}
+
+/* Thanh máu */
 .hp-section { display: flex; justify-content: space-around; align-items: center; padding: 10px; background: rgba(0,0,0,0.85); z-index: 5; }
 .hp-slots { display: flex; gap: 4px; padding: 5px; border-radius: 5px; }
 .hp-slots.damaged { background: rgba(255, 0, 0, 0.5); animation: flash 0.3s; }
@@ -8,27 +18,41 @@ body { margin: 0; padding: 0; display: flex; justify-content: center; align-item
 
 .slot { width: 35px; height: 14px; background: #2ecc71; border: 1px solid #fff; transition: 0.5s; }
 .slot.lost { background: #333; transform: scale(0.8); border-color: #555; }
-.player-name { color: #00d2ff; font-weight: bold; font-size: 0.75rem; text-align: center; }
+.player-name { color: #00d2ff; font-weight: bold; font-size: 0.8rem; }
 .vs-badge { color: gold; font-weight: 900; font-size: 1.2rem; }
 
+/* Arena & Nhân vật */
 .arena { flex: 1; display: flex; justify-content: space-around; align-items: flex-end; padding-bottom: 40px; }
-.fighter { width: 32vw; max-width: 180px; height: 45vw; max-height: 240px; background-size: cover; background-position: center; border: 3px solid #fff; border-radius: 10px; transition: transform 0.2s; }
+.fighter {
+    width: 32vw; max-width: 180px; height: 45vw; max-height: 240px;
+    background-size: cover; background-position: center; border: 3px solid #fff;
+    border-radius: 10px; transition: transform 0.2s, filter 0.2s;
+    background-color: #444;
+}
 
-/* Robot là đối thủ (bên phải), Học sinh là bạn (bên trái) */
-.student-img { background-image: url('../images/hocsinh.jpg'); }
-.robot-img { background-image: url('../images/robot.jpg'); transform: scaleX(-1); }
+/* Đường dẫn ảnh (Dùng .jpeg) */
+.student-img { background-image: url('../images/hocsinh.jpeg'); }
+.robot-img { background-image: url('../images/robot.jpeg'); transform: scaleX(-1); }
 
+/* Hiệu ứng Đấm */
 .player-punch { transform: translateX(120px) scale(1.1) !important; z-index: 10; }
 .enemy-punch { transform: translateX(-120px) scaleX(-1.1) !important; z-index: 10; }
 .hit-shake { animation: shake 0.3s forwards; filter: brightness(2) sepia(1) hue-rotate(-50deg); }
 
-@keyframes shake { 0%, 100% { transform: translate(0,0); } 25% { transform: translate(-10px, 5px); } 75% { transform: translate(10px, -5px); } }
+@keyframes shake {
+    0%, 100% { transform: translate(0,0); }
+    25% { transform: translate(-10px, 5px); }
+    75% { transform: translate(10px, -5px); }
+}
 
-.quiz-container { background: white; padding: 15px; border-top: 4px solid gold; box-sizing: border-box; }
-.question-text { font-size: 1rem; font-weight: bold; text-align: center; margin-bottom: 10px; }
+/* Câu hỏi */
+.quiz-container { background: white; padding: 15px; border-top: 4px solid gold; width: 100%; box-sizing: border-box; }
+.question-text { font-size: 1.1rem; font-weight: bold; color: #333; text-align: center; margin-bottom: 10px; }
 .answer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 button { padding: 12px 5px; background: #2c3e50; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
 
+/* Overlay Kết quả */
 .overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.96); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; color: white; text-align: center; }
 .cup-display { width: 70%; max-width: 260px; margin: 15px 0; border: 4px solid gold; border-radius: 15px; overflow: hidden; box-shadow: 0 0 30px gold; }
 #result-img { width: 100%; display: block; }
+.retry-btn { background: gold !important; color: #000 !important; padding: 15px 30px !important; margin-top: 10px; border-radius: 5px; font-weight: bold; cursor: pointer; }
