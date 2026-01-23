@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Đuổi Hình Bắt Chữ - STEAM 12A4</title>
+    <!-- Icon và Font chữ -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- File CSS giao diện -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,7 +24,7 @@
         </button>
     </header>
 
-    <!-- 2. MOBILE MENU OVERLAY -->
+    <!-- 2. MOBILE MENU OVERLAY (Menu trượt trên điện thoại) -->
     <div class="mobile-menu-overlay" onclick="toggleMobileMenu()"></div>
     <div class="mobile-menu" id="mobile-menu">
         <div class="menu-header">
@@ -42,6 +44,7 @@
         <aside class="sidebar">
             <div class="logo-section">
                 <div class="logo-wrapper">
+                    <!-- Logo trường (Nếu lỗi sẽ hiện icon thay thế) -->
                     <img src="../images/logotruongdung.jpg" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
                 </div>
                 <h2>STEAM 12A4</h2>
@@ -66,10 +69,10 @@
             <div class="footer"><p>© 2025-2026 Dev Team</p></div>
         </aside>
 
-        <!-- 4. MAIN GAME CONTENT -->
+        <!-- 4. MAIN GAME CONTENT (Khu vực chơi game) -->
         <main class="main-content">
             <div class="game-board">
-                <!-- Header Info (Level, Time, Score) -->
+                <!-- Header Info (Lớp, Thời gian, Điểm) -->
                 <div class="board-header">
                     <div class="select-wrapper">
                         <i class="fas fa-layer-group"></i>
@@ -90,27 +93,28 @@
                     </div>
                 </div>
 
-                <!-- Image Area -->
+                <!-- Image Area (Khung ảnh câu hỏi) -->
                 <div class="image-frame">
                     <img id="current-image" src="" alt="Đang tải...">
+                    <!-- Icon xoay khi đang tải ảnh -->
                     <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i></div>
                 </div>
 
-                <!-- Hint Button -->
+                <!-- Hint Button (Nút gợi ý) -->
                 <div class="action-area">
                     <button class="btn-hint" onclick="showCurrentHint()">
                         <i class="fas fa-lightbulb"></i> Gợi ý
                     </button>
                 </div>
 
-                <!-- Slots & Keyboard -->
+                <!-- Slots & Keyboard (Ô chữ và Bàn phím) -->
                 <div id="answer-container" class="slots-area"></div>
                 <div id="keyboard-container" class="keyboard-area"></div>
             </div>
         </main>
     </div>
 
-    <!-- MODAL -->
+    <!-- 5. MODAL (Hộp thoại thông báo Thắng/Thua) -->
     <div id="custom-modal" class="modal-overlay">
         <div class="modal-box">
             <div class="modal-icon" id="modal-icon"></div>
@@ -120,15 +124,28 @@
         </div>
     </div>
 
+    <!-- 6. SCRIPTS (Thứ tự rất quan trọng) -->
+    
+    <!-- Script lưu điểm (Nếu có file này thì game sẽ lưu điểm, không có vẫn chạy được) -->
+    <script type="module" src="score-saver.js"></script>
+
+    <!-- Script Logic Game (File xử lý câu hỏi, xáo trộn, thời gian...) -->
+    <!-- Đảm bảo bạn đã dán code "Fix lỗi treo" vào file input_file_2.js -->
     <script src="input_file_2.js"></script>
+
+    <!-- Script Giao diện (Menu Mobile, Dark Mode) -->
     <script>
         // Logic Đóng/Mở Menu Mobile
         function toggleMobileMenu() {
-            document.getElementById('mobile-menu').classList.toggle('active');
-            document.querySelector('.mobile-menu-overlay').classList.toggle('active');
+            const menu = document.getElementById('mobile-menu');
+            const overlay = document.querySelector('.mobile-menu-overlay');
+            if(menu && overlay) {
+                menu.classList.toggle('active');
+                overlay.classList.toggle('active');
+            }
         }
 
-        // Logic Dark Mode
+        // Logic Dark Mode (Chế độ tối)
         const body = document.body;
         
         function setTheme(isDark) {
@@ -141,19 +158,25 @@
             }
         }
 
-        // Kiểm tra cài đặt cũ
+        // Kiểm tra cài đặt cũ khi vừa vào trang
         if (localStorage.getItem('theme') === 'dark') setTheme(true);
 
-        // Sự kiện click Desktop
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            setTheme(!body.classList.contains('dark-mode'));
-        });
+        // Sự kiện click nút đổi màu trên Desktop (Sidebar)
+        const desktopThemeBtn = document.getElementById('theme-toggle');
+        if(desktopThemeBtn) {
+            desktopThemeBtn.addEventListener('click', () => {
+                setTheme(!body.classList.contains('dark-mode'));
+            });
+        }
         
-        // Sự kiện click Mobile
-        document.getElementById('mobile-theme-toggle').addEventListener('click', () => {
-            setTheme(!body.classList.contains('dark-mode'));
-            toggleMobileMenu(); // Đóng menu sau khi chọn
-        });
+        // Sự kiện click nút đổi màu trên Mobile (Menu)
+        const mobileThemeBtn = document.getElementById('mobile-theme-toggle');
+        if(mobileThemeBtn) {
+            mobileThemeBtn.addEventListener('click', () => {
+                setTheme(!body.classList.contains('dark-mode'));
+                toggleMobileMenu(); // Đóng menu sau khi chọn cho gọn
+            });
+        }
     </script>
 </body>
 </html>
