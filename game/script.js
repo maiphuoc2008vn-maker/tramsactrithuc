@@ -1,10 +1,5 @@
-/* ==========================================================================
-   GAME LOGIC - FIX LỖI TREO & FULL CÂU HỎI LỚP 10, 11, 12
-   ========================================================================== */
-
-// 1. CƠ SỞ DỮ LIỆU CÂU HỎI
+/* DATA CÂU HỎI FULL */
 const questionDatabase = {
-    // --- LỚP 10: PHẦN CỨNG & HỆ ĐIỀU HÀNH ---
     "10a1": [
         { image: "../images/5.jpg", answer: "BANPHIM", hint: "Thiết bị nhập dữ liệu (7 ký tự)" },
         { image: "../images/6.jpg", answer: "CHUOT", hint: "Thiết bị điều khiển con trỏ (5 ký tự)" },
@@ -20,8 +15,6 @@ const questionDatabase = {
         { image: "../images/3.jpg", answer: "EXCEL", hint: "Phần mềm bảng tính (5 ký tự)" },
         { image: "../images/15.jpg", answer: "GOOGLE", hint: "Công cụ tìm kiếm số 1 (6 ký tự)" }
     ],
-
-    // --- LỚP 11: LẬP TRÌNH (PYTHON/C++) ---
     "11a1": [
          { image: "../images/11_python.jpg", answer: "PYTHON", hint: "Ngôn ngữ lập trình con trăn (6 ký tự)" },
          { image: "../images/11_bien.jpg", answer: "BIEN", hint: "Dùng để lưu trữ giá trị (4 ký tự)" },
@@ -36,8 +29,6 @@ const questionDatabase = {
          { image: "../images/11_bug.jpg", answer: "BUG", hint: "Lỗi trong chương trình (3 ký tự)" },
          { image: "../images/11_debug.jpg", answer: "DEBUG", hint: "Quá trình sửa lỗi (5 ký tự)" }
     ],
-
-    // --- LỚP 12: CƠ SỞ DỮ LIỆU & MẠNG ---
     "12a1": [
          { image: "../images/12_csdl.jpg", answer: "CSDL", hint: "Viết tắt Cơ sở dữ liệu (4 ký tự)" },
          { image: "../images/12_access.jpg", answer: "ACCESS", hint: "Hệ quản trị CSDL của Microsoft (6 ký tự)" },
@@ -54,7 +45,7 @@ const questionDatabase = {
     ]
 };
 
-// 2. BIẾN TOÀN CỤC
+/* BIẾN & ELEMENT */
 let currentQuestions = [];
 let currentIndex = 0;
 let userAnswer = [];
@@ -64,18 +55,16 @@ let timerInterval;
 let timeLeft = 60;
 let isScoreSaved = false;
 
-// Lấy các thẻ HTML (Dùng try-catch để tránh lỗi nếu HTML thiếu ID)
-const getEl = (id) => document.getElementById(id);
 const els = {
-    grade: getEl("grade-select"),
-    img: getEl("current-image"),
-    slots: getEl("answer-container"),
-    keyboard: getEl("keyboard-container"),
-    score: getEl("score-value"),
-    timer: getEl("timer")
+    grade: document.getElementById("grade-select"),
+    img: document.getElementById("current-image"),
+    slots: document.getElementById("answer-container"),
+    keyboard: document.getElementById("keyboard-container"),
+    score: document.getElementById("score-value"),
+    timer: document.getElementById("timer")
 };
 
-// --- HÀM XÁO TRỘN CÂU HỎI (Shuffle) ---
+/* XÁO TRỘN */
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -84,29 +73,44 @@ function shuffleArray(array) {
     return array;
 }
 
-// --- KHỞI TẠO GAME ---
+/* KHỞI ĐỘNG */
 function init() {
-    console.log("Game Start: Đang khởi tạo...");
-    
-    // Lấy điểm cũ từ localStorage
     score = parseInt(localStorage.getItem("gameScore")) || 0;
     if(els.score) els.score.innerText = score;
     
-    // Gắn sự kiện chọn lớp
     if(els.grade) {
         els.grade.addEventListener("change", (e) => loadGrade(e.target.value));
-        loadGrade("10a1"); // Mặc định chạy lớp 10
+        loadGrade("10a1");
     } else {
-        loadGrade("10a1"); 
+        loadGrade("10a1");
     }
+
+    // Logic Mobile Menu
+    window.toggleMobileMenu = function() {
+        const menu = document.getElementById('mobile-menu');
+        const overlay = document.querySelector('.mobile-menu-overlay');
+        if(menu && overlay) {
+            menu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+    };
+
+    // Logic Dark Mode
+    const body = document.body;
+    const themeBtn = document.getElementById('theme-toggle');
+    
+    function setTheme(isDark) {
+        if (isDark) { body.classList.add('dark-mode'); localStorage.setItem('theme', 'dark'); }
+        else { body.classList.remove('dark-mode'); localStorage.setItem('theme', 'light'); }
+    }
+    
+    if (localStorage.getItem('theme') === 'dark') setTheme(true);
+    if(themeBtn) themeBtn.addEventListener('click', () => setTheme(!body.classList.contains('dark-mode')));
 }
 
 function loadGrade(grade) {
-    // 1. Lấy dữ liệu theo lớp
     const rawData = questionDatabase[grade] || questionDatabase["10a1"];
-    // 2. Tạo bản sao và xáo trộn để câu hỏi ngẫu nhiên
     currentQuestions = shuffleArray([...rawData]); 
-    
     currentIndex = 0;
     loadQuestion();
 }
@@ -115,74 +119,49 @@ function loadQuestion() {
     clearInterval(timerInterval);
     canPlay = true;
     isScoreSaved = false;
-    
-    // Kiểm tra các phần tử UI quan trọng
-    if (!els.slots || !els.keyboard) {
-        console.error("LỖI: Không tìm thấy khung game trong HTML");
-        return;
-    }
 
-    // Nếu hết câu hỏi
     if (!currentQuestions || currentIndex >= currentQuestions.length) {
         endGame();
         return;
     }
 
     const q = currentQuestions[currentIndex];
-    console.log("Đang tải câu:", q.answer);
 
-    // --- XỬ LÝ ẢNH (QUAN TRỌNG: FIX LỖI TREO) ---
-    if(els.img) {
-        // Hiện spinner, làm mờ ảnh cũ
-        els.img.style.opacity = 0.3; 
-        const spinner = document.querySelector('.loading-spinner');
-        if(spinner) spinner.style.display = 'block';
-
-        // Gán ảnh mới
-        els.img.src = q.image;
-        
-        // Khi ảnh tải xong
-        els.img.onload = () => {
-            els.img.style.opacity = 1;
-            if(spinner) spinner.style.display = 'none';
-        };
-        
-        // Khi ảnh lỗi -> Dùng ảnh thay thế -> KHÔNG ĐƯỢC TREO GAME
-        els.img.onerror = () => {
-            console.warn("Không tải được ảnh:", q.image);
-            // Dùng ảnh giữ chỗ online nếu ảnh thật bị lỗi
-            els.img.src = `https://via.placeholder.com/400x200?text=${q.answer}`; 
-            els.img.style.opacity = 1;
-            if(spinner) spinner.style.display = 'none';
-        };
-    }
-    
-    // --- VẼ GIAO DIỆN NGAY LẬP TỨC (Không chờ ảnh tải xong) ---
+    // FIX LỖI: Vẽ ô chữ trước khi load ảnh
     userAnswer = Array(q.answer.length).fill("");
     renderSlots();
     renderKeyboard();
     startTimer();
+
+    if(els.img) {
+        els.img.style.opacity = 0.3;
+        const spinner = document.querySelector('.loading-spinner');
+        if(spinner) spinner.style.display = 'block';
+
+        els.img.src = q.image;
+        els.img.onload = () => { els.img.style.opacity = 1; if(spinner) spinner.style.display = 'none'; };
+        els.img.onerror = () => {
+            els.img.src = `https://via.placeholder.com/400x200?text=${q.answer}`;
+            els.img.style.opacity = 1; if(spinner) spinner.style.display = 'none';
+        };
+    }
 }
 
-// --- CÁC HÀM XỬ LÝ GIAO DIỆN ---
+/* UI RENDER */
 function renderSlots() {
+    if(!els.slots) return;
     els.slots.innerHTML = "";
     userAnswer.forEach((char, i) => {
         const div = document.createElement("div");
         div.className = "slot" + (char ? " filled" : "");
         div.innerText = char;
-        // Click để xóa ký tự
-        div.onclick = () => { 
-            if(canPlay && char !== "") { 
-                userAnswer[i] = ""; 
-                renderSlots(); 
-            } 
-        };
+        div.onclick = () => { if(canPlay && char !== "") { userAnswer[i] = ""; renderSlots(); } };
         els.slots.appendChild(div);
     });
 }
 
 function renderKeyboard() {
+    if(!els.keyboard) return;
     els.keyboard.innerHTML = "";
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     chars.split("").forEach(c => {
@@ -193,13 +172,11 @@ function renderKeyboard() {
         els.keyboard.appendChild(btn);
     });
     
-    // Nút Xóa
     const del = document.createElement("button");
     del.innerHTML = "<i class='fas fa-backspace'></i>";
     del.className = "key-btn key-del";
     del.onclick = () => {
         if (!canPlay) return;
-        // Xóa ký tự cuối cùng điền vào
         for (let i = userAnswer.length - 1; i >= 0; i--) {
             if (userAnswer[i]) { userAnswer[i] = ""; renderSlots(); return; }
         }
@@ -213,33 +190,11 @@ function typeChar(char) {
     if (idx !== -1) {
         userAnswer[idx] = char;
         renderSlots();
-        // Kiểm tra thắng ngay khi điền đủ
         if (!userAnswer.includes("")) checkWin();
     }
 }
 
-// --- LOGIC GAME ---
-function startTimer() {
-    timeLeft = 60;
-    if(els.timer) els.timer.innerText = timeLeft;
-    
-    timerInterval = setInterval(() => {
-        timeLeft--;
-        if(els.timer) els.timer.innerText = timeLeft;
-        
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            canPlay = false;
-            saveCurrentScoreSafe(); // Lưu điểm an toàn
-            
-            showModal('lose', 'HẾT GIỜ!', `Bạn dừng lại ở <b>${score} điểm</b>.`, 'Chơi Lại', () => {
-                localStorage.setItem("gameScore", 0);
-                location.reload();
-            });
-        }
-    }, 1000);
-}
-
+/* GAMEPLAY LOGIC */
 function checkWin() {
     const correct = currentQuestions[currentIndex].answer;
     const inputAnswer = userAnswer.join("");
@@ -247,7 +202,6 @@ function checkWin() {
     if (inputAnswer === correct) {
         clearInterval(timerInterval);
         canPlay = false;
-        
         score += 10;
         if(els.score) els.score.innerText = score;
         localStorage.setItem("gameScore", score);
@@ -257,53 +211,53 @@ function checkWin() {
             loadQuestion();
         });
     } else {
-        // Hiệu ứng rung khi sai
         if(els.slots) {
             els.slots.classList.add('shake-animation');
             setTimeout(() => els.slots.classList.remove('shake-animation'), 500);
         }
-        document.querySelectorAll('.slot').forEach(s => { 
-            s.style.borderColor = "#ff7675"; 
-            s.style.color = "#ff7675"; 
-        });
-        
-        // Reset màu sau 1 giây
+        document.querySelectorAll('.slot').forEach(s => { s.style.borderColor = "#ff7675"; s.style.color = "#ff7675"; });
         setTimeout(() => {
-             document.querySelectorAll('.slot').forEach(s => { 
-                s.style.borderColor = "#b2bec3"; 
-                s.style.color = "#2d3436"; 
-            });
-            renderSlots(); 
+            document.querySelectorAll('.slot').forEach(s => { s.style.borderColor = "#b2bec3"; s.style.color = "#2d3436"; });
+            renderSlots();
         }, 1000);
     }
+}
+
+function startTimer() {
+    timeLeft = 60;
+    if(els.timer) els.timer.innerText = timeLeft;
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        if(els.timer) els.timer.innerText = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            canPlay = false;
+            saveCurrentScoreSafe();
+            showModal('lose', 'HẾT GIỜ!', `Điểm: <b>${score}</b>`, 'Chơi Lại', () => {
+                localStorage.setItem("gameScore", 0);
+                location.reload();
+            });
+        }
+    }, 1000);
 }
 
 function endGame() {
     clearInterval(timerInterval);
     saveCurrentScoreSafe();
-    showModal('win', 'HOÀN THÀNH!', `Chúc mừng! Tổng điểm: <b>${score}</b>`, 'Về Menu', () => {
+    showModal('win', 'HOÀN THÀNH!', `Tổng điểm: <b>${score}</b>`, 'Về Menu', () => {
         localStorage.setItem("gameScore", 0);
         window.location.href = 'hub.html';
     });
 }
 
-// --- HÀM LƯU ĐIỂM AN TOÀN (KHÔNG GÂY LỖI NẾU THIẾU FIREBASE) ---
 function saveCurrentScoreSafe() {
-    // Kiểm tra xem hàm lưu điểm có tồn tại không trước khi gọi
     if (typeof window.saveScoreToFirebase === "function" && score > 0 && !isScoreSaved) {
-        try {
-            window.saveScoreToFirebase(score);
-            isScoreSaved = true;
-            console.log("Đã gọi lưu điểm thành công.");
-        } catch (e) {
-            console.warn("Lỗi khi lưu điểm:", e);
-        }
-    } else {
-        console.log("Bỏ qua lưu điểm (Không có module hoặc 0 điểm)");
+        window.saveScoreToFirebase(score);
+        isScoreSaved = true;
     }
 }
 
-// --- MODAL & GỢI Ý ---
+/* MODAL & HELPERS */
 window.showCurrentHint = function() {
     if(!canPlay) return;
     showModal('hint', 'GỢI Ý', currentQuestions[currentIndex].hint, 'Đã Hiểu');
@@ -316,25 +270,15 @@ function showModal(type, title, msg, btnText = "Đóng", callback = null) {
     
     const iconMap = { 'win': '🎉', 'lose': '💔', 'hint': '💡' };
     modal.className = `modal-overlay active type-${type}`;
-    
-    // Cập nhật nội dung modal an toàn
-    const setTxt = (id, txt) => { const el = document.getElementById(id); if(el) el.innerHTML = txt; };
-    setTxt('modal-icon', iconMap[type] || '🔔');
-    setTxt('modal-title', title);
-    setTxt('modal-msg', msg);
-    setTxt('modal-btn', btnText);
-    
-    // Xử lý nút bấm (Clone để xóa event cũ)
+    document.getElementById('modal-icon').innerHTML = iconMap[type] || '🔔';
+    document.getElementById('modal-title').innerText = title;
+    document.getElementById('modal-msg').innerHTML = msg;
+    document.getElementById('modal-btn').innerText = btnText;
+
     const btn = document.getElementById('modal-btn');
-    if(btn) {
-        const newBtn = btn.cloneNode(true);
-        btn.parentNode.replaceChild(newBtn, btn);
-        newBtn.onclick = () => {
-            window.closeModal();
-            if(callback) callback();
-        };
-    }
-    modalCallback = callback;
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    newBtn.onclick = () => { closeModal(); if(callback) callback(); };
 }
 
 window.closeModal = function() {
@@ -342,5 +286,4 @@ window.closeModal = function() {
     if(modal) modal.classList.remove('active');
 }
 
-// --- CHẠY GAME KHI TRANG LOAD XONG ---
 document.addEventListener("DOMContentLoaded", init);
