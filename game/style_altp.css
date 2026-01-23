@@ -1,8 +1,8 @@
 :root {
-    --altp-blue: #020a24;
-    --altp-gradient: linear-gradient(180deg, #0e1a4b 0%, #020a24 100%);
+    --altp-bg: radial-gradient(circle at center, #1e3c72 0%, #020a24 100%);
+    --altp-blue: #0e1a4b;
     --altp-gold: #f1c40f;
-    --altp-blue-light: #3498db;
+    --white: #ffffff;
     --correct: #27ae60;
     --wrong: #e74c3c;
     --selected: #e67e22;
@@ -10,149 +10,107 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; }
 
-body { 
-    background: radial-gradient(circle, #1e3c72 0%, #020a24 100%);
-    min-height: 100vh;
-    color: white;
-}
+body { background: var(--altp-bg); min-height: 100vh; color: var(--white); overflow-x: hidden; }
 
 /* NAVBAR */
-.navbar {
-    background: rgba(0, 0, 0, 0.5);
-    padding: 10px 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+.navbar { background: rgba(0,0,0,0.6); padding: 12px 5%; border-bottom: 2px solid var(--altp-blue); }
+.nav-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 1.2rem; color: var(--altp-gold); }
+.brand img { width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--altp-gold); }
+.nav-actions { display: flex; gap: 10px; }
+.nav-link { 
+    text-decoration: none; color: white; background: rgba(255,255,255,0.1); 
+    padding: 8px 15px; border-radius: 5px; font-size: 14px; border: none; cursor: pointer;
 }
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; color: var(--altp-gold); }
-.brand img { width: 40px; border-radius: 50%; }
-.nav-btn { text-decoration: none; color: white; background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 5px; font-size: 14px; }
+.nav-link.active { background: var(--altp-gold); color: black; font-weight: bold; }
 
-/* MAIN GAME CONTAINER */
-.game-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 20px;
-    max-width: 1000px;
-    margin: 0 auto;
-}
+/* GAME CONTAINER */
+.game-container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
 
-/* STATUS & HELP */
-.status-bar {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 50px;
-}
-.lifelines { display: flex; gap: 15px; }
+/* STATUS BAR */
+.top-status { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+.lifelines { display: flex; gap: 10px; }
 .lifelines button {
-    width: 60px; height: 45px;
-    background: var(--altp-blue);
-    border: 2px solid white;
-    border-radius: 50% / 100% 100% 0 0; /* Bo tròn kiểu Millionaire */
-    border-radius: 20px;
-    color: white; font-weight: bold; cursor: pointer;
-    transition: 0.3s;
+    width: 55px; height: 45px; background: var(--altp-blue); color: white;
+    border: 2px solid var(--white); border-radius: 12px; font-weight: 900;
+    cursor: pointer; transition: 0.3s;
 }
-.lifelines button:hover { border-color: var(--altp-gold); box-shadow: 0 0 10px var(--altp-gold); }
-.lifelines button.used { opacity: 0.3; filter: grayscale(1); }
+.lifelines button:hover:not(:disabled) { border-color: var(--altp-gold); color: var(--altp-gold); transform: scale(1.05); }
+.lifelines button.used { opacity: 0.3; filter: grayscale(1); position: relative; }
+.lifelines button.used::after { content: "X"; position: absolute; color: red; font-size: 30px; top: 0; left: 15px; }
 
-.money-badge {
-    background: linear-gradient(to right, #f1c40f, #f39c12);
-    color: #000; padding: 10px 25px; border-radius: 50px;
-    font-weight: 900; border: 2px solid white;
-}
+.money-box { text-align: right; background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 10px; border-left: 4px solid var(--altp-gold); }
+#q-index { font-size: 0.8rem; color: #bdc3c7; display: block; }
+#money-val { font-size: 1.3rem; font-weight: 900; color: var(--altp-gold); }
 
-/* ĐỒNG HỒ TRÒN */
-.timer-wrapper {
-    width: 80px; height: 80px;
-    border: 4px solid var(--altp-blue-light);
-    border-radius: 50%;
-    display: flex; justify-content: center; align-items: center;
-    font-size: 32px; font-weight: 900;
-    background: #000;
-    box-shadow: 0 0 20px var(--altp-blue-light);
-    margin-bottom: 30px;
+/* CENTER STAGE */
+.center-stage { text-align: center; margin-bottom: 30px; }
+.timer-circle {
+    width: 80px; height: 80px; border-radius: 50%; border: 4px solid var(--altp-gold);
+    display: flex; justify-content: center; align-items: center; margin: 0 auto 20px;
+    background: black; font-size: 2rem; font-weight: 900; box-shadow: 0 0 20px rgba(241, 196, 15, 0.4);
 }
 
-/* KHỐI CÂU HỎI HÌNH LỤC GIÁC TẬP TRUNG */
-.question-box {
-    position: relative;
-    width: 100%;
-    background: var(--altp-blue);
-    border: 2px solid #fff;
-    padding: 30px 60px;
-    text-align: center;
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 40px;
-    /* Tạo hình vát 2 đầu */
-    clip-path: polygon(5% 0%, 95% 0%, 100% 50%, 95% 100%, 5% 100%, 0% 50%);
-    box-shadow: inset 0 0 20px rgba(52, 152, 219, 0.5);
+/* QUESTION BOX (Hexagon Style) */
+.question-block {
+    position: relative; width: 100%; background: var(--altp-blue);
+    border: 2px solid var(--white); padding: 25px 50px;
+    clip-path: polygon(3% 0%, 97% 0%, 100% 50%, 97% 100%, 3% 100%, 0% 50%);
+    margin-bottom: 30px; box-shadow: inset 0 0 20px rgba(255,255,255,0.1);
 }
+.question-text { font-size: 1.5rem; font-weight: 700; line-height: 1.4; }
 
-/* ĐƯỜNG KẺ TRANG TRÍ GIỮA MÀN HÌNH */
-.question-box::before, .question-box::after {
-    content: ""; position: absolute; top: 50%; 
-    width: 100px; height: 2px; background: white;
-}
-.question-box::before { left: -100px; }
-.question-box::after { right: -100px; }
-
-/* LƯỚI ĐÁP ÁN LỤC GIÁC */
-.answers-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px 40px;
-    width: 100%;
-}
-
+/* ANSWERS GRID */
+.answers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px 30px; }
 .ans-item {
-    position: relative;
-    background: var(--altp-blue);
-    border: 2px solid #fff;
-    padding: 15px 40px;
-    color: white;
-    font-size: 18px;
-    font-weight: 700;
-    text-align: left;
-    cursor: pointer;
-    /* Hình lục giác vát 2 đầu */
+    background: var(--altp-blue); color: white; border: 2px solid var(--white);
+    padding: 15px 35px; font-size: 1.1rem; font-weight: 700; text-align: left;
+    cursor: pointer; transition: 0.2s;
     clip-path: polygon(5% 0%, 95% 0%, 100% 50%, 95% 100%, 5% 100%, 0% 50%);
-    transition: 0.2s;
+}
+.ans-item:hover:not(:disabled) { border-color: var(--altp-gold); background: #1e3799; }
+.ans-item .prefix { color: var(--altp-gold); margin-right: 10px; font-weight: 900; }
+
+/* ĐÁP ÁN TRẠNG THÁI */
+.ans-item.selected { background: var(--selected) !important; border-color: var(--white); }
+.ans-item.correct { background: var(--correct) !important; border-color: var(--white); animation: blink 0.5s infinite; }
+.ans-item.wrong { background: var(--wrong) !important; border-color: var(--white); }
+
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+
+/* OVERLAY & MODAL */
+.overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--altp-bg); z-index: 2000; display: flex; justify-content: center; align-items: center;
+}
+.start-card { background: var(--altp-blue); padding: 40px; border-radius: 20px; text-align: center; border: 3px solid var(--altp-gold); max-width: 400px; }
+.start-card h1 { font-size: 2.5rem; margin-bottom: 10px; color: var(--altp-gold); }
+.select-group { margin: 25px 0; text-align: left; }
+#grade-select { width: 100%; padding: 12px; border-radius: 5px; font-weight: bold; margin-top: 8px; }
+.start-btn { 
+    width: 100%; padding: 15px; background: var(--altp-gold); border: none; 
+    border-radius: 5px; font-weight: 900; font-size: 1.1rem; cursor: pointer; 
 }
 
-/* Hiệu ứng Prefix A, B, C, D */
-.ans-item span.prefix { color: var(--altp-gold); margin-right: 15px; }
-
-/* TRẠNG THÁI MÀU SẮC ĐẶC TRƯNG */
-.ans-item:hover { background: #1e3799; border-color: var(--altp-gold); }
-
-.ans-item.selected { 
-    background: var(--selected) !important; 
-    border-color: #fff !important; 
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85); z-index: 3000; display: flex; justify-content: center; align-items: center;
 }
-
-.ans-item.correct { 
-    background: var(--correct) !important; 
-    border-color: #fff !important;
-    animation: flash 0.5s infinite;
+.modal-box { 
+    background: var(--altp-blue); padding: 35px; border-radius: 20px; text-align: center; 
+    border: 2px solid var(--altp-gold); max-width: 450px; width: 90%; 
 }
-
-.ans-item.wrong { 
-    background: var(--wrong) !important; 
-    border-color: #fff !important; 
+#modal-icon { font-size: 3rem; color: var(--altp-gold); margin-bottom: 15px; }
+.modal-close-btn { 
+    margin-top: 20px; padding: 10px 30px; background: var(--white); 
+    border: none; border-radius: 5px; font-weight: 800; cursor: pointer;
 }
-
-@keyframes flash {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.6; }
-}
+.hidden { display: none; }
 
 /* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
-    .answers-grid { grid-template-columns: 1fr; }
-    .question-box { font-size: 18px; padding: 20px 40px; }
+    .answers-grid { grid-template-columns: 1fr; gap: 10px; }
+    .top-status { flex-direction: column; gap: 20px; }
+    .question-block { padding: 20px 30px; font-size: 1.1rem; clip-path: polygon(5% 0%, 95% 0%, 100% 50%, 95% 100%, 5% 100%, 0% 50%); }
+    .ans-item { font-size: 1rem; }
 }
