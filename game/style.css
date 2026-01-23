@@ -1,183 +1,252 @@
 /* ==========================================================================
-   1. GLOBAL STYLES
+   1. GLOBAL & RESET
    ========================================================================== */
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; touch-action: manipulation; /* Chống delay cảm ứng */ }
 
 body {
     font-family: 'Nunito', sans-serif;
-    /* Nền Gradient Xanh - Tím đẹp mắt */
     background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
     color: #2d3436;
-    transition: background 0.3s;
+    overflow-x: hidden;
 }
 
-.app-container { display: flex; width: 100%; height: 100%; }
+body.dark-mode {
+    background: #2d3436;
+    color: #dfe6e9;
+}
+
+.app-container { display: flex; height: 100vh; overflow: hidden; }
 
 /* ==========================================================================
-   2. SIDEBAR (THANH MENU)
+   2. DESKTOP SIDEBAR (Ẩn trên Mobile)
    ========================================================================== */
 .sidebar {
     width: 260px;
-    background: #ffffff; /* Nền trắng tuyệt đối để không bị lẫn màu */
+    background: rgba(255, 255, 255, 0.95);
     display: flex; flex-direction: column;
-    padding: 20px;
-    box-shadow: 4px 0 15px rgba(0,0,0,0.1);
-    z-index: 10;
+    padding: 25px 20px;
+    box-shadow: 4px 0 15px rgba(0,0,0,0.05);
+    z-index: 100;
+    backdrop-filter: blur(10px);
 }
+body.dark-mode .sidebar { background: #1e272e; border-right: 1px solid #353b48; }
 
 .logo-section { text-align: center; margin-bottom: 30px; }
 .logo-wrapper {
-    width: 80px; height: 80px; margin: 0 auto 10px;
-    border-radius: 50%; padding: 2px;
+    width: 80px; height: 80px; margin: 0 auto 15px;
+    border-radius: 50%; padding: 3px;
     background: linear-gradient(45deg, #0984e3, #e84393);
 }
 .logo-wrapper img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid white; object-fit: cover; }
-.logo-section h2 { font-size: 18px; font-weight: 800; color: #2d3436; }
-.subtitle { font-size: 12px; color: #636e72; }
+.logo-section h2 { font-size: 1.2rem; font-weight: 800; color: #2d3436; }
+body.dark-mode .logo-section h2 { color: #fff; }
+.subtitle { font-size: 0.8rem; color: #636e72; font-weight: bold; }
 
 .nav-menu { flex: 1; display: flex; flex-direction: column; gap: 10px; }
 .nav-item {
     border: none; background: transparent; text-align: left;
-    padding: 12px 15px; border-radius: 10px;
-    font-size: 15px; font-weight: 700; color: #636e72;
+    padding: 12px 15px; border-radius: 12px;
+    font-size: 1rem; font-weight: 700; color: #636e72;
     cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 12px;
 }
 .nav-item:hover { background: #f1f2f6; color: #0984e3; transform: translateX(5px); }
-.nav-item.active { background: #0984e3; color: white; box-shadow: 0 5px 10px rgba(9, 132, 227, 0.3); }
+.nav-item.active { background: #0984e3; color: white; box-shadow: 0 5px 15px rgba(9, 132, 227, 0.3); }
 
-.footer { text-align: center; font-size: 12px; color: #b2bec3; margin-top: 20px; }
+body.dark-mode .nav-item { color: #b2bec3; }
+body.dark-mode .nav-item:hover { background: #353b48; color: #74b9ff; }
+
+.footer { text-align: center; font-size: 0.75rem; color: #b2bec3; margin-top: 20px; }
 
 /* ==========================================================================
-   3. GAME BOARD (KHUNG TRÒ CHƠI)
+   3. GAME BOARD (Responsive)
    ========================================================================== */
 .main-content {
     flex: 1; display: flex; justify-content: center; align-items: center;
-    padding: 20px;
+    padding: 20px; position: relative;
+    overflow-y: auto; /* Cho phép cuộn nếu màn hình quá thấp */
 }
 
 .game-board {
-    background: rgba(255, 255, 255, 0.95); /* Nền trắng đục 95% - SỬA LỖI TRONG SUỐT */
-    width: 100%; max-width: 750px;
-    padding: 30px; border-radius: 25px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2); /* Đổ bóng đậm tạo độ nổi */
-    text-align: center; position: relative;
-    border: 1px solid rgba(255,255,255,0.5);
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.9);
+    width: 100%; max-width: 800px;
+    padding: 25px; border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    text-align: center;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.6);
+    display: flex; flex-direction: column; gap: 15px;
 }
+body.dark-mode .game-board { background: rgba(30, 39, 46, 0.95); border-color: #353b48; }
 
 /* Header Info */
-.board-header { 
-    display: flex; justify-content: space-between; align-items: center; 
-    margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
-}
+.board-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+
 .select-wrapper {
-    background: #f1f2f6; padding: 8px 15px; border-radius: 20px;
+    background: #f1f2f6; padding: 5px 15px; border-radius: 20px;
     display: flex; align-items: center; gap: 8px; border: 1px solid #dfe6e9;
 }
-select { border: none; background: transparent; font-weight: 700; font-size: 14px; outline: none; }
+body.dark-mode .select-wrapper { background: #353b48; border-color: #57606f; color: white; }
+select { border: none; background: transparent; font-weight: 700; font-size: 0.9rem; outline: none; color: inherit; cursor: pointer; }
 
 .stats-group { display: flex; gap: 10px; }
 .stat-box {
-    padding: 8px 18px; border-radius: 15px; font-weight: bold; color: white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 6px;
+    padding: 6px 15px; border-radius: 15px; font-weight: bold; color: white; font-size: 0.9rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 5px;
 }
-.time-box { background: #ff7675; } /* Màu đỏ cam */
-.score-box { background: #00b894; } /* Màu xanh lá */
+.time-box { background: #ff7675; }
+.score-box { background: #00b894; }
 
-.game-title { 
-    font-size: 28px; font-weight: 900; color: #6c5ce7; 
-    margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;
-}
-
-/* Ảnh câu hỏi */
+/* Image Area */
 .image-frame {
-    width: 100%; height: 220px; background: #dfe6e9;
-    border-radius: 15px; overflow: hidden; margin-bottom: 20px;
+    width: 100%; height: 240px; background: #dfe6e9;
+    border-radius: 15px; overflow: hidden; position: relative;
+    border: 4px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     display: flex; justify-content: center; align-items: center;
-    border: 3px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
-.image-frame img { max-width: 100%; max-height: 100%; object-fit: contain; }
+body.dark-mode .image-frame { background: #353b48; border-color: #57606f; }
+.image-frame img { max-width: 100%; max-height: 100%; object-fit: contain; z-index: 2; transition: opacity 0.3s; }
+.loading-spinner { position: absolute; font-size: 30px; color: #b2bec3; z-index: 1; }
 
-/* Nút Gợi Ý (SỬA LỖI NÚT NHỎ) */
+/* Buttons */
 .btn-hint {
-    background: #fdcb6e; border: none; padding: 10px 24px;
+    background: #fdcb6e; border: none; padding: 8px 20px;
     border-radius: 50px; font-weight: 800; color: #2d3436;
-    cursor: pointer; font-size: 14px; text-transform: uppercase;
-    box-shadow: 0 5px 0 #e17055; transition: 0.2s;
-    display: inline-flex; align-items: center; gap: 8px;
+    cursor: pointer; font-size: 0.9rem; text-transform: uppercase;
+    box-shadow: 0 4px 0 #e17055; transition: 0.2s;
 }
-.btn-hint:hover { transform: translateY(2px); box-shadow: 0 3px 0 #e17055; background: #ffeaa7; }
-.btn-hint:active { transform: translateY(5px); box-shadow: none; }
+.btn-hint:active { transform: translateY(4px); box-shadow: none; }
 
-/* Ô Chữ (Slots) */
+/* Slots (Ô chữ) */
 .slots-area { 
     display: flex; justify-content: center; flex-wrap: wrap; 
-    gap: 8px; margin: 25px 0; min-height: 50px; 
+    gap: 8px; min-height: 50px; margin: 5px 0;
 }
 .slot {
-    width: 45px; height: 50px; 
+    width: 42px; height: 48px; 
     background: white; border: 2px solid #b2bec3; border-radius: 10px;
     display: flex; justify-content: center; align-items: center;
-    font-size: 22px; font-weight: 800; color: #2d3436;
+    font-size: 1.3rem; font-weight: 800; color: #2d3436;
     box-shadow: 0 4px 0 #b2bec3; cursor: pointer; transition: 0.1s;
 }
-.slot.filled { 
-    background: #74b9ff; color: white; border-color: #0984e3; 
-    box-shadow: 0 4px 0 #0984e3; 
-}
+body.dark-mode .slot { background: #353b48; color: white; border-color: #57606f; box-shadow: 0 4px 0 #2f3542; }
+.slot.filled { background: #74b9ff; color: white; border-color: #0984e3; box-shadow: 0 4px 0 #0984e3; }
 
-/* Bàn phím */
-.keyboard-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; max-width: 600px; margin: 0 auto; }
+/* Keyboard */
+.keyboard-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 10px; }
 .key-btn {
     width: 40px; height: 45px; border: none; border-radius: 8px;
-    font-size: 16px; font-weight: 700; background: white; color: #2d3436;
+    font-size: 1rem; font-weight: 700; background: white; color: #2d3436;
     box-shadow: 0 3px 0 #b2bec3; border: 1px solid #dfe6e9; cursor: pointer;
 }
+body.dark-mode .key-btn { background: #353b48; color: white; border-color: #57606f; box-shadow: 0 3px 0 #2f3542; }
 .key-btn:active { transform: translateY(3px); box-shadow: none; }
-.key-del { background: #fab1a0; color: #d63031; width: auto; padding: 0 12px; }
+.key-del { background: #fab1a0; color: #d63031; width: auto; padding: 0 15px; }
 
 /* ==========================================================================
-   4. MODAL & DARK MODE
+   4. MOBILE SPECIFIC (Dành cho điện thoại < 900px)
+   ========================================================================== */
+.mobile-header, .mobile-menu-overlay, .mobile-menu { display: none; } /* Ẩn mặc định trên Desktop */
+
+@media (max-width: 900px) {
+    /* Ẩn Sidebar Desktop */
+    .sidebar { display: none; }
+
+    /* Layout chính */
+    .app-container { flex-direction: column; height: auto; min-height: 100vh; }
+    
+    /* Header Mobile */
+    .mobile-header {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 0 15px; height: 60px;
+        background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+        position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    body.dark-mode .mobile-header { background: #1e272e; color: white; }
+    
+    .header-left { display: flex; align-items: center; gap: 5px; color: #3498db; font-weight: bold; cursor: pointer; }
+    .header-title { font-weight: 800; font-size: 1.1rem; text-transform: uppercase; }
+    .hamburger-btn { background: none; border: none; font-size: 1.4rem; color: #2d3436; cursor: pointer; }
+    body.dark-mode .hamburger-btn { color: white; }
+
+    /* Menu Mobile Trượt */
+    .mobile-menu-overlay {
+        position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1001;
+        opacity: 0; visibility: hidden; transition: 0.3s; display: block;
+    }
+    .mobile-menu-overlay.active { opacity: 1; visibility: visible; }
+    
+    .mobile-menu {
+        display: flex; flex-direction: column;
+        position: fixed; top: 0; right: -280px; width: 280px; height: 100vh;
+        background: white; z-index: 1002; transition: 0.3s;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1); padding: 20px;
+    }
+    body.dark-mode .mobile-menu { background: #1e272e; }
+    .mobile-menu.active { right: 0; }
+    
+    .menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+    .menu-header h3 { font-size: 1.2rem; font-weight: 800; }
+    .menu-header button { background: none; border: none; font-size: 1.5rem; color: #636e72; }
+    
+    .menu-list a {
+        display: flex; align-items: center; gap: 15px;
+        padding: 15px; border-radius: 10px; color: #2d3436; font-weight: 700;
+        text-decoration: none; margin-bottom: 10px; background: #f1f2f6;
+    }
+    body.dark-mode .menu-list a { background: #353b48; color: white; }
+
+    /* Game Board Adjustments on Mobile */
+    .main-content { padding: 80px 10px 20px; align-items: flex-start; } /* Đẩy xuống tránh header */
+    .game-board { padding: 20px 15px; border-radius: 20px; }
+    
+    .image-frame { height: 200px; } /* Ảnh nhỏ lại chút */
+    
+    .slot { width: 34px; height: 40px; font-size: 1.1rem; border-radius: 6px; box-shadow: 0 3px 0 #b2bec3; }
+    .key-btn { width: 32px; height: 40px; font-size: 0.9rem; border-radius: 6px; }
+    .key-del { width: auto; padding: 0 10px; }
+    
+    .btn-hint { width: 100%; padding: 10px; font-size: 1rem; }
+}
+
+/* Small Phones (< 380px) */
+@media (max-width: 380px) {
+    .image-frame { height: 160px; }
+    .slot { width: 30px; height: 36px; font-size: 1rem; }
+    .key-btn { width: 28px; height: 36px; font-size: 0.8rem; }
+}
+
+/* ==========================================================================
+   5. MODAL
    ========================================================================== */
 .modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
-    z-index: 9999; display: flex; justify-content: center; align-items: center;
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+    z-index: 2000; display: flex; justify-content: center; align-items: center;
     opacity: 0; visibility: hidden; transition: 0.3s;
 }
 .modal-overlay.active { opacity: 1; visibility: visible; }
 .modal-box {
-    background: white; width: 90%; max-width: 400px; padding: 30px;
+    background: white; width: 90%; max-width: 350px; padding: 25px;
     border-radius: 20px; text-align: center;
     box-shadow: 0 20px 50px rgba(0,0,0,0.3); transform: scale(0.8); transition: 0.3s;
 }
+body.dark-mode .modal-box { background: #1e272e; color: white; }
 .modal-overlay.active .modal-box { transform: scale(1); }
-.modal-icon { font-size: 50px; margin-bottom: 10px; animation: bounce 2s infinite; }
-.modal-title { font-size: 24px; font-weight: 800; margin-bottom: 10px; }
-.modal-msg { color: #636e72; margin-bottom: 20px; font-size: 16px; }
+.modal-icon { font-size: 40px; margin-bottom: 15px; }
+.modal-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 10px; }
+.modal-msg { color: #636e72; margin-bottom: 20px; font-size: 1rem; line-height: 1.5; }
+body.dark-mode .modal-msg { color: #b2bec3; }
 .modal-btn {
     width: 100%; padding: 12px; border: none; border-radius: 50px;
     font-weight: 800; color: white; cursor: pointer; text-transform: uppercase;
+    background: #0984e3; box-shadow: 0 4px 10px rgba(9, 132, 227, 0.4);
 }
-/* Màu Modal */
-.type-win .modal-btn { background: #00b894; } .type-win .modal-title { color: #00b894; }
-.type-lose .modal-btn { background: #ff7675; } .type-lose .modal-title { color: #ff7675; }
-.type-hint .modal-btn { background: #fdcb6e; } .type-hint .modal-title { color: #e17055; }
 
-/* Dark Mode */
-.dark-mode body { background: #2d3436; }
-.dark-mode .sidebar { background: #1e272e; }
-.dark-mode .logo-section h2, .dark-mode .nav-item { color: #dfe6e9; }
-.dark-mode .nav-item:hover { background: #34495e; }
-.dark-mode .game-board { background: #1e272e; border-color: #34495e; box-shadow: none; }
-.dark-mode .game-title { color: #a29bfe; }
-.dark-mode .select-wrapper { background: #34495e; border-color: #57606f; }
-.dark-mode select { color: white; }
-.dark-mode .image-frame { background: #34495e; border-color: #57606f; }
-.dark-mode .slot { background: #34495e; border-color: #57606f; color: white; box-shadow: 0 4px 0 #2f3542; }
-.dark-mode .key-btn { background: #34495e; color: white; border-color: #57606f; box-shadow: 0 3px 0 #2f3542; }
-.dark-mode .modal-box { background: #1e272e; color: white; }
-
-@keyframes bounce { 0%,100% {transform:translateY(0);} 50% {transform:translateY(-10px);} }
+/* Modal Colors */
+.type-win .modal-btn { background: #00b894; } 
+.type-win .modal-title { color: #00b894; }
+.type-lose .modal-btn { background: #ff7675; } 
+.type-lose .modal-title { color: #ff7675; }
+.type-hint .modal-btn { background: #fdcb6e; color: #2d3436; } 
+.type-hint .modal-title { color: #e17055; }
