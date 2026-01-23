@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Đuổi Hình Bắt Chữ - STEAM 12A4</title>
+    <!-- CSS từ FontAwesome và Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- LIÊN KẾT FILE CSS -->
+    <!-- Link file CSS của bạn -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- HEADER -->
+    <!-- 1. HEADER -->
     <header class="header">
         <div class="logo-area" onclick="window.location.href='hub.html'">
             <img src="../images/logotruongdung.jpg" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
@@ -29,18 +29,22 @@
             <button class="nav-link" onclick="window.location.href='hub.html'">
                 <i class="fas fa-gamepad"></i> Kho Game
             </button>
-            <button class="nav-link" onclick="window.location.href='bangxephang.html'">
-                <i class="fas fa-trophy"></i> BXH
+            <button class="nav-link" onclick="window.location.href='../trangchu/index.html'">
+                <i class="fas fa-home"></i> Trang Chủ
             </button>
         </nav>
 
         <div class="header-actions">
-            <button id="theme-toggle" class="icon-btn"><i class="fas fa-moon"></i></button>
-            <button class="hamburger-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+            <button id="theme-toggle" class="icon-btn">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="hamburger-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </header>
 
-    <!-- MOBILE MENU -->
+    <!-- 2. MOBILE MENU -->
     <div class="mobile-menu-overlay" onclick="toggleMobileMenu()"></div>
     <div class="mobile-menu" id="mobile-menu">
         <div class="menu-header">
@@ -48,13 +52,13 @@
             <button onclick="toggleMobileMenu()"><i class="fas fa-times"></i></button>
         </div>
         <div class="menu-list">
-            <a href="#" onclick="location.reload()"><i class="fas fa-redo"></i> Chơi Lại</a>
+            <a href="#" onclick="location.reload();"><i class="fas fa-redo"></i> Chơi Lại</a>
             <a href="hub.html"><i class="fas fa-gamepad"></i> Về Kho Game</a>
-            <a href="bangxephang.html"><i class="fas fa-trophy"></i> Bảng Xếp Hạng</a>
+            <a href="../trangchu/index.html"><i class="fas fa-home"></i> Về Trang Chủ</a>
         </div>
     </div>
 
-    <!-- GAME BOARD -->
+    <!-- 3. MAIN GAME -->
     <div class="app-container">
         <main class="main-content">
             <div class="game-board">
@@ -62,44 +66,73 @@
                     <div class="select-wrapper">
                         <i class="fas fa-layer-group"></i>
                         <select id="grade-select">
-                            <option value="10a1">Lớp 10</option>
-                            <option value="11a1">Lớp 11</option>
-                            <option value="12a1">Lớp 12</option>
+                            <option value="10a1">Khối 10</option>
+                            <option value="11a1">Khối 11</option>
+                            <option value="12a1">Khối 12</option>
                         </select>
                     </div>
+                    
                     <div class="stats-group">
-                        <div class="stat-box time-box"><i class="fas fa-clock"></i> <span id="timer">60</span></div>
-                        <div class="stat-box score-box"><i class="fas fa-star"></i> <span id="score-value">0</span></div>
+                        <div class="stat-box time-box">
+                            <i class="fas fa-clock"></i> <span id="timer">60</span>
+                        </div>
+                        <div class="stat-box score-box">
+                            <i class="fas fa-star"></i> <span id="score-value">0</span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="image-frame">
-                    <img id="current-image" src="" alt="Hình ảnh">
+                    <img id="current-image" src="" alt="Đang tải...">
                     <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i></div>
                 </div>
 
                 <div class="action-area">
-                    <button class="btn-hint" onclick="showCurrentHint()"><i class="fas fa-lightbulb"></i> Gợi ý</button>
+                    <button class="btn-hint" onclick="showCurrentHint()">
+                        <i class="fas fa-lightbulb"></i> Gợi ý
+                    </button>
                 </div>
 
+                <!-- Ô Chữ -->
                 <div id="answer-container" class="slots-area"></div>
+                <!-- Bàn Phím -->
                 <div id="keyboard-container" class="keyboard-area"></div>
             </div>
         </main>
     </div>
 
-    <!-- MODAL -->
+    <!-- 4. MODAL THÔNG BÁO -->
     <div id="custom-modal" class="modal-overlay">
         <div class="modal-box">
-            <div class="modal-icon" id="modal-icon"></div>
-            <h3 class="modal-title" id="modal-title"></h3>
-            <div class="modal-msg" id="modal-msg"></div>
-            <button class="modal-btn" id="modal-btn" onclick="closeModal()">Đóng</button>
+            <div class="modal-icon" id="modal-icon">🎉</div>
+            <h3 class="modal-title" id="modal-title">Tiêu đề</h3>
+            <div class="modal-msg" id="modal-msg">Nội dung thông báo ở đây...</div>
+            <button class="modal-btn" id="modal-btn">Đóng</button>
         </div>
     </div>
 
-    <!-- LIÊN KẾT JS: CHÚ Ý TÊN FILE LÀ game.js -->
+    <!-- 5. SCRIPTS (QUAN TRỌNG: Đặt đúng tên file trên GitHub) -->
     <script type="module" src="score-saver.js"></script>
-    <script src="game.js"></script> 
+    <script src="script.js"></script>
+
+    <script>
+        // Logic điều khiển Menu Mobile
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('active');
+            document.querySelector('.mobile-menu-overlay').classList.toggle('active');
+        }
+
+        // Logic Dark Mode cơ bản
+        const themeBtn = document.getElementById('theme-toggle');
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const icon = themeBtn.querySelector('i');
+            if(document.body.classList.contains('dark-mode')) {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+        });
+    </script>
 </body>
 </html>
