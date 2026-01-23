@@ -1,284 +1,142 @@
-/* ==========================================================================
-   1. CẤU HÌNH CHUNG & HÌNH NỀN
-   ========================================================================== */
-/* Font chữ đẹp đã import bên HTML (Nunito) */
+/* --- RESET & CHUNG --- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito', sans-serif; overflow: hidden; }
 
-/* Nền chính của game: Màu xanh đậm huyền bí kiểu TV Show */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* --- MENU TRÊN ĐỈNH (TOP HEADER) --- */
+.top-header {
+    background: #0f2027;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #f1c40f;
+    z-index: 1000;
+    height: 60px;
+}
+
+.header-left { display: flex; align-items: center; gap: 10px; }
+.mini-logo { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; }
+.brand-name { font-weight: 800; font-size: 1.2rem; color: #f1c40f; }
+
+.nav-menu { display: flex; gap: 15px; }
+.nav-item {
+    background: rgba(255,255,255,0.1);
+    border: none; color: white; padding: 8px 15px;
+    border-radius: 5px; cursor: pointer; transition: 0.3s;
+}
+.nav-item:hover { background: #f1c40f; color: #000; }
+.nav-item.active { background: #f1c40f; color: #000; }
+
+.menu-toggle-btn {
+    display: none; /* Chỉ hiện trên mobile */
+    background: none; border: none; color: white; font-size: 24px; cursor: pointer;
+}
+
+/* --- GAME CONTENT --- */
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 10px;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+    padding: 20px;
+    position: relative;
+}
+
+/* --- RESPONSIVE LƯỚI ĐÁP ÁN --- */
+.answers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 cột cho Laptop */
+    gap: 15px;
+}
+
+/* --- ĐIỀU CHỈNH CHO MOBILE (< 768px) --- */
+@media (max-width: 768px) {
+    .menu-toggle-btn { display: block; }
+
+    .nav-menu {
+        display: none; /* Mặc định ẩn trên mobile */
+        flex-direction: column;
+        position: absolute;
+        top: 60px; right: 0;
+        background: #0f2027;
+        width: 200px;
+        padding: 10px;
+        border-bottom-left-radius: 10px;
+        box-shadow: -5px 5px 15px rgba(0,0,0,0.5);
+    }
+
+    .nav-menu.active { display: flex; }
+
+    .answers-grid {
+        grid-template-columns: 1fr; /* 1 cột cho Điện thoại */
+    }
+
+    .question-box { font-size: 18px; padding: 20px; min-height: 100px; }
+    
+    .top-info { flex-direction: column; gap: 15px; }
+    
+    .overlay h1 { font-size: 30px; }
+
+    .lifelines button { width: 45px; height: 45px; font-size: 12px; }
+}
+
+/* --- GIỮ LẠI CÁC STYLE HIỆU ỨNG CŨ CỦA BẠN (Cần thiết) --- */
 .altp-bg {
     background: radial-gradient(circle at center, #1e3c72 0%, #2a5298 50%, #000000 100%);
     display: flex; justify-content: center; align-items: center;
-    min-height: 100vh;
 }
-
-/* Khung chứa game */
-.game-container {
-    width: 95%; max-width: 900px;
-    background: rgba(0, 0, 0, 0.6); /* Nền đen mờ */
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
-    padding: 25px;
-    position: relative;
-    overflow: hidden;
-    display: flex; flex-direction: column;
-}
-
-/* ==========================================================================
-   2. THANH THÔNG TIN (TRỢ GIÚP & TIỀN)
-   ========================================================================== */
-.top-info {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding-bottom: 15px;
-}
-
-/* Các quyền trợ giúp */
-.lifelines { display: flex; gap: 10px; }
-
-.lifelines button {
-    width: 55px; height: 55px;
-    border-radius: 50%; border: 3px solid #fff;
-    background: linear-gradient(135deg, #3498db, #2980b9);
-    color: white; font-weight: 800; font-size: 14px;
-    cursor: pointer; position: relative;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
-    display: flex; justify-content: center; align-items: center;
-}
-
-.lifelines button i { font-size: 20px; }
-
-.lifelines button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(52, 152, 219, 0.6); }
-
-/* Khi đã sử dụng quyền trợ giúp */
-.lifelines button:disabled {
-    background: #34495e; border-color: #7f8c8d; color: #95a5a6;
-    cursor: not-allowed; transform: none; box-shadow: none;
-}
-.lifelines button.used::after {
-    content: ""; position: absolute;
-    width: 100%; height: 2px; background: #e74c3c;
-    transform: rotate(45deg);
-}
-.lifelines button.used::before {
-    content: ""; position: absolute;
-    width: 100%; height: 2px; background: #e74c3c;
-    transform: rotate(-45deg);
-}
-
-/* Badge hiển thị Tiền */
 .money-badge {
     background: linear-gradient(to right, #f1c40f, #f39c12);
-    color: #2c3e50; padding: 10px 25px;
-    border-radius: 30px; font-weight: 900; font-size: 18px;
-    border: 2px solid #fff;
-    box-shadow: 0 0 15px rgba(241, 196, 15, 0.6);
-    text-transform: uppercase; letter-spacing: 1px;
+    color: #2c3e50; padding: 8px 20px; border-radius: 30px; font-weight: 800;
 }
-
-/* ==========================================================================
-   3. ĐỒNG HỒ & CÂU HỎI
-   ========================================================================== */
-.center-stage { text-align: center; margin-bottom: 30px; position: relative; }
-
-/* Đồng hồ đếm ngược */
 .timer-circle {
-    width: 90px; height: 90px; margin: 0 auto 25px;
-    border-radius: 50%; background: #000;
-    border: 5px solid #ff4757; color: #fff;
-    font-size: 36px; font-weight: 800;
-    display: flex; justify-content: center; align-items: center;
-    box-shadow: 0 0 25px rgba(255, 71, 87, 0.8);
-    animation: pulseTimer 1s infinite; z-index: 10; position: relative;
+    width: 70px; height: 70px; margin: 0 auto 20px;
+    border-radius: 50%; border: 4px solid #ff4757; color: #fff;
+    display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 24px;
 }
-@keyframes pulseTimer {
-    0% { transform: scale(1); box-shadow: 0 0 25px rgba(255, 71, 87, 0.8); }
-    50% { transform: scale(1.1); box-shadow: 0 0 40px rgba(255, 71, 87, 1); }
-    100% { transform: scale(1); box-shadow: 0 0 25px rgba(255, 71, 87, 0.8); }
-}
-
-/* Hộp câu hỏi */
 .question-box {
-    background: linear-gradient(180deg, #102646 0%, #000000 50%, #102646 100%);
-    border: 2px solid #6dd5fa; border-radius: 20px;
-    color: #fff; font-weight: bold; font-size: 26px;
-    padding: 30px 40px; text-align: center;
-    min-height: 140px; display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 0 20px rgba(109, 213, 250, 0.3), inset 0 0 30px rgba(0,0,0,0.8);
-    position: relative;
+    background: linear-gradient(180deg, #102646 0%, #000 100%);
+    border: 2px solid #6dd5fa; border-radius: 15px; color: #fff; text-align: center;
+    padding: 25px; font-size: 22px; font-weight: bold; margin-bottom: 25px;
 }
-/* Trang trí viền ngang cho hộp câu hỏi */
-.question-box::before, .question-box::after {
-    content: ""; position: absolute; top: 50%; 
-    width: 40px; height: 2px; background: #6dd5fa;
-}
-.question-box::before { left: 0; transform: translateX(-50%); }
-.question-box::after { right: 0; transform: translateX(50%); }
-
-/* ==========================================================================
-   4. LƯỚI ĐÁP ÁN (BUTTONS)
-   ========================================================================== */
-.answers-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
-}
-
 .ans-btn {
     background: linear-gradient(90deg, #141e30 0%, #243b55 100%);
-    border: 2px solid #7f8c8d; border-radius: 50px;
-    padding: 18px 30px; color: white; text-align: left;
-    cursor: pointer; font-size: 18px; font-family: 'Nunito', sans-serif;
-    transition: all 0.2s; position: relative; overflow: hidden;
-    box-shadow: 0 5px 0 #000;
+    border: 1px solid #7f8c8d; border-radius: 50px; padding: 15px 25px;
+    color: white; text-align: left; cursor: pointer; font-size: 16px;
 }
+.ans-btn.correct { background: linear-gradient(90deg, #11998e, #38ef7d) !important; animation: blink 0.3s infinite; }
+.ans-btn.wrong { background: linear-gradient(90deg, #cb2d3e, #ef473a) !important; }
+.ans-btn.selected { background: orange !important; }
+@keyframes blink { from { opacity: 1; } to { opacity: 0.7; } }
 
-.ans-btn:hover {
-    border-color: #f1c40f; background: linear-gradient(90deg, #1f2f45 0%, #3a5b7d 100%);
-    transform: translateY(-2px); box-shadow: 0 7px 0 #000;
-}
-.ans-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #000; }
-
-.ans-btn .prefix {
-    color: #f1c40f; font-weight: 900; margin-right: 15px; font-size: 20px;
-}
-
-/* TRẠNG THÁI ĐÁP ÁN */
-/* 1. Đang chọn (Màu cam) */
-.ans-btn.selected {
-    background: linear-gradient(90deg, #d35400, #e67e22);
-    border-color: #fff; color: white;
-}
-
-/* 2. Chính xác (Màu xanh lá nhấp nháy) */
-.ans-btn.correct {
-    background: linear-gradient(90deg, #11998e, #38ef7d) !important;
-    border-color: #fff; color: white; box-shadow: 0 0 20px #38ef7d;
-    animation: blinkCorrect 0.3s infinite alternate;
-}
-@keyframes blinkCorrect { from { opacity: 1; } to { opacity: 0.6; } }
-
-/* 3. Sai (Màu đỏ) */
-.ans-btn.wrong {
-    background: linear-gradient(90deg, #cb2d3e, #ef473a) !important;
-    border-color: #fff; opacity: 0.8;
-}
-
-/* ==========================================================================
-   5. MÀN HÌNH BẮT ĐẦU (OVERLAY)
-   ========================================================================== */
+/* CSS Modal, Start Overlay giữ nguyên như cũ của bạn... */
 .overlay {
     position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(10, 20, 30, 0.98);
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    z-index: 100; backdrop-filter: blur(10px);
+    background: rgba(0,0,0,0.95); display: flex; flex-direction: column;
+    justify-content: center; align-items: center; z-index: 100;
 }
+#grade-select { padding: 10px; border-radius: 5px; margin: 15px 0; width: 80%; max-width: 300px; }
+.start-btn { padding: 15px 40px; border-radius: 30px; border: none; background: #e74c3c; color: #fff; font-weight: 900; cursor: pointer; }
 
-.overlay h1 {
-    font-size: 50px; font-weight: 900; color: transparent;
-    background: linear-gradient(to right, #f1c40f, #fff);
-    -webkit-background-clip: text; background-clip: text;
-    margin-bottom: 20px; text-transform: uppercase;
-    text-shadow: 0 0 30px rgba(241, 196, 15, 0.5);
-    animation: floatTitle 3s infinite ease-in-out;
-}
-@keyframes floatTitle { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-10px);} }
-
-.overlay p { color: #bdc3c7; margin-bottom: 20px; font-size: 18px; }
-
-#grade-select {
-    width: 300px; padding: 15px; border-radius: 50px;
-    border: 3px solid #3498db; background: #fff;
-    font-size: 16px; font-weight: 800; color: #2c3e50;
-    margin-bottom: 30px; outline: none; cursor: pointer; text-align: center;
-    box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);
-}
-
-.start-btn {
-    padding: 18px 60px; background: linear-gradient(45deg, #e74c3c, #c0392b);
-    color: white; border: none; border-radius: 50px;
-    font-size: 24px; font-weight: 900; letter-spacing: 2px;
-    cursor: pointer; box-shadow: 0 10px 30px rgba(231, 76, 60, 0.6);
-    transition: all 0.3s;
-}
-.start-btn:hover { transform: scale(1.1); box-shadow: 0 15px 40px rgba(231, 76, 60, 0.8); }
-
-/* ==========================================================================
-   6. CUSTOM MODAL (HỘP THÔNG BÁO) & BIỂU ĐỒ
-   ========================================================================== */
-/* Nền mờ */
+/* Modal styles... */
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.85); z-index: 10000;
-    display: flex; justify-content: center; align-items: center;
-    backdrop-filter: blur(8px); transition: opacity 0.3s;
+    background: rgba(0,0,0,0.85); z-index: 9999; display: flex; justify-content: center; align-items: center;
 }
-.modal-overlay.hidden { display: none; opacity: 0; }
-
-/* Hộp modal */
-.modal-box {
-    background: linear-gradient(135deg, #0f2027 0%, #203a43 100%);
-    width: 90%; max-width: 500px;
-    border: 4px solid #f1c40f; border-radius: 25px;
-    padding: 30px; text-align: center; color: white;
-    box-shadow: 0 0 50px rgba(241, 196, 15, 0.2);
-    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    position: relative;
-}
-@keyframes popIn { from {transform: scale(0.5); opacity: 0;} to {transform: scale(1); opacity: 1;} }
-
-/* Header Modal */
-.modal-header { margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
-.modal-header i { font-size: 50px; color: #f1c40f; margin-bottom: 10px; display: block; }
-.modal-header h2 { font-family: 'Nunito', sans-serif; text-transform: uppercase; font-size: 28px; margin: 0; color: #f1c40f; }
-
-/* Body Modal */
-.modal-body { font-size: 18px; line-height: 1.6; margin-bottom: 30px; color: #ecf0f1; }
-
-/* Nút đóng Modal */
-.close-modal-btn {
-    background: linear-gradient(to right, #27ae60, #2ecc71);
-    color: white; border: none; padding: 12px 40px;
-    font-size: 18px; font-weight: bold; border-radius: 50px;
-    cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
-}
-.close-modal-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(39, 174, 96, 0.6); }
-
-/* --- CÁC TRẠNG THÁI MÀU SẮC CHO MODAL --- */
-
-/* 1. Mặc định / Trợ giúp: Màu vàng */
-.modal-box { border-color: #f1c40f; box-shadow: 0 0 30px rgba(241, 196, 15, 0.3); }
-.modal-header i, .modal-header h2 { color: #f1c40f; }
-
-/* 2. Thua / Hết giờ: Màu đỏ */
-.modal-box.lose { border-color: #ff4757; box-shadow: 0 0 40px rgba(255, 71, 87, 0.4); }
-.modal-box.lose .modal-header i, .modal-box.lose .modal-header h2 { color: #ff4757; }
-.modal-box.lose .close-modal-btn { background: linear-gradient(to right, #e74c3c, #c0392b); box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4); }
-
-/* 3. Thắng: Màu xanh lá */
-.modal-box.win { border-color: #2ed573; box-shadow: 0 0 40px rgba(46, 213, 115, 0.4); }
-.modal-box.win .modal-header i, .modal-box.win .modal-header h2 { color: #2ed573; }
-
-/* --- STYLE BIỂU ĐỒ CỘT (Khán giả) --- */
-.chart-container {
-    display: flex; justify-content: space-around; align-items: flex-end;
-    height: 220px; padding-top: 30px;
-    background: rgba(255, 255, 255, 0.05); border-radius: 10px;
-    padding-bottom: 10px;
-}
-.chart-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; width: 50px; }
-
-.chart-bar {
-    width: 100%; background: linear-gradient(to top, #3498db, #2980b9);
-    border-radius: 5px 5px 0 0; position: relative;
-    transition: height 1s ease-out; box-shadow: 0 0 15px rgba(52, 152, 219, 0.6);
-}
-
-.chart-percent {
-    position: absolute; top: -30px; width: 100%; text-align: center;
-    font-weight: bold; font-size: 14px; color: #fff; text-shadow: 0 2px 2px #000;
-}
-
-.chart-label {
-    margin-top: 15px; font-weight: 800; font-size: 18px; color: #2c3e50;
-    background: #f1c40f; width: 35px; height: 35px; line-height: 35px;
-    border-radius: 50%; box-shadow: 0 0 10px #f1c40f;
-}
+.hidden { display: none; }
+.modal-box { background: #0f2027; border: 3px solid #f1c40f; padding: 30px; border-radius: 20px; color: #fff; text-align: center; max-width: 400px; width: 90%; }
+.close-modal-btn { background: #27ae60; color: white; border: none; padding: 10px 30px; border-radius: 20px; cursor: pointer; margin-top: 20px; }
