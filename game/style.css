@@ -1,75 +1,83 @@
 /* ==========================================================================
    1. GLOBAL & RESET
    ========================================================================== */
-* { margin: 0; padding: 0; box-sizing: border-box; touch-action: manipulation; /* Chống delay cảm ứng */ }
+* { margin: 0; padding: 0; box-sizing: border-box; touch-action: manipulation; font-family: 'Nunito', sans-serif; }
+
+:root {
+    --bg-header: rgba(255, 255, 255, 0.95);
+    --text-color: #2d3436;
+    --primary: #3498db;
+    --shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
 
 body {
-    font-family: 'Nunito', sans-serif;
     background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
     min-height: 100vh;
-    color: #2d3436;
+    color: var(--text-color);
     overflow-x: hidden;
+    padding-top: 70px; /* Chừa chỗ cho Header */
 }
 
 body.dark-mode {
+    --bg-header: rgba(30, 39, 46, 0.95);
+    --text-color: #dfe6e9;
     background: #2d3436;
-    color: #dfe6e9;
 }
 
-.app-container { display: flex; height: 100vh; overflow: hidden; }
-
 /* ==========================================================================
-   2. DESKTOP SIDEBAR (Ẩn trên Mobile)
+   2. HEADER (MENU TRÊN)
    ========================================================================== */
-.sidebar {
-    width: 260px;
-    background: rgba(255, 255, 255, 0.95);
-    display: flex; flex-direction: column;
-    padding: 25px 20px;
-    box-shadow: 4px 0 15px rgba(0,0,0,0.05);
-    z-index: 100;
+.header {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 70px;
+    background: var(--bg-header);
     backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%; z-index: 1000;
+    box-shadow: var(--shadow);
+    transition: background 0.3s;
 }
-body.dark-mode .sidebar { background: #1e272e; border-right: 1px solid #353b48; }
 
-.logo-section { text-align: center; margin-bottom: 30px; }
-.logo-wrapper {
-    width: 80px; height: 80px; margin: 0 auto 15px;
-    border-radius: 50%; padding: 3px;
-    background: linear-gradient(45deg, #0984e3, #e84393);
+/* Logo */
+.logo-area { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.logo-area img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); }
+.logo-text h2 { font-size: 1.1rem; font-weight: 800; line-height: 1.2; color: var(--text-color); }
+.logo-text span { font-size: 0.75rem; color: var(--primary); font-weight: 700; letter-spacing: 1px; }
+
+/* Desktop Nav */
+.desktop-nav { display: flex; gap: 15px; }
+.nav-link {
+    background: transparent; border: none;
+    padding: 8px 16px; border-radius: 20px;
+    font-weight: 700; font-size: 0.95rem; color: #7f8c8d;
+    cursor: pointer; transition: 0.3s;
+    display: flex; align-items: center; gap: 8px;
 }
-.logo-wrapper img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid white; object-fit: cover; }
-.logo-section h2 { font-size: 1.2rem; font-weight: 800; color: #2d3436; }
-body.dark-mode .logo-section h2 { color: #fff; }
-.subtitle { font-size: 0.8rem; color: #636e72; font-weight: bold; }
+.nav-link:hover, .nav-link.active { background: var(--primary); color: white; transform: translateY(-2px); }
 
-.nav-menu { flex: 1; display: flex; flex-direction: column; gap: 10px; }
-.nav-item {
-    border: none; background: transparent; text-align: left;
-    padding: 12px 15px; border-radius: 12px;
-    font-size: 1rem; font-weight: 700; color: #636e72;
-    cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 12px;
+/* Header Actions */
+.header-actions { display: flex; align-items: center; gap: 10px; }
+.icon-btn, .hamburger-btn {
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 1px solid #dfe6e9; background: transparent;
+    color: var(--text-color); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; transition: 0.3s;
 }
-.nav-item:hover { background: #f1f2f6; color: #0984e3; transform: translateX(5px); }
-.nav-item.active { background: #0984e3; color: white; box-shadow: 0 5px 15px rgba(9, 132, 227, 0.3); }
-
-body.dark-mode .nav-item { color: #b2bec3; }
-body.dark-mode .nav-item:hover { background: #353b48; color: #74b9ff; }
-
-.footer { text-align: center; font-size: 0.75rem; color: #b2bec3; margin-top: 20px; }
+.icon-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+.hamburger-btn { display: none; } /* Ẩn trên desktop */
 
 /* ==========================================================================
-   3. GAME BOARD (Responsive)
+   3. GAME BOARD (KHUNG GAME)
    ========================================================================== */
 .main-content {
-    flex: 1; display: flex; justify-content: center; align-items: center;
-    padding: 20px; position: relative;
-    overflow-y: auto; /* Cho phép cuộn nếu màn hình quá thấp */
+    display: flex; justify-content: center; align-items: center;
+    padding: 30px 15px; min-height: calc(100vh - 70px);
 }
 
 .game-board {
-    background: rgba(255, 255, 255, 0.9);
-    width: 100%; max-width: 800px;
+    background: rgba(255, 255, 255, 0.85);
+    width: 100%; max-width: 700px;
     padding: 25px; border-radius: 25px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.15);
     text-align: center;
@@ -77,144 +85,106 @@ body.dark-mode .nav-item:hover { background: #353b48; color: #74b9ff; }
     border: 1px solid rgba(255,255,255,0.6);
     display: flex; flex-direction: column; gap: 15px;
 }
-body.dark-mode .game-board { background: rgba(30, 39, 46, 0.95); border-color: #353b48; }
+body.dark-mode .game-board { background: rgba(30, 39, 46, 0.9); border-color: #353b48; }
 
-/* Header Info */
-.board-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-
+/* Header Info (Timer, Score) */
+.board-header { display: flex; justify-content: space-between; align-items: center; }
 .select-wrapper {
-    background: #f1f2f6; padding: 5px 15px; border-radius: 20px;
-    display: flex; align-items: center; gap: 8px; border: 1px solid #dfe6e9;
+    background: #f1f2f6; padding: 6px 15px; border-radius: 20px;
+    display: flex; align-items: center; gap: 8px;
 }
-body.dark-mode .select-wrapper { background: #353b48; border-color: #57606f; color: white; }
-select { border: none; background: transparent; font-weight: 700; font-size: 0.9rem; outline: none; color: inherit; cursor: pointer; }
+body.dark-mode .select-wrapper { background: #353b48; color: white; }
+select { border: none; background: transparent; font-weight: 700; outline: none; color: inherit; }
 
-.stats-group { display: flex; gap: 10px; }
+.stats-group { display: flex; gap: 8px; }
 .stat-box {
-    padding: 6px 15px; border-radius: 15px; font-weight: bold; color: white; font-size: 0.9rem;
+    padding: 6px 14px; border-radius: 12px; font-weight: bold; color: white; font-size: 0.9rem;
     box-shadow: 0 4px 8px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 5px;
 }
 .time-box { background: #ff7675; }
 .score-box { background: #00b894; }
 
-/* Image Area */
+/* Image Frame */
 .image-frame {
-    width: 100%; height: 240px; background: #dfe6e9;
-    border-radius: 15px; overflow: hidden; position: relative;
+    width: 100%; height: 220px; background: #dfe6e9;
+    border-radius: 15px; position: relative;
     border: 4px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    display: flex; justify-content: center; align-items: center;
+    display: flex; justify-content: center; align-items: center; overflow: hidden;
 }
 body.dark-mode .image-frame { background: #353b48; border-color: #57606f; }
 .image-frame img { max-width: 100%; max-height: 100%; object-fit: contain; z-index: 2; transition: opacity 0.3s; }
 .loading-spinner { position: absolute; font-size: 30px; color: #b2bec3; z-index: 1; }
 
-/* Buttons */
+/* Action Buttons */
 .btn-hint {
-    background: #fdcb6e; border: none; padding: 8px 20px;
+    background: #fdcb6e; border: none; padding: 10px 25px;
     border-radius: 50px; font-weight: 800; color: #2d3436;
-    cursor: pointer; font-size: 0.9rem; text-transform: uppercase;
-    box-shadow: 0 4px 0 #e17055; transition: 0.2s;
+    cursor: pointer; box-shadow: 0 4px 0 #e17055; transition: 0.2s;
 }
 .btn-hint:active { transform: translateY(4px); box-shadow: none; }
 
-/* Slots (Ô chữ) */
-.slots-area { 
-    display: flex; justify-content: center; flex-wrap: wrap; 
-    gap: 8px; min-height: 50px; margin: 5px 0;
-}
+/* Slots & Keyboard */
+.slots-area { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; min-height: 50px; }
 .slot {
-    width: 42px; height: 48px; 
-    background: white; border: 2px solid #b2bec3; border-radius: 10px;
-    display: flex; justify-content: center; align-items: center;
-    font-size: 1.3rem; font-weight: 800; color: #2d3436;
-    box-shadow: 0 4px 0 #b2bec3; cursor: pointer; transition: 0.1s;
+    width: 40px; height: 46px; background: white; border: 2px solid #b2bec3;
+    border-radius: 10px; display: flex; justify-content: center; align-items: center;
+    font-size: 1.2rem; font-weight: 800; color: #2d3436; box-shadow: 0 3px 0 #b2bec3;
+    cursor: pointer; transition: 0.1s;
 }
-body.dark-mode .slot { background: #353b48; color: white; border-color: #57606f; box-shadow: 0 4px 0 #2f3542; }
-.slot.filled { background: #74b9ff; color: white; border-color: #0984e3; box-shadow: 0 4px 0 #0984e3; }
+body.dark-mode .slot { background: #353b48; color: white; border-color: #57606f; box-shadow: 0 3px 0 #2f3542; }
+.slot.filled { background: #74b9ff; color: white; border-color: #0984e3; box-shadow: 0 3px 0 #0984e3; }
 
-/* Keyboard */
-.keyboard-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 10px; }
+.keyboard-area { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-top: 5px; }
 .key-btn {
-    width: 40px; height: 45px; border: none; border-radius: 8px;
+    width: 38px; height: 44px; border: none; border-radius: 8px;
     font-size: 1rem; font-weight: 700; background: white; color: #2d3436;
-    box-shadow: 0 3px 0 #b2bec3; border: 1px solid #dfe6e9; cursor: pointer;
+    box-shadow: 0 3px 0 #b2bec3; cursor: pointer;
 }
-body.dark-mode .key-btn { background: #353b48; color: white; border-color: #57606f; box-shadow: 0 3px 0 #2f3542; }
+body.dark-mode .key-btn { background: #353b48; color: white; box-shadow: 0 3px 0 #2f3542; }
 .key-btn:active { transform: translateY(3px); box-shadow: none; }
 .key-del { background: #fab1a0; color: #d63031; width: auto; padding: 0 15px; }
 
 /* ==========================================================================
-   4. MOBILE SPECIFIC (Dành cho điện thoại < 900px)
+   4. MOBILE RESPONSIVE
    ========================================================================== */
-.mobile-header, .mobile-menu-overlay, .mobile-menu { display: none; } /* Ẩn mặc định trên Desktop */
-
 @media (max-width: 900px) {
-    /* Ẩn Sidebar Desktop */
-    .sidebar { display: none; }
-
-    /* Layout chính */
-    .app-container { flex-direction: column; height: auto; min-height: 100vh; }
-    
-    /* Header Mobile */
-    .mobile-header {
-        display: flex; justify-content: space-between; align-items: center;
-        padding: 0 15px; height: 60px;
-        background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
-        position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    body.dark-mode .mobile-header { background: #1e272e; color: white; }
-    
-    .header-left { display: flex; align-items: center; gap: 5px; color: #3498db; font-weight: bold; cursor: pointer; }
-    .header-title { font-weight: 800; font-size: 1.1rem; text-transform: uppercase; }
-    .hamburger-btn { background: none; border: none; font-size: 1.4rem; color: #2d3436; cursor: pointer; }
-    body.dark-mode .hamburger-btn { color: white; }
-
-    /* Menu Mobile Trượt */
-    .mobile-menu-overlay {
-        position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1001;
-        opacity: 0; visibility: hidden; transition: 0.3s; display: block;
-    }
-    .mobile-menu-overlay.active { opacity: 1; visibility: visible; }
-    
-    .mobile-menu {
-        display: flex; flex-direction: column;
-        position: fixed; top: 0; right: -280px; width: 280px; height: 100vh;
-        background: white; z-index: 1002; transition: 0.3s;
-        box-shadow: -5px 0 15px rgba(0,0,0,0.1); padding: 20px;
-    }
-    body.dark-mode .mobile-menu { background: #1e272e; }
-    .mobile-menu.active { right: 0; }
-    
-    .menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-    .menu-header h3 { font-size: 1.2rem; font-weight: 800; }
-    .menu-header button { background: none; border: none; font-size: 1.5rem; color: #636e72; }
-    
-    .menu-list a {
-        display: flex; align-items: center; gap: 15px;
-        padding: 15px; border-radius: 10px; color: #2d3436; font-weight: 700;
-        text-decoration: none; margin-bottom: 10px; background: #f1f2f6;
-    }
-    body.dark-mode .menu-list a { background: #353b48; color: white; }
-
-    /* Game Board Adjustments on Mobile */
-    .main-content { padding: 80px 10px 20px; align-items: flex-start; } /* Đẩy xuống tránh header */
-    .game-board { padding: 20px 15px; border-radius: 20px; }
-    
-    .image-frame { height: 200px; } /* Ảnh nhỏ lại chút */
-    
-    .slot { width: 34px; height: 40px; font-size: 1.1rem; border-radius: 6px; box-shadow: 0 3px 0 #b2bec3; }
-    .key-btn { width: 32px; height: 40px; font-size: 0.9rem; border-radius: 6px; }
-    .key-del { width: auto; padding: 0 10px; }
-    
-    .btn-hint { width: 100%; padding: 10px; font-size: 1rem; }
+    .desktop-nav { display: none; } /* Ẩn menu ngang */
+    .hamburger-btn { display: flex; } /* Hiện nút 3 gạch */
+    .header { padding: 0 20px; }
 }
 
-/* Small Phones (< 380px) */
-@media (max-width: 380px) {
-    .image-frame { height: 160px; }
-    .slot { width: 30px; height: 36px; font-size: 1rem; }
-    .key-btn { width: 28px; height: 36px; font-size: 0.8rem; }
+/* Mobile Menu Slide */
+.mobile-menu-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1001;
+    opacity: 0; visibility: hidden; transition: 0.3s;
+}
+.mobile-menu-overlay.active { opacity: 1; visibility: visible; }
+
+.mobile-menu {
+    position: fixed; top: 0; right: -280px; width: 280px; height: 100vh;
+    background: white; z-index: 1002; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1); padding: 20px;
+}
+body.dark-mode .mobile-menu { background: #1e272e; }
+.mobile-menu.active { right: 0; }
+
+.menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.menu-header h3 { font-size: 1.2rem; font-weight: 800; }
+.menu-header button { background: none; border: none; font-size: 1.5rem; color: #636e72; cursor: pointer; }
+
+.menu-list a {
+    display: flex; align-items: center; gap: 15px;
+    padding: 15px; border-radius: 10px; color: #2d3436; font-weight: 700;
+    text-decoration: none; margin-bottom: 10px; background: #f1f2f6; transition: 0.2s;
+}
+body.dark-mode .menu-list a { background: #353b48; color: white; }
+.menu-list a:active { transform: scale(0.98); }
+
+/* Small Screen Adjustments */
+@media (max-width: 400px) {
+    .image-frame { height: 180px; }
+    .slot { width: 34px; height: 40px; font-size: 1rem; }
+    .key-btn { width: 32px; height: 40px; font-size: 0.9rem; }
 }
 
 /* ==========================================================================
@@ -233,20 +203,19 @@ body.dark-mode .key-btn { background: #353b48; color: white; border-color: #5760
 }
 body.dark-mode .modal-box { background: #1e272e; color: white; }
 .modal-overlay.active .modal-box { transform: scale(1); }
+
 .modal-icon { font-size: 40px; margin-bottom: 15px; }
 .modal-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 10px; }
-.modal-msg { color: #636e72; margin-bottom: 20px; font-size: 1rem; line-height: 1.5; }
+.modal-msg { color: #636e72; margin-bottom: 20px; font-size: 1rem; }
 body.dark-mode .modal-msg { color: #b2bec3; }
+
 .modal-btn {
     width: 100%; padding: 12px; border: none; border-radius: 50px;
     font-weight: 800; color: white; cursor: pointer; text-transform: uppercase;
     background: #0984e3; box-shadow: 0 4px 10px rgba(9, 132, 227, 0.4);
 }
 
-/* Modal Colors */
-.type-win .modal-btn { background: #00b894; } 
-.type-win .modal-title { color: #00b894; }
-.type-lose .modal-btn { background: #ff7675; } 
-.type-lose .modal-title { color: #ff7675; }
-.type-hint .modal-btn { background: #fdcb6e; color: #2d3436; } 
-.type-hint .modal-title { color: #e17055; }
+/* Colors by type */
+.type-win .modal-btn { background: #00b894; } .type-win .modal-title { color: #00b894; }
+.type-lose .modal-btn { background: #ff7675; } .type-lose .modal-title { color: #ff7675; }
+.type-hint .modal-btn { background: #fdcb6e; color: #2d3436; } .type-hint .modal-title { color: #e17055; }
