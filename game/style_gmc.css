@@ -1,116 +1,191 @@
-/* Nền chính */
-.gmc-bg {
-    background: #0d1117; /* Màu đen xanh đậm GitHub */
-    display: flex; justify-content: center; align-items: center;
-    padding: 20px;
+:root {
+    --bg-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    --primary-color: #4facfe;
+    --secondary-color: #00f2fe;
+    --white: #ffffff;
+    --text-dark: #2d3436;
+    --tag-pink: #ff7675;
+    --tag-green: #2ecc71;
+    --tag-orange: #fab1a0;
 }
 
-/* Khung giả lập IDE */
-.ide-container {
-    width: 100%; max-width: 900px;
-    background: #161b22;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    border: 1px solid #30363d;
-    overflow: hidden;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    color: var(--text-dark);
+}
+
+/* Header */
+.main-header {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(10px);
+}
+
+.header-left { display: flex; align-items: center; gap: 15px; }
+.logo-img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary-color); }
+.brand-info h1 { font-size: 1.2rem; color: #2d3436; }
+.brand-info span { font-size: 0.8rem; color: #4facfe; font-weight: bold; }
+
+.header-actions { display: flex; gap: 15px; }
+.btn-action {
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+.btn-blue { background: #3498db; color: white; }
+.btn-gray { background: #f1f2f6; color: #57606f; }
+.btn-action:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+/* Game Card */
+.game-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.game-card {
+    background: var(--white);
+    width: 100%;
+    max-width: 850px;
+    border-radius: 30px;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
     position: relative;
 }
 
-/* Header cửa sổ */
-.ide-header {
-    background: #010409;
-    padding: 10px 15px;
-    display: flex; justify-content: space-between; align-items: center;
-    border-bottom: 1px solid #30363d;
-}
-
-.dots { display: flex; gap: 8px; }
-.dot { width: 12px; height: 12px; border-radius: 50%; }
-.red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
-
-.filename {
-    color: #8b949e; font-family: 'Fira Code', monospace; font-size: 14px;
-}
-
-.score-board {
-    color: #58a6ff; font-weight: bold;
-}
-
-/* Khu vực Code */
-.code-editor {
+/* Status Tags */
+.status-tags {
     display: flex;
-    background: #0d1117;
-    padding: 20px 0;
-    min-height: 200px;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.tag-level {
+    background: #f1f2f6;
+    padding: 8px 15px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 0.9rem;
+}
+
+.stats-right { display: flex; gap: 10px; }
+.tag-stat {
+    color: white;
+    padding: 8px 15px;
+    border-radius: 12px;
+    font-weight: 800;
+    min-width: 60px;
+    text-align: center;
+}
+.tag-time { background: var(--tag-pink); }
+.tag-score { background: var(--tag-green); }
+
+/* Code Section */
+.code-section {
+    background: #1e1e1e;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.ide-fake-header {
+    background: #333;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dots { display: flex; gap: 6px; }
+.dots span { width: 10px; height: 10px; border-radius: 50%; }
+.r { background: #ff5f56; } .y { background: #ffbd2e; } .g { background: #27c93f; }
+.file-name { color: #aaa; font-size: 0.8rem; font-family: 'Fira Code'; }
+
+.code-display-wrapper {
+    display: flex;
+    padding: 20px;
     font-family: 'Fira Code', monospace;
-    font-size: 16px;
-    border-bottom: 1px solid #30363d;
-}
-
-.line-numbers {
-    width: 50px; text-align: right;
-    color: #484f58; padding-right: 15px;
-    border-right: 1px solid #30363d;
-    user-select: none; line-height: 1.6;
-}
-
-.code-content {
-    flex: 1; padding-left: 15px;
-    color: #e6edf3;
+    font-size: 1.1rem;
     line-height: 1.6;
-    white-space: pre-wrap; /* Giữ nguyên xuống dòng */
 }
 
-/* Highlight cú pháp (Fake) */
-.kwd { color: #ff7b72; } /* Keyword: def, if... */
-.str { color: #a5d6ff; } /* String */
-.func { color: #d2a8ff; } /* Function */
-.num { color: #79c0ff; } /* Number */
-.cmt { color: #8b949e; font-style: italic; } /* Comment */
+.line-nums { color: #555; padding-right: 20px; text-align: right; user-select: none; }
+.code-content { color: #d4d4d4; flex: 1; }
 
-/* Khu vực tương tác */
-.interaction-area { padding: 20px; background: #161b22; }
-
-.console-box {
-    background: #0d1117; border-left: 4px solid #238636;
-    padding: 10px 15px; margin-bottom: 20px;
-    color: #e6edf3; font-family: 'Fira Code', monospace;
-    border-radius: 4px;
+/* Question & Hint */
+.question-section { text-align: center; margin-bottom: 25px; }
+.hint-btn {
+    background: #ffeaa7;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 15px;
+    font-weight: 800;
+    color: #d35400;
+    cursor: pointer;
+    margin-bottom: 15px;
 }
 
+/* Options */
 .options-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
 }
 
 .code-btn {
-    background: #21262d; border: 1px solid #30363d;
-    color: #c9d1d9; padding: 15px;
-    border-radius: 6px; cursor: pointer;
-    font-family: 'Nunito', sans-serif; font-weight: bold;
-    transition: all 0.2s; text-align: left;
+    background: #f8f9fa;
+    border: 2px solid #eee;
+    padding: 18px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-family: 'Nunito';
+    font-weight: 700;
+    font-size: 1rem;
+    transition: 0.2s;
+    text-align: left;
 }
 
-.code-btn:hover { background: #30363d; border-color: #8b949e; }
-.code-btn.correct { background: #1f6feb !important; border-color: #58a6ff; color: white; }
-.code-btn.wrong { background: #da3633 !important; border-color: #f85149; color: white; }
+.code-btn:hover {
+    border-color: var(--primary-color);
+    background: #f1f9ff;
+}
+
+.code-btn.correct { background: #2ecc71 !important; color: white; border-color: #27ae60; }
+.code-btn.wrong { background: #ff7675 !important; color: white; border-color: #d63031; }
 
 /* Feedback Overlay */
 #feedback-overlay {
-    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(13, 17, 23, 0.95);
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
     display: flex; justify-content: center; align-items: center;
-    z-index: 100;
+    z-index: 1000;
 }
 .hidden { display: none !important; }
-
 .feedback-box {
-    text-align: center; color: white; animation: popIn 0.3s;
+    background: white; padding: 40px; border-radius: 30px; text-align: center;
+    max-width: 400px; width: 90%;
 }
-#feedback-icon { font-size: 50px; margin-bottom: 10px; }
 .next-btn {
-    margin-top: 20px; padding: 10px 25px;
-    background: #238636; border: none; color: white;
-    border-radius: 5px; font-weight: bold; cursor: pointer;
+    margin-top: 20px; padding: 12px 30px;
+    background: var(--tag-green); border: none; color: white;
+    border-radius: 15px; font-weight: 800; cursor: pointer;
 }
 
-@keyframes popIn { 0% {transform: scale(0.8); opacity: 0;} 100% {transform: scale(1); opacity: 1;} }
+/* Syntax Highlighting */
+.kwd { color: #569cd6; }
+.str { color: #ce9178; }
+.func { color: #dcdcaa; }
