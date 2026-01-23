@@ -1,88 +1,65 @@
-:root {
-    --punch-dist: 120px; /* Khoảng cách đấm mặc định */
-}
-
 body { 
-    margin: 0; padding: 0; 
-    display: flex; justify-content: center; align-items: center; 
-    height: 100vh; background: #000; 
-    font-family: 'Segoe UI', Arial, sans-serif;
-    overflow: hidden; 
+    margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; 
+    height: 100vh; background: #000; font-family: 'Segoe UI', Tahoma, sans-serif; overflow: hidden; 
 }
 
 .game-container {
-    width: 100vw; height: 100vh;
-    max-width: 900px; max-height: 650px;
-    background: url('../images/san-dau.jpeg') center/cover no-repeat black;
-    position: relative; overflow: hidden;
-    display: flex; flex-direction: column;
+    width: 100vw; height: 100vh; max-width: 900px; max-height: 650px;
+    background: url('../images/san-dau.jpeg') center/cover no-repeat #1a1a1a;
+    position: relative; overflow: hidden; display: flex; flex-direction: column;
 }
 
-/* Thanh máu co giãn */
+/* Thanh máu */
 .hp-section {
     display: flex; justify-content: space-around; align-items: center;
-    padding: 10px 5px; background: rgba(0,0,0,0.8);
-    z-index: 5;
+    padding: 10px; background: rgba(0,0,0,0.85); z-index: 5;
 }
-.player-name { color: #00d2ff; font-weight: bold; font-size: 0.8rem; margin-bottom: 3px; display: block; }
-.hp-slots { display: flex; gap: 3px; }
-.slot { width: 30px; height: 12px; background: #2ecc71; border: 1px solid #fff; transition: 0.3s; }
-.slot.lost { background: #444; border-color: #666; }
-.vs-badge { color: gold; font-weight: 900; font-size: 1.2rem; }
+.player-name { color: #00d2ff; font-weight: bold; font-size: 0.8rem; margin-bottom: 4px; display: block; text-align: center; }
+.hp-slots { display: flex; gap: 4px; }
+.slot { width: 35px; height: 14px; background: #2ecc71; border: 1px solid #fff; transition: 0.4s; box-shadow: 0 0 5px #2ecc71; }
+.slot.lost { background: #333; border-color: #555; box-shadow: none; }
+.vs-badge { color: gold; font-weight: 900; font-size: 1.4rem; text-shadow: 0 0 10px red; }
 
-/* Arena - Nhân vật tự co lại trên màn hình nhỏ */
-.arena {
-    flex: 1; display: flex; justify-content: space-around; align-items: flex-end;
-    padding-bottom: 40px; position: relative;
-}
+/* Sân đấu & Nhân vật */
+.arena { flex: 1; display: flex; justify-content: space-around; align-items: flex-end; padding-bottom: 50px; position: relative; }
 .fighter {
-    width: 35vw; max-width: 180px; 
-    height: 45vw; max-height: 240px;
-    background-size: cover; background-position: center;
-    border: 3px solid #fff; border-radius: 10px;
-    transition: transform 0.2s, filter 0.2s;
+    width: 32vw; max-width: 180px; height: 42vw; max-height: 240px;
+    background-size: cover; background-position: center; border: 3px solid #fff;
+    border-radius: 12px; transition: transform 0.2s, filter 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
 }
 .ronaldo-img { background-image: url('../images/ronaldo.jpeg'); }
 .messi-img { background-image: url('../images/messi.jpeg'); transform: scaleX(-1); }
 
-/* Hiệu ứng đấm */
-.player-punch { transform: translateX(var(--punch-dist)) scale(1.1) !important; z-index: 10; }
-.enemy-punch { transform: translateX(calc(var(--punch-dist) * -1)) scaleX(-1.1) !important; z-index: 10; }
-.hit-shake { animation: shake 0.3s; filter: brightness(2) sepia(1) hue-rotate(-50deg); }
+/* Hiệu ứng đấm & rung */
+.player-punch { transform: translateX(120px) scale(1.1) !important; z-index: 10; }
+.enemy-punch { transform: translateX(-120px) scaleX(-1.1) !important; z-index: 10; }
+.hit-shake { animation: shake 0.3s forwards; filter: brightness(2) sepia(1) hue-rotate(-50deg); }
 
 @keyframes shake {
     0%, 100% { transform: translate(0,0); }
-    25% { transform: translate(-10px, 0); }
-    75% { transform: translate(10px, 0); }
+    25% { transform: translate(-10px, 5px); }
+    50% { transform: translate(10px, -5px); }
 }
 
-/* Khu vực câu hỏi tối ưu Mobile */
-.quiz-container {
-    background: white; padding: 15px;
-    border-top: 4px solid gold; width: 100%; box-sizing: border-box;
-}
-.question-text { font-size: 1rem; font-weight: bold; color: #333; text-align: center; margin-bottom: 12px; }
-.answer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-button { 
-    padding: 12px 5px; font-size: 0.9rem; font-weight: bold;
-    background: #2c3e50; color: white; border: none; border-radius: 5px; 
-}
+/* Khu vực câu hỏi */
+.quiz-container { background: #f9f9f9; padding: 15px; border-top: 5px solid gold; width: 100%; box-sizing: border-box; }
+.question-text { font-size: 1.1rem; font-weight: bold; color: #2c3e50; text-align: center; margin-bottom: 12px; }
+.answer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+button { padding: 12px 5px; font-size: 0.95rem; font-weight: bold; background: #34495e; color: white; border: none; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+button:hover { background: #2c3e50; }
 
-/* Overlay */
-.overlay { 
-    position: absolute; inset: 0; background: rgba(0,0,0,0.95); 
-    display: flex; flex-direction: column; justify-content: center; 
-    align-items: center; z-index: 100; color: white; text-align: center;
-}
-.game-title { font-size: 2rem; color: gold; margin-bottom: 20px; }
+/* Màn hình nâng cúp */
+.overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.96); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; color: white; text-align: center; }
+.cup-display { width: 75%; max-width: 280px; margin: 15px 0; border: 4px solid gold; border-radius: 15px; overflow: hidden; box-shadow: 0 0 30px gold; animation: zoomIn 0.5s ease-out; }
+#result-img { width: 100%; display: block; }
+#result-title { font-size: 2.2rem; color: gold; margin: 10px 0; }
+.retry-btn { background: gold !important; color: black !important; padding: 15px 40px !important; margin-top: 10px; }
 
-/* MEDIA QUERIES CHO ĐIỆN THOẠI NHỎ */
+@keyframes zoomIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
 @media (max-width: 600px) {
-    :root { var(--punch-dist): 80px; }
-    .slot { width: 18px; height: 10px; }
-    .vs-badge { font-size: 1rem; }
-    .question-text { font-size: 0.9rem; }
-    button { font-size: 0.8rem; padding: 10px 2px; }
     .fighter { width: 110px; height: 160px; }
-    .game-title { font-size: 1.5rem; }
+    .slot { width: 20px; height: 10px; }
+    .question-text { font-size: 0.95rem; }
+    button { font-size: 0.85rem; }
 }
