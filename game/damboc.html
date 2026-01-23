@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Siêu Kinh Điển: Ronaldo vs Messi - Boxing Quiz</title>
+    <title>Đại Chiến Tin Học: Robot vs Học Sinh</title>
     <link rel="stylesheet" href="damboc.css">
 </head>
 <body>
     <div class="game-container">
-        <!-- Màn hình bắt đầu -->
+        <!-- Màn hình khởi đầu -->
         <div id="start-screen" class="overlay">
             <h1 class="game-title">BOXING TIN HỌC</h1>
-            <p>Chọn trình độ của bạn:</p>
+            <p>Chọn khối lớp để bắt đầu:</p>
             <div class="btn-group">
                 <button onclick="startGame(10)">LỚP 10</button>
                 <button onclick="startGame(11)">LỚP 11</button>
@@ -19,27 +19,27 @@
             </div>
         </div>
 
-        <!-- Màn hình kết quả (Nâng cúp) -->
+        <!-- Màn hình nâng cúp -->
         <div id="result-screen" class="overlay" style="display:none;">
-            <h2 id="result-title">SIUUUUUU!</h2>
+            <h2 id="result-title">CHIẾN THẮNG!</h2>
             <div class="cup-display">
-                <img id="result-img" src="" alt="Winner Cup">
+                <img id="result-img" src="" alt="Winner">
             </div>
             <p id="result-msg">Nâng cao chức vô địch!</p>
             <button class="retry-btn" onclick="location.reload()">CHƠI LẠI</button>
         </div>
 
-        <!-- Thanh máu (5 vạch) -->
+        <!-- Thanh máu -->
         <div class="hp-section">
             <div class="hp-wrapper">
-                <span class="player-name">RONALDO (BẠN)</span>
+                <span class="player-name">ROBOT (BẠN)</span>
                 <div class="hp-slots" id="player-hp-slots">
                     <div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div>
                 </div>
             </div>
             <div class="vs-badge">VS</div>
             <div class="hp-wrapper">
-                <span class="player-name">MESSI (ĐỐI THỦ)</span>
+                <span class="player-name">HỌC SINH</span>
                 <div class="hp-slots" id="enemy-hp-slots">
                     <div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div><div class="slot"></div>
                 </div>
@@ -48,13 +48,15 @@
 
         <!-- Sân đấu -->
         <div class="arena">
-            <div id="player" class="fighter ronaldo-img"></div>
-            <div id="enemy" class="fighter messi-img"></div>
+            <!-- Nhân vật Robot -->
+            <div id="player" class="fighter robot-img"></div>
+            <!-- Nhân vật Học sinh -->
+            <div id="enemy" class="fighter student-img"></div>
         </div>
 
         <!-- Khu vực câu hỏi -->
         <div id="quiz-area" class="quiz-container" style="display:none;">
-            <div id="question" class="question-text">Đang tải...</div>
+            <div id="question" class="question-text">Đang tải câu hỏi...</div>
             <div id="answers" class="answer-grid"></div>
         </div>
     </div>
