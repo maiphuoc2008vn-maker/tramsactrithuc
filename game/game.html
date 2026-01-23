@@ -6,11 +6,13 @@
     <title>Đuổi Hình Bắt Chữ - STEAM 12A4</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- LIÊN KẾT FILE CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- 1. HEADER (Menu Trên Cùng - Giống Hub) -->
+    <!-- HEADER -->
     <header class="header">
         <div class="logo-area" onclick="window.location.href='hub.html'">
             <img src="../images/logotruongdung.jpg" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
@@ -20,7 +22,6 @@
             </div>
         </div>
 
-        <!-- Menu Desktop (Ẩn trên Mobile) -->
         <nav class="desktop-nav">
             <button class="nav-link active" onclick="location.reload()">
                 <i class="fas fa-redo"></i> Chơi Lại
@@ -34,18 +35,12 @@
         </nav>
 
         <div class="header-actions">
-            <!-- Nút Dark Mode -->
-            <button id="theme-toggle" class="icon-btn" title="Giao diện">
-                <i class="fas fa-moon"></i>
-            </button>
-            <!-- Nút Menu Mobile -->
-            <button class="hamburger-btn" onclick="toggleMobileMenu()">
-                <i class="fas fa-bars"></i>
-            </button>
+            <button id="theme-toggle" class="icon-btn"><i class="fas fa-moon"></i></button>
+            <button class="hamburger-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
         </div>
     </header>
 
-    <!-- 2. MOBILE MENU OVERLAY (Menu trượt) -->
+    <!-- MOBILE MENU -->
     <div class="mobile-menu-overlay" onclick="toggleMobileMenu()"></div>
     <div class="mobile-menu" id="mobile-menu">
         <div class="menu-header">
@@ -53,17 +48,16 @@
             <button onclick="toggleMobileMenu()"><i class="fas fa-times"></i></button>
         </div>
         <div class="menu-list">
-            <a href="#" onclick="location.reload(); toggleMobileMenu()"><i class="fas fa-redo"></i> Chơi Lại</a>
+            <a href="#" onclick="location.reload()"><i class="fas fa-redo"></i> Chơi Lại</a>
             <a href="hub.html"><i class="fas fa-gamepad"></i> Về Kho Game</a>
             <a href="bangxephang.html"><i class="fas fa-trophy"></i> Bảng Xếp Hạng</a>
         </div>
     </div>
 
-    <!-- 3. MAIN GAME CONTENT -->
+    <!-- GAME BOARD -->
     <div class="app-container">
         <main class="main-content">
             <div class="game-board">
-                <!-- Header Info (Lớp, Thời gian, Điểm) -->
                 <div class="board-header">
                     <div class="select-wrapper">
                         <i class="fas fa-layer-group"></i>
@@ -73,80 +67,39 @@
                             <option value="12a1">Lớp 12</option>
                         </select>
                     </div>
-                    
                     <div class="stats-group">
-                        <div class="stat-box time-box">
-                            <i class="fas fa-clock"></i> <span id="timer">60</span>
-                        </div>
-                        <div class="stat-box score-box">
-                            <i class="fas fa-star"></i> <span id="score-value">0</span>
-                        </div>
+                        <div class="stat-box time-box"><i class="fas fa-clock"></i> <span id="timer">60</span></div>
+                        <div class="stat-box score-box"><i class="fas fa-star"></i> <span id="score-value">0</span></div>
                     </div>
                 </div>
 
-                <!-- Khung Ảnh -->
                 <div class="image-frame">
-                    <img id="current-image" src="" alt="Đang tải...">
+                    <img id="current-image" src="" alt="Hình ảnh">
                     <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i></div>
                 </div>
 
-                <!-- Nút Gợi Ý -->
                 <div class="action-area">
-                    <button class="btn-hint" onclick="showCurrentHint()">
-                        <i class="fas fa-lightbulb"></i> Gợi ý
-                    </button>
+                    <button class="btn-hint" onclick="showCurrentHint()"><i class="fas fa-lightbulb"></i> Gợi ý</button>
                 </div>
 
-                <!-- Ô Chữ & Bàn Phím -->
                 <div id="answer-container" class="slots-area"></div>
                 <div id="keyboard-container" class="keyboard-area"></div>
             </div>
         </main>
     </div>
 
-    <!-- 4. MODAL -->
+    <!-- MODAL -->
     <div id="custom-modal" class="modal-overlay">
         <div class="modal-box">
             <div class="modal-icon" id="modal-icon"></div>
-            <h3 class="modal-title" id="modal-title">Tiêu đề</h3>
-            <div class="modal-msg" id="modal-msg">Nội dung...</div>
+            <h3 class="modal-title" id="modal-title"></h3>
+            <div class="modal-msg" id="modal-msg"></div>
             <button class="modal-btn" id="modal-btn" onclick="closeModal()">Đóng</button>
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- LIÊN KẾT JS: CHÚ Ý TÊN FILE LÀ game.js -->
     <script type="module" src="score-saver.js"></script>
-    <script src="input_file_2.js"></script>
-
-    <script>
-        // Logic Mobile Menu
-        function toggleMobileMenu() {
-            document.getElementById('mobile-menu').classList.toggle('active');
-            document.querySelector('.mobile-menu-overlay').classList.toggle('active');
-        }
-
-        // Logic Dark Mode
-        const body = document.body;
-        const themeBtn = document.getElementById('theme-toggle');
-        const themeIcon = themeBtn.querySelector('i');
-
-        function setTheme(isDark) {
-            if (isDark) {
-                body.classList.add('dark-mode');
-                themeIcon.className = 'fas fa-sun';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                body.classList.remove('dark-mode');
-                themeIcon.className = 'fas fa-moon';
-                localStorage.setItem('theme', 'light');
-            }
-        }
-
-        if (localStorage.getItem('theme') === 'dark') setTheme(true);
-
-        themeBtn.addEventListener('click', () => {
-            setTheme(!body.classList.contains('dark-mode'));
-        });
-    </script>
+    <script src="game.js"></script> 
 </body>
 </html>
