@@ -4,27 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Đuổi Hình Bắt Chữ - STEAM 12A4</title>
-    <!-- Icon và Font chữ -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- File CSS giao diện -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- 1. MOBILE HEADER (Chỉ hiện trên điện thoại) -->
-    <header class="mobile-header">
-        <div class="header-left" onclick="window.location.href='hub.html'">
-            <i class="fas fa-arrow-left"></i>
-            <span>Kho Game</span>
+    <!-- 1. HEADER (Menu Trên Cùng - Giống Hub) -->
+    <header class="header">
+        <div class="logo-area" onclick="window.location.href='hub.html'">
+            <img src="../images/logotruongdung.jpg" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+            <div class="logo-text">
+                <h2>STEAM 12A4</h2>
+                <span>Kho Game</span>
+            </div>
         </div>
-        <div class="header-title">Đuổi Hình Bắt Chữ</div>
-        <button class="hamburger-btn" onclick="toggleMobileMenu()">
-            <i class="fas fa-bars"></i>
-        </button>
+
+        <!-- Menu Desktop (Ẩn trên Mobile) -->
+        <nav class="desktop-nav">
+            <button class="nav-link active" onclick="location.reload()">
+                <i class="fas fa-redo"></i> Chơi Lại
+            </button>
+            <button class="nav-link" onclick="window.location.href='hub.html'">
+                <i class="fas fa-gamepad"></i> Kho Game
+            </button>
+            <button class="nav-link" onclick="window.location.href='bangxephang.html'">
+                <i class="fas fa-trophy"></i> BXH
+            </button>
+        </nav>
+
+        <div class="header-actions">
+            <!-- Nút Dark Mode -->
+            <button id="theme-toggle" class="icon-btn" title="Giao diện">
+                <i class="fas fa-moon"></i>
+            </button>
+            <!-- Nút Menu Mobile -->
+            <button class="hamburger-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
     </header>
 
-    <!-- 2. MOBILE MENU OVERLAY (Menu trượt trên điện thoại) -->
+    <!-- 2. MOBILE MENU OVERLAY (Menu trượt) -->
     <div class="mobile-menu-overlay" onclick="toggleMobileMenu()"></div>
     <div class="mobile-menu" id="mobile-menu">
         <div class="menu-header">
@@ -32,44 +53,14 @@
             <button onclick="toggleMobileMenu()"><i class="fas fa-times"></i></button>
         </div>
         <div class="menu-list">
-            <a href="#" onclick="location.reload()"><i class="fas fa-redo"></i> Chơi Lại</a>
+            <a href="#" onclick="location.reload(); toggleMobileMenu()"><i class="fas fa-redo"></i> Chơi Lại</a>
             <a href="hub.html"><i class="fas fa-gamepad"></i> Về Kho Game</a>
             <a href="bangxephang.html"><i class="fas fa-trophy"></i> Bảng Xếp Hạng</a>
-            <a href="#" id="mobile-theme-toggle"><i class="fas fa-adjust"></i> Đổi Giao Diện</a>
         </div>
     </div>
 
+    <!-- 3. MAIN GAME CONTENT -->
     <div class="app-container">
-        <!-- 3. DESKTOP SIDEBAR (Chỉ hiện trên Laptop) -->
-        <aside class="sidebar">
-            <div class="logo-section">
-                <div class="logo-wrapper">
-                    <!-- Logo trường (Nếu lỗi sẽ hiện icon thay thế) -->
-                    <img src="../images/logotruongdung.jpg" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
-                </div>
-                <h2>STEAM 12A4</h2>
-                <p class="subtitle">THPT ĐẠM RI</p>
-            </div>
-            
-            <nav class="nav-menu">
-                <button class="nav-item" onclick="location.href='hub.html'">
-                    <i class="fas fa-arrow-left"></i> Kho Game
-                </button>
-                <button class="nav-item active" onclick="location.reload()">
-                    <i class="fas fa-redo"></i> Chơi Lại
-                </button>
-                <button class="nav-item" onclick="window.location.href='bangxephang.html'">
-                    <i class="fas fa-trophy"></i> Xếp Hạng
-                </button>
-                <button id="theme-toggle" class="nav-item">
-                    <i class="fas fa-moon"></i> Chế độ Tối
-                </button>
-            </nav>
-            
-            <div class="footer"><p>© 2025-2026 Dev Team</p></div>
-        </aside>
-
-        <!-- 4. MAIN GAME CONTENT (Khu vực chơi game) -->
         <main class="main-content">
             <div class="game-board">
                 <!-- Header Info (Lớp, Thời gian, Điểm) -->
@@ -93,28 +84,27 @@
                     </div>
                 </div>
 
-                <!-- Image Area (Khung ảnh câu hỏi) -->
+                <!-- Khung Ảnh -->
                 <div class="image-frame">
                     <img id="current-image" src="" alt="Đang tải...">
-                    <!-- Icon xoay khi đang tải ảnh -->
                     <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i></div>
                 </div>
 
-                <!-- Hint Button (Nút gợi ý) -->
+                <!-- Nút Gợi Ý -->
                 <div class="action-area">
                     <button class="btn-hint" onclick="showCurrentHint()">
                         <i class="fas fa-lightbulb"></i> Gợi ý
                     </button>
                 </div>
 
-                <!-- Slots & Keyboard (Ô chữ và Bàn phím) -->
+                <!-- Ô Chữ & Bàn Phím -->
                 <div id="answer-container" class="slots-area"></div>
                 <div id="keyboard-container" class="keyboard-area"></div>
             </div>
         </main>
     </div>
 
-    <!-- 5. MODAL (Hộp thoại thông báo Thắng/Thua) -->
+    <!-- 4. MODAL -->
     <div id="custom-modal" class="modal-overlay">
         <div class="modal-box">
             <div class="modal-icon" id="modal-icon"></div>
@@ -124,59 +114,39 @@
         </div>
     </div>
 
-    <!-- 6. SCRIPTS (Thứ tự rất quan trọng) -->
-    
-    <!-- Script lưu điểm (Nếu có file này thì game sẽ lưu điểm, không có vẫn chạy được) -->
+    <!-- Scripts -->
     <script type="module" src="score-saver.js"></script>
-
-    <!-- Script Logic Game (File xử lý câu hỏi, xáo trộn, thời gian...) -->
-    <!-- Đảm bảo bạn đã dán code "Fix lỗi treo" vào file input_file_2.js -->
     <script src="input_file_2.js"></script>
 
-    <!-- Script Giao diện (Menu Mobile, Dark Mode) -->
     <script>
-        // Logic Đóng/Mở Menu Mobile
+        // Logic Mobile Menu
         function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const overlay = document.querySelector('.mobile-menu-overlay');
-            if(menu && overlay) {
-                menu.classList.toggle('active');
-                overlay.classList.toggle('active');
-            }
+            document.getElementById('mobile-menu').classList.toggle('active');
+            document.querySelector('.mobile-menu-overlay').classList.toggle('active');
         }
 
-        // Logic Dark Mode (Chế độ tối)
+        // Logic Dark Mode
         const body = document.body;
-        
+        const themeBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeBtn.querySelector('i');
+
         function setTheme(isDark) {
             if (isDark) {
                 body.classList.add('dark-mode');
+                themeIcon.className = 'fas fa-sun';
                 localStorage.setItem('theme', 'dark');
             } else {
                 body.classList.remove('dark-mode');
+                themeIcon.className = 'fas fa-moon';
                 localStorage.setItem('theme', 'light');
             }
         }
 
-        // Kiểm tra cài đặt cũ khi vừa vào trang
         if (localStorage.getItem('theme') === 'dark') setTheme(true);
 
-        // Sự kiện click nút đổi màu trên Desktop (Sidebar)
-        const desktopThemeBtn = document.getElementById('theme-toggle');
-        if(desktopThemeBtn) {
-            desktopThemeBtn.addEventListener('click', () => {
-                setTheme(!body.classList.contains('dark-mode'));
-            });
-        }
-        
-        // Sự kiện click nút đổi màu trên Mobile (Menu)
-        const mobileThemeBtn = document.getElementById('mobile-theme-toggle');
-        if(mobileThemeBtn) {
-            mobileThemeBtn.addEventListener('click', () => {
-                setTheme(!body.classList.contains('dark-mode'));
-                toggleMobileMenu(); // Đóng menu sau khi chọn cho gọn
-            });
-        }
+        themeBtn.addEventListener('click', () => {
+            setTheme(!body.classList.contains('dark-mode'));
+        });
     </script>
 </body>
 </html>
