@@ -1,28 +1,17 @@
-/* 1. KHO DỮ LIỆU CÂU HỎI */
+/* 1. KHO DỮ LIỆU CÂU HỎI (Đảm bảo tên ảnh phải có thật trong thư mục images) */
 const questionDatabase = {
     "10a1": [
         { image: "../images/5.jpg", answer: "BANPHIM", hint: "Thiết bị nhập dữ liệu (7 ký tự)" },
         { image: "../images/6.jpg", answer: "CHUOT", hint: "Thiết bị điều khiển con trỏ (5 ký tự)" },
         { image: "../images/19.jpg", answer: "USB", hint: "Thiết bị lưu trữ di động (3 ký tự)" },
         { image: "../images/28.jpg", answer: "WEBCAM", hint: "Camera kỹ thuật số (6 ký tự)" },
-        { image: "../images/29.jpg", answer: "TAINGHE", hint: "Thiết bị âm thanh (7 ký tự)" },
-        { image: "../images/44.jpg", answer: "HDD", hint: "Ổ cứng đĩa từ (3 ký tự)" },
-        { image: "../images/45.jpg", answer: "SSD", hint: "Ổ cứng thể rắn (3 ký tự)" },
-        { image: "../images/43.jpg", answer: "RAM", hint: "Bộ nhớ truy cập ngẫu nhiên (3 ký tự)" },
-        { image: "../images/cpu.jpg", answer: "CPU", hint: "Bộ não máy tính (3 ký tự)" },
-        { image: "../images/7.jpg", answer: "WINDOWS", hint: "Hệ điều hành của Microsoft (7 ký tự)" },
-        { image: "../images/9.jpg", answer: "WORD", hint: "Phần mềm soạn thảo (4 ký tự)" },
-        { image: "../images/3.jpg", answer: "EXCEL", hint: "Phần mềm bảng tính (5 ký tự)" },
-        { image: "../images/15.jpg", answer: "GOOGLE", hint: "Công cụ tìm kiếm số 1 (6 ký tự)" }
+        { image: "../images/29.jpg", answer: "TAINGHE", hint: "Thiết bị âm thanh (7 ký tự)" }
     ],
     "11a1": [
          { image: "../images/11_python.jpg", answer: "PYTHON", hint: "Ngôn ngữ lập trình (6 ký tự)" },
          { image: "../images/11_bien.jpg", answer: "BIEN", hint: "Dùng để lưu trữ giá trị (4 ký tự)" },
          { image: "../images/11_if.jpg", answer: "IF", hint: "Câu lệnh điều kiện (2 ký tự)" },
-         { image: "../images/11_for.jpg", answer: "VONGLAP", hint: "Công việc lặp lại (7 ký tự)" },
-         { image: "../images/11_array.jpg", answer: "MANG", hint: "Tập hợp phần tử cùng kiểu (4 ký tự)" },
-         { image: "../images/11_input.jpg", answer: "INPUT", hint: "Lệnh nhập dữ liệu (5 ký tự)" },
-         { image: "../images/11_print.jpg", answer: "PRINT", hint: "Lệnh xuất dữ liệu (5 ký tự)" }
+         { image: "../images/11_for.jpg", answer: "VONGLAP", hint: "Công việc lặp lại (7 ký tự)" }
     ],
     "12a1": [
          { image: "../images/12_csdl.jpg", answer: "CSDL", hint: "Cơ sở dữ liệu (4 ký tự)" },
@@ -47,25 +36,35 @@ const els = {
     slots: document.getElementById("answer-container"),
     keyboard: document.getElementById("keyboard-container"),
     score: document.getElementById("score-value"),
-    timer: document.getElementById("timer")
+    timer: document.getElementById("timer"),
+    spinner: document.querySelector('.loading-spinner')
 };
 
-/* 3. LOGIC GAME */
-function shuffle(array) {
-    return array.sort(() => Math.random() - 0.5);
-}
-
+/* 3. KHỞI CHẠY */
 function init() {
     score = 0;
     if(els.score) els.score.innerText = score;
+    
+    // Gán sự kiện đổi lớp
     if(els.grade) {
-        els.grade.addEventListener("change", (e) => loadGrade(e.target.value));
+        els.grade.onchange = (e) => {
+            console.log("Đã đổi sang khối:", e.target.value);
+            loadGrade(e.target.value);
+        };
     }
+    
     loadGrade("10a1");
 }
 
 function loadGrade(grade) {
-    currentQuestions = shuffle([...questionDatabase[grade]]);
+    // Kiểm tra xem dữ liệu khối đó có tồn tại không
+    if (!questionDatabase[grade]) {
+        alert("Dữ liệu khối này đang được cập nhật!");
+        return;
+    }
+    
+    // Xáo trộn câu hỏi
+    currentQuestions = [...questionDatabase[grade]].sort(() => Math.random() - 0.5);
     currentIndex = 0;
     loadQuestion();
 }
@@ -85,19 +84,28 @@ function loadQuestion() {
     renderKeyboard();
     startTimer();
 
-    // Hiển thị ảnh
+    // Reset và hiển thị ảnh
     if(els.img) {
-        els.img.style.opacity = 0.3;
+        if(els.spinner) els.spinner.style.display = 'block';
+        els.img.style.opacity = 0;
         els.img.src = q.image;
-        els.img.onload = () => els.img.style.opacity = 1;
-        els.img.onerror = () => {
-            els.img.src = "https://via.placeholder.com/400x200?text=Loi+Anh";
+        
+        els.img.onload = () => {
             els.img.style.opacity = 1;
+            if(els.spinner) els.spinner.style.display = 'none';
+        };
+        
+        els.img.onerror = () => {
+            console.error("Không tìm thấy ảnh:", q.image);
+            els.img.src = "https://via.placeholder.com/400x200?text=Chua+Co+Hinh+Anh";
+            els.img.style.opacity = 1;
+            if(els.spinner) els.spinner.style.display = 'none';
         };
     }
 }
 
 function renderSlots() {
+    if(!els.slots) return;
     els.slots.innerHTML = "";
     userAnswer.forEach((char, i) => {
         const div = document.createElement("div");
@@ -109,6 +117,7 @@ function renderSlots() {
 }
 
 function renderKeyboard() {
+    if(!els.keyboard) return;
     els.keyboard.innerHTML = "";
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(c => {
         const btn = document.createElement("button");
@@ -124,6 +133,18 @@ function renderKeyboard() {
         };
         els.keyboard.appendChild(btn);
     });
+    
+    // Thêm nút xóa (Backspace)
+    const delBtn = document.createElement("button");
+    delBtn.innerHTML = "←";
+    delBtn.className = "key-btn";
+    delBtn.style.background = "#ff7675";
+    delBtn.onclick = () => {
+        for(let i = userAnswer.length-1; i>=0; i--) {
+            if(userAnswer[i] !== "") { userAnswer[i] = ""; renderSlots(); break; }
+        }
+    };
+    els.keyboard.appendChild(delBtn);
 }
 
 function checkWin() {
@@ -132,13 +153,13 @@ function checkWin() {
         clearInterval(timerInterval);
         canPlay = false;
         score += 10;
-        els.score.innerText = score;
-        showModal('win', 'CHÍNH XÁC!', `Đáp án: ${correct}`, 'Câu tiếp', () => {
+        if(els.score) els.score.innerText = score;
+        showModal('win', 'CHÍNH XÁC!', `Đáp án là: ${correct}`, 'Câu tiếp', () => {
             currentIndex++;
             loadQuestion();
         });
     } else {
-        // Hiệu ứng rung khi sai
+        // Hiệu ứng rung khi sai (Cần CSS shake)
         els.slots.style.animation = "shake 0.5s";
         setTimeout(() => els.slots.style.animation = "", 500);
     }
@@ -146,20 +167,21 @@ function checkWin() {
 
 function startTimer() {
     timeLeft = 60;
-    els.timer.innerText = timeLeft;
+    if(els.timer) els.timer.innerText = timeLeft;
     timerInterval = setInterval(() => {
         timeLeft--;
-        els.timer.innerText = timeLeft;
+        if(els.timer) els.timer.innerText = timeLeft;
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
             canPlay = false;
-            showModal('lose', 'HẾT GIỜ!', `Điểm của bạn: ${score}`, 'Chơi lại', () => location.reload());
+            showModal('lose', 'HẾT GIỜ!', `Bạn được ${score} điểm`, 'Chơi lại', () => location.reload());
         }
     }, 1000);
 }
 
 function showModal(type, title, msg, btnText, callback) {
     const modal = document.getElementById('custom-modal');
+    if(!modal) return;
     modal.className = `modal-overlay active type-${type}`;
     document.getElementById('modal-title').innerText = title;
     document.getElementById('modal-msg').innerText = msg;
