@@ -3,91 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALTP - STEAM 12A4</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Ai Là Triệu Phú - STEAM 12A4</title>
+    <!-- Google Font & Icon -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style_altp.css">
 </head>
 <body>
-    <div class="app-wrapper">
-        <!-- TOP NAV -->
+    <div class="game-wrapper">
+        <!-- Thanh menu trên cùng -->
         <nav class="navbar">
-            <div class="nav-container">
+            <div class="nav-content">
                 <div class="brand">
                     <img src="../images/logotruongdung.jpg" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
                     <span>STEAM 12A4</span>
                 </div>
-                <div class="nav-links" id="mainNav">
-                    <a href="hub.html" class="nav-btn"><i class="fas fa-home"></i> Kho Game</a>
-                    <a href="#" onclick="location.reload()" class="nav-btn active"><i class="fas fa-redo"></i> Chơi Lại</a>
+                <div class="nav-actions">
+                    <a href="hub.html" class="nav-link"><i class="fas fa-th"></i> Kho Game</a>
+                    <button onclick="location.reload()" class="nav-link active"><i class="fas fa-redo"></i> Chơi Lại</button>
                 </div>
-                <button class="menu-mobile" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
             </div>
         </nav>
 
-        <!-- GAME CONTENT -->
-        <main class="game-area">
-            <div class="main-card">
-                <!-- Status Badges -->
-                <div class="status-bar">
-                    <div class="lifelines">
-                        <button id="help-5050" onclick="use5050()">50:50</button>
-                        <button id="help-call" onclick="useCall()"><i class="fas fa-phone"></i></button>
-                        <button id="help-crowd" onclick="useCrowd()"><i class="fas fa-users"></i></button>
-                    </div>
-                    
-                    <div class="stats-group">
-                        <div class="badge money"><i class="fas fa-dollar-sign"></i> <span id="money-val">0</span></div>
-                        <div class="badge timer"><i class="far fa-clock"></i> <span id="timer">30</span></div>
-                    </div>
+        <!-- Khu vực chơi game chính -->
+        <main class="game-container">
+            <!-- Thông tin trợ giúp và tiền -->
+            <div class="top-status">
+                <div class="lifelines">
+                    <button id="help-5050" onclick="use5050()" title="Trợ giúp 50:50">50:50</button>
+                    <button id="help-call" onclick="useCall()" title="Gọi điện thoại"><i class="fas fa-phone"></i></button>
+                    <button id="help-crowd" onclick="useCrowd()" title="Ý kiến khán giả"><i class="fas fa-users"></i></button>
                 </div>
 
-                <!-- Question Section -->
-                <div class="question-container">
-                    <h3 id="q-index">CÂU HỎI 1</h3>
-                    <div class="question-text" id="question-text">Đang tải câu hỏi...</div>
-                </div>
-
-                <!-- Answer Grid -->
-                <div class="answers-grid">
-                    <button class="ans-item" id="btn-0" onclick="chooseAnswer(0)">A. Đang tải...</button>
-                    <button class="ans-item" id="btn-1" onclick="chooseAnswer(1)">B. Đang tải...</button>
-                    <button class="ans-item" id="btn-2" onclick="chooseAnswer(2)">C. Đang tải...</button>
-                    <button class="ans-item" id="btn-3" onclick="chooseAnswer(3)">D. Đang tải...</button>
+                <div class="game-info">
+                    <div class="money-box">
+                        <span id="q-index">CÂU HỎI 1</span>
+                        <div id="money-val">200.000 VNĐ</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Start Overlay -->
-            <div id="start-overlay" class="start-screen">
-                <div class="start-box">
-                    <h1>AI LÀ TRIỆU PHÚ</h1>
-                    <p>Chọn khối lớp để thử thách kiến thức</p>
-                    <select id="grade-select">
-                        <option value="10">Khối 10 (Hệ thống)</option>
-                        <option value="11">Khối 11 (Lập trình)</option>
-                        <option value="12">Khối 12 (CSDL & AI)</option>
-                    </select>
-                    <button class="btn-play" onclick="startGame()">BẮT ĐẦU CHƠI</button>
+            <!-- Đồng hồ và Câu hỏi -->
+            <div class="center-stage">
+                <div class="timer-circle">
+                    <span id="timer">30</span>
                 </div>
+                
+                <div class="question-block">
+                    <div class="question-text" id="question-text">
+                        Đang chuẩn bị câu hỏi...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lưới đáp án (Hình lục giác) -->
+            <div class="answers-grid">
+                <button class="ans-item" id="btn-0" onclick="chooseAnswer(0)">
+                    <span class="prefix">A:</span> <span class="text">Đáp án A</span>
+                </button>
+                <button class="ans-item" id="btn-1" onclick="chooseAnswer(1)">
+                    <span class="prefix">B:</span> <span class="text">Đáp án B</span>
+                </button>
+                <button class="ans-item" id="btn-2" onclick="chooseAnswer(2)">
+                    <span class="prefix">C:</span> <span class="text">Đáp án C</span>
+                </button>
+                <button class="ans-item" id="btn-3" onclick="chooseAnswer(3)">
+                    <span class="prefix">D:</span> <span class="text">Đáp án D</span>
+                </button>
             </div>
         </main>
+
+        <!-- Màn hình chọn lớp khi bắt đầu -->
+        <div id="start-overlay" class="overlay">
+            <div class="start-card">
+                <h1>AI LÀ TRIỆU PHÚ</h1>
+                <p>Thử thách kiến thức Khoa học máy tính</p>
+                <div class="select-group">
+                    <label>Chọn khối lớp:</label>
+                    <select id="grade-select">
+                        <option value="10">Khối 10 (Hệ thống & Văn phòng)</option>
+                        <option value="11">Khối 11 (Lập trình & Thuật toán)</option>
+                        <option value="12">Khối 12 (CSDL & AI & Mạng)</option>
+                    </select>
+                </div>
+                <button class="start-btn" onclick="startGame()">BẮT ĐẦU CHƠI</button>
+            </div>
+        </div>
     </div>
 
-    <!-- Modal thông báo -->
+    <!-- Hộp thoại thông báo (Modal) -->
     <div id="support-modal" class="modal-overlay hidden">
-        <div class="modal-card">
+        <div class="modal-box">
             <i id="modal-icon" class="fas fa-info-circle"></i>
             <h2 id="modal-title">Thông báo</h2>
             <div id="modal-body" class="modal-content"></div>
-            <button class="btn-close" onclick="closeSupportModal()">ĐÃ HIỂU</button>
+            <button class="modal-close-btn" onclick="closeSupportModal()">ĐÃ HIỂU</button>
         </div>
     </div>
 
     <script src="script_altp.js"></script>
-    <script>
-        function toggleMenu() {
-            document.getElementById('mainNav').classList.toggle('show');
-        }
-    </script>
 </body>
 </html>
