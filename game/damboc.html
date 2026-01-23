@@ -11,7 +11,7 @@
         <!-- Overlay khởi đầu -->
         <div id="start-screen" class="overlay">
             <h1 class="game-title">BOXING TIN HỌC</h1>
-            <p>Chọn khối lớp:</p>
+            <p>Chọn khối lớp để bắt đầu:</p>
             <div class="btn-group">
                 <button onclick="startGame(10)">LỚP 10</button>
                 <button onclick="startGame(11)">LỚP 11</button>
@@ -48,13 +48,16 @@
 
         <!-- Sân đấu -->
         <div class="arena">
+            <!-- Bạn (Học sinh) bên trái -->
             <div id="player" class="fighter student-img"></div>
+            <!-- Đối thủ (Robot) bên phải -->
             <div id="enemy" class="fighter robot-img"></div>
         </div>
 
+        <!-- Câu hỏi -->
         <div id="quiz-area" class="quiz-container" style="display:none;">
-            <div id="question" class="question-text">Câu hỏi?</div>
-            <div id="answer-grid" class="answer-grid"></div>
+            <div id="question" class="question-text">Đang tải câu hỏi...</div>
+            <div id="answers" class="answer-grid"></div>
         </div>
     </div>
     <script src="damboc.js"></script>
