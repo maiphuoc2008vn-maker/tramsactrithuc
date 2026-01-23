@@ -46,7 +46,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* Logo Area */
-.logo-area { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.logo-area { display: flex; align-items: center; gap: 10px; cursor: pointer; flex-shrink: 0; }
 .logo-area img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary); }
 .logo-text h2 { font-size: 1.1rem; font-weight: 800; color: var(--text-main); line-height: 1.2; }
 .logo-text span { font-size: 0.75rem; color: var(--primary); font-weight: 700; letter-spacing: 1px; }
@@ -81,7 +81,7 @@ a { text-decoration: none; color: inherit; }
 .theme-btn:hover { background: var(--bg-body); color: #f1c40f; }
 .logout-btn:hover { background: #ff7675; color: white; border-color: #ff7675; }
 
-/* User Chip (Desktop) */
+/* User Chip (Desktop Only) */
 .user-chip {
     display: flex; align-items: center; gap: 8px;
     padding: 5px 15px 5px 5px;
@@ -236,19 +236,28 @@ a { text-decoration: none; color: inherit; }
 @media (max-width: 900px) {
     .desktop-nav { display: none; } /* Ẩn menu ngang */
     .hamburger-btn { display: flex; } /* Hiện nút 3 gạch */
-    .user-chip { display: none; } /* Ẩn user trên header */
-    .logout-btn.desktop-only { display: none; } /* Ẩn nút logout desktop */
     
-    .header { padding: 0 20px; }
+    /* ẨN USER INFO TRÊN HEADER ĐỂ TRÁNH VỠ GIAO DIỆN */
+    .user-chip { display: none !important; }
+    
+    .logout-btn.desktop-only { display: none; }
+    
+    .header { padding: 0 15px; }
     .hub-header h1 { font-size: 2rem; }
 }
 
 /* Mobile nhỏ (Dưới 480px) */
 @media (max-width: 480px) {
-    .logo-text h2 { font-size: 1rem; }
-    .logo-text span { font-size: 0.6rem; }
-    .logo-area img { width: 38px; height: 38px; }
-    
-    .game-grid { grid-template-columns: 1fr; } /* Chuyển thành 1 cột */
+    /* Logo: Thu nhỏ và ép thẳng hàng */
+    .logo-text h2 { 
+        font-size: 0.9rem; 
+        white-space: nowrap; /* Cấm xuống dòng */
+        line-height: 1.2;
+    }
+    .logo-text span { font-size: 0.65rem; display: block; }
+    .logo-area img { width: 35px; height: 35px; }
+    .logo-area { gap: 8px; }
+
+    .game-grid { grid-template-columns: 1fr; } /* 1 cột */
     .main-content { padding: 20px; }
 }
