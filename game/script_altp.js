@@ -8,7 +8,8 @@ const sounds = {
     wait: new Audio('sounds/wait.mp3'),
     call: new Audio('sounds/call.mp3'),
 };
-sounds.bg.loop = true; sounds.bg.volume = 0.4;
+sounds.bg.loop = true; 
+sounds.bg.volume = 0.4;
 
 // =========================================================================
 // 2. DỮ LIỆU CÂU HỎI
@@ -68,54 +69,45 @@ const questionData = {
 };
 
 // =========================================================================
-// 3. LOGIC GAME
+// 3. LOGIC XỬ LÝ GAME
 // =========================================================================
 let currentQuestions = [];
 let currIdx = 0;
 let isPlaying = false;
 let timer;
 let timeLeft = 30;
-// Biến lưu callback (hành động sau khi đóng modal)
 let modalCallback = null;
 
 function startGame() {
     const grade = document.getElementById("grade-select").value;
     currentQuestions = questionData[grade];
 
-    document.getElementById("start-overlay").style.display = "none";
+    document.getElementById("start-overlay").classList.add("hidden");
     currIdx = 0;
     
-    sounds.bg.play().catch(e => console.log("Cần tương tác để phát nhạc"));
+    sounds.bg.play().catch(e => console.log("Cần tương tác người dùng để phát nhạc"));
     loadQuestion();
 }
 
 function loadQuestion() {
-    // --- XỬ LÝ CHIẾN THẮNG GAME ---
+    // Nếu vượt qua 15 câu
     if (currIdx >= currentQuestions.length) {
-        sounds.correct.play();
-        showSupportModal(
-            "CHÚC MỪNG!", 
-            "BẠN LÀ TRIỆU PHÚ KHOA HỌC MÁY TÍNH!<br>Bạn đã xuất sắc vượt qua tất cả câu hỏi.", 
-            "fa-trophy",
-            "win", // Kiểu thắng
-            () => location.reload() // Hành động: Tải lại trang
-        );
+        showSupportModal("CHÚC MỪNG!", "BẠN LÀ TRIỆU PHÚ!<br>Bạn đã vượt qua 15 câu hỏi của chương trình.", "fa-trophy", "win", () => location.reload());
         return;
     }
 
     let data = currentQuestions[currIdx];
     document.getElementById("question-text").innerText = data.q;
-    document.getElementById("q-index").innerText = "Câu " + (currIdx + 1);
+    document.getElementById("q-index").innerText = "CÂU HỎI " + (currIdx + 1);
     document.getElementById("money-val").innerText = data.m + " VNĐ";
     
-    // Reset nút
+    // Reset các nút đáp án
     for(let i=0; i<4; i++) {
         let btn = document.getElementById("btn-" + i);
-        btn.innerHTML = `<span class="prefix">${String.fromCharCode(65+i)}:</span> <span class="text">${data.a[i]}</span>`;
-        btn.className = "ans-btn";
+        btn.querySelector(".text").innerText = data.a[i];
+        btn.className = "ans-item"; 
         btn.disabled = false;
         btn.style.opacity = 1;
-        btn.classList.remove("selected", "correct", "wrong");
     }
 
     startTimer();
@@ -131,15 +123,9 @@ function startTimer() {
         document.getElementById("timer").innerText = timeLeft;
         if(timeLeft <= 0) {
             clearInterval(timer);
+            isPlaying = false;
             sounds.wrong.play();
-            // --- XỬ LÝ HẾT GIỜ (MODAL MỚI) ---
-            showSupportModal(
-                "HẾT GIỜ!", 
-                "Rất tiếc, bạn đã hết thời gian suy nghĩ.<br>Bạn dừng bước tại đây.", 
-                "fa-hourglass-end",
-                "lose", // Kiểu thua
-                () => location.reload()
-            );
+            showSupportModal("HẾT GIỜ!", "Bạn đã hết thời gian suy nghĩ.", "fa-hourglass-end", "lose", () => location.reload());
         }
     }, 1000);
 }
@@ -148,12 +134,14 @@ function chooseAnswer(index) {
     if(!isPlaying) return;
     isPlaying = false;
     clearInterval(timer);
+    
     sounds.bg.pause();
     sounds.wait.play();
 
     let btn = document.getElementById("btn-" + index);
     btn.classList.add("selected");
 
+    // Tạo độ trễ kịch tính 2 giây
     setTimeout(() => {
         sounds.wait.pause();
         sounds.wait.currentTime = 0;
@@ -163,8 +151,12 @@ function chooseAnswer(index) {
 
 function checkResult(index) {
     let correct = currentQuestions[currIdx].c;
+    let btnSelected = document.getElementById("btn-" + index);
+    let btnCorrect = document.getElementById("btn-" + correct);
+
     if(index === correct) {
-        document.getElementById("btn-" + index).classList.add("correct");
+        // ĐÚNG
+        btnSelected.classList.add("correct");
         sounds.correct.play();
         setTimeout(() => {
             currIdx++;
@@ -172,21 +164,28 @@ function checkResult(index) {
             loadQuestion();
         }, 2000);
     } else {
-        document.getElementById("btn-" + index).classList.add("wrong");
-        document.getElementById("btn-" + correct).classList.add("correct");
+        // SAI
+        btnSelected.classList.add("wrong");
+        btnCorrect.classList.add("correct");
         sounds.wrong.play();
         
-        // --- XỬ LÝ TRẢ LỜI SAI (MODAL MỚI) ---
-        let correctChar = String.fromCharCode(65 + correct);
-        let prize = currIdx > 0 ? currentQuestions[currIdx-1].m : "0";
-        
+        // Tính tiền thưởng theo mốc
+        let prize = "0";
+        if (currIdx >= 10) prize = "22.000.000";
+        else if (currIdx >= 5) prize = "2.000.000";
+        else prize = "0";
+
         setTimeout(() => {
             showSupportModal(
-                "SAI RỒI!", 
-                `Đáp án đúng là <b style="color:#f1c40f; font-size:24px;">${correctChar}</b>.<br>
-                 Bạn nhận được: <b>${prize} VNĐ</b>`, 
-                "fa-times-circle",
-                "lose", // Kiểu thua
+                "KẾT THÚC", 
+                `<div style="text-align: center;">
+                    <h2 style="color: #e74c3c; margin-bottom: 10px;">BẠN ĐÃ TRẢ LỜI SAI RỒI!</h2>
+                    <p>Đáp án đúng là: <b style="color:#f1c40f">${String.fromCharCode(65+correct)}</b></p>
+                    <p style="margin-top:15px">Số tiền thưởng bạn nhận được:</p>
+                    <h2 style="color:#f1c40f; font-size:30px">${prize} VNĐ</h2>
+                </div>`, 
+                "fa-times-circle", 
+                "lose", 
                 () => location.reload()
             );
         }, 2000);
@@ -194,142 +193,90 @@ function checkResult(index) {
 }
 
 // =========================================================================
-// 4. HỆ THỐNG MODAL (NÂNG CẤP)
+// 4. QUYỀN TRỢ GIÚP
 // =========================================================================
 
-/**
- * Hàm hiện Modal thông minh
- * @param {string} title - Tiêu đề
- * @param {string} content - Nội dung (HTML)
- * @param {string} iconClass - Class icon FontAwesome
- * @param {string} type - Loại modal: 'normal', 'win', 'lose' (để đổi màu)
- * @param {function} callback - Hàm chạy khi bấm nút đóng (VD: reload game)
- */
-function showSupportModal(title, content, iconClass = "fa-info-circle", type = "normal", callback = null) {
-    const modal = document.getElementById("support-modal");
-    const box = document.getElementById("modal-box-content");
-    const btn = document.getElementById("modal-btn-action");
+function use5050() {
+    if(!isPlaying) return;
+    document.getElementById("help-5050").classList.add("used");
+    document.getElementById("help-5050").disabled = true;
 
+    let correct = currentQuestions[currIdx].c;
+    let wrongIndices = [0,1,2,3].filter(i => i !== correct);
+    wrongIndices.sort(() => Math.random() - 0.5);
+    
+    // Ẩn 2 đáp án sai
+    document.getElementById("btn-" + wrongIndices[0]).querySelector(".text").innerText = "";
+    document.getElementById("btn-" + wrongIndices[0]).disabled = true;
+    document.getElementById("btn-" + wrongIndices[1]).querySelector(".text").innerText = "";
+    document.getElementById("btn-" + wrongIndices[1]).disabled = true;
+}
+
+function useCall() {
+    if(!isPlaying) return;
+    document.getElementById("help-call").classList.add("used");
+    document.getElementById("help-call").disabled = true;
+
+    sounds.bg.pause();
+    sounds.call.play();
+
+    setTimeout(() => {
+        let correctChar = String.fromCharCode(65 + currentQuestions[currIdx].c);
+        showSupportModal("GỌI ĐIỆN THOẠI", `Người thân nói: "Theo mình biết thì đáp án đúng phải là ${correctChar}!"`, "fa-phone", "normal", () => {
+            sounds.bg.play();
+        });
+    }, 3000);
+}
+
+function useCrowd() {
+    if(!isPlaying) return;
+    document.getElementById("help-crowd").classList.add("used");
+    document.getElementById("help-crowd").disabled = true;
+
+    let correct = currentQuestions[currIdx].c;
+    let percents = [0,0,0,0];
+    percents[correct] = Math.floor(Math.random() * 41) + 50; 
+    
+    let remain = 100 - percents[correct];
+    let others = [0,1,2,3].filter(x => x !== correct);
+    
+    let p1 = Math.floor(Math.random() * remain);
+    percents[others[0]] = p1;
+    remain -= p1;
+    
+    let p2 = Math.floor(Math.random() * remain);
+    percents[others[1]] = p2;
+    percents[others[2]] = remain - p2;
+
+    let html = `<div style="display:flex; justify-content:space-around; align-items:flex-end; height:120px; margin-top:20px;">`;
+    ['A','B','C','D'].forEach((l, i) => {
+        html += `<div style="text-align:center; width:40px;">
+                    <div style="background:#f1c40f; height:${percents[i]}px; border-radius:3px 3px 0 0;"></div>
+                    <div style="font-weight:bold; font-size:12px; margin-top:5px;">${l}<br>${percents[i]}%</div>
+                 </div>`;
+    });
+    html += `</div>`;
+
+    showSupportModal("Ý KIẾN KHÁN GIẢ", html, "fa-users");
+}
+
+// =========================================================================
+// 5. HỆ THỐNG MODAL
+// =========================================================================
+function showSupportModal(title, content, icon, type, callback) {
+    const modal = document.getElementById("support-modal");
     document.getElementById("modal-title").innerText = title;
     document.getElementById("modal-body").innerHTML = content;
+    document.getElementById("modal-icon").className = "fas " + icon;
     
-    // Icon
-    const icon = document.getElementById("modal-icon");
-    icon.className = `fas ${iconClass}`;
-    
-    // Reset Class màu cũ
-    box.classList.remove("win", "lose");
-    if(type === "win") box.classList.add("win");
-    if(type === "lose") box.classList.add("lose");
-
-    // Đổi chữ nút bấm tùy tình huống
-    if(type === "win" || type === "lose") {
-        btn.innerText = "CHƠI LẠI";
-    } else {
-        btn.innerText = "ĐÃ HIỂU";
-    }
-
-    modalCallback = callback; // Lưu hành động tiếp theo
+    modalCallback = callback;
     modal.classList.remove("hidden");
 }
 
 function closeSupportModal() {
     document.getElementById("support-modal").classList.add("hidden");
-    // Nếu có hành động được cài đặt (như reload game), thì thực hiện
-    if (modalCallback) {
+    if(modalCallback) {
         modalCallback();
         modalCallback = null;
     }
-}
-
-// =========================================================================
-// 5. CÁC QUYỀN TRỢ GIÚP
-// =========================================================================
-
-// 1. TRỢ GIÚP 50:50
-function use5050() {
-    if(!isPlaying) return;
-    document.getElementById("help-5050").disabled = true;
-    document.getElementById("help-5050").classList.add("used");
-
-    let correct = currentQuestions[currIdx].c;
-    let wrong = [0,1,2,3].filter(x => x !== correct);
-    wrong.sort(() => Math.random() - 0.5);
-    
-    document.querySelector(`#btn-${wrong[0]} .text`).innerText = "";
-    document.querySelector(`#btn-${wrong[1]} .text`).innerText = "";
-    document.getElementById(`btn-${wrong[0]}`).disabled = true;
-    document.getElementById(`btn-${wrong[1]}`).disabled = true;
-}
-
-// 2. GỌI ĐIỆN THOẠI
-function useCall() {
-    if(!isPlaying) return; 
-    
-    document.getElementById("help-call").disabled = true;
-    document.getElementById("help-call").classList.add("used");
-
-    sounds.bg.pause();
-    sounds.wait.pause();
-    sounds.call.currentTime = 0; 
-    sounds.call.play().catch(e => console.log("Lỗi phát nhạc: " + e));
-
-    setTimeout(() => {
-        sounds.call.pause();
-        let correctChar = String.fromCharCode(65 + currentQuestions[currIdx].c);
-        
-        let content = `
-            <div style="font-style: italic; color: #bdc3c7;">Đang kết nối với Người thân...</div>
-            <div style="margin-top: 15px; font-size: 20px;">
-                "Alo! Mình vừa tra Google rồi.<br>
-                Đáp án chắc chắn là <b style="color: #f1c40f; font-size: 30px;">${correctChar}</b> nhé!<br>
-                Tin mình đi, không sai được đâu!"
-            </div>
-        `;
-        
-        showSupportModal("GỌI ĐIỆN THOẠI", content, "fa-phone-volume");
-        sounds.bg.play();
-    }, 4000); 
-}
-
-// 3. HỎI Ý KIẾN KHÁN GIẢ
-function useCrowd() {
-    if(!isPlaying) return; 
-    
-    document.getElementById("help-crowd").disabled = true;
-    document.getElementById("help-crowd").classList.add("used");
-
-    let correctIndex = currentQuestions[currIdx].c;
-    let percents = [0, 0, 0, 0];
-    
-    percents[correctIndex] = Math.floor(Math.random() * 31) + 50; 
-    let remain = 100 - percents[correctIndex];
-    let wrongIndices = [0, 1, 2, 3].filter(index => index !== correctIndex);
-
-    let w1 = Math.floor(Math.random() * remain);
-    percents[wrongIndices[0]] = w1;
-    remain -= w1;
-
-    let w2 = Math.floor(Math.random() * remain);
-    percents[wrongIndices[1]] = w2;
-    remain -= w2;
-    percents[wrongIndices[2]] = remain;
-
-    let chartHTML = `<div class="chart-container">`;
-    const labels = ['A', 'B', 'C', 'D'];
-    
-    for(let i = 0; i < 4; i++) {
-        let height = percents[i] * 1.8; 
-        chartHTML += `
-            <div class="chart-col">
-                <div class="chart-bar" style="height: ${height}px;">
-                    <span class="chart-percent">${percents[i]}%</span>
-                </div>
-                <div class="chart-label">${labels[i]}</div>
-            </div>
-        `;
-    }
-    chartHTML += `</div>`;
-
-    showSupportModal("Ý KIẾN KHÁN GIẢ", chartHTML, "fa-users");
 }
