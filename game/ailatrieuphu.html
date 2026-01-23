@@ -6,35 +6,36 @@
     <title>Ai Là Triệu Phú - STEAM 12A4</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <!-- Kết nối Style chung và Style riêng -->
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style_altp.css">
 </head>
 <body>
     <div class="app-container">
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <div class="logo-section">
-                <div class="logo-wrapper">
-                    <img src="../images/logotruongdung.jpg" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
-                </div>
-                <h2>STEAM 12A4</h2>
+        <!-- HEADER MENU -->
+        <header class="top-header">
+            <div class="header-left">
+                <img src="../images/logotruongdung.jpg" class="mini-logo" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+                <span class="brand-name">STEAM 12A4</span>
             </div>
-            <nav class="nav-menu">
+            
+            <button class="menu-toggle-btn" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <nav class="nav-menu" id="mainNav">
                 <button class="nav-item" onclick="location.href='hub.html'"><i class="fas fa-arrow-left"></i> Kho Game</button>
                 <button class="nav-item active" onclick="location.reload()"><i class="fas fa-redo"></i> Chơi Lại</button>
             </nav>
-        </aside>
+        </header>
 
         <!-- MAIN GAME -->
         <main class="main-content altp-bg">
             <div class="game-container">
-                <!-- Thanh thông tin trên cùng -->
+                <!-- Thanh thông tin trên cùng (Trợ giúp & Tiền) -->
                 <div class="top-info">
                     <div class="lifelines">
-                        <button id="help-5050" onclick="use5050()">50:50</button>
-                        <button id="help-call" onclick="useCall()"><i class="fas fa-phone"></i></button>
-                        <button id="help-crowd" onclick="useCrowd()"><i class="fas fa-users"></i></button>
+                        <button id="help-5050" onclick="use5050()" title="50:50">50:50</button>
+                        <button id="help-call" onclick="useCall()" title="Gọi điện thoại"><i class="fas fa-phone"></i></button>
+                        <button id="help-crowd" onclick="useCrowd()" title="Ý kiến khán giả"><i class="fas fa-users"></i></button>
                     </div>
                     <div class="money-badge">
                         <span id="q-index">Câu 1</span> - <span id="money-val">200.000 VNĐ</span>
@@ -57,10 +58,10 @@
                     <button class="ans-btn" id="btn-3" onclick="chooseAnswer(3)">D: ...</button>
                 </div>
 
-                <!-- Màn hình chọn lớp (Start Overlay) -->
+                <!-- Màn hình chờ bắt đầu -->
                 <div id="start-overlay" class="overlay">
                     <h1>AI LÀ TRIỆU PHÚ</h1>
-                    <p style="color: white; margin-bottom: 15px;">Chọn kiến thức khối lớp để bắt đầu:</p>
+                    <p>Chọn kiến thức khối lớp để bắt đầu:</p>
                     <select id="grade-select">
                         <option value="10">Khối 10 (Hệ thống & Văn phòng)</option>
                         <option value="11">Khối 11 (Lập trình & Thuật toán)</option>
@@ -72,34 +73,25 @@
         </main>
     </div>
 
-    <!-- MODAL HỖ TRỢ (Custom Popup) -->
-    <div id="support-modal" class="modal-overlay hidden">
-        <div class="modal-box">
-            <div class="modal-header">
-                <i id="modal-icon" class="fas fa-info-circle"></i>
-                <h2 id="modal-title">Tiêu đề</h2>
-            </div>
-            <div id="modal-body" class="modal-body">
-                <!-- Nội dung sẽ được JS chèn vào đây -->
-            </div>
-            <button class="close-modal-btn" onclick="closeSupportModal()">ĐÃ HIỂU</button>
-        </div>
-    </div>
-
-    <script src="script_altp.js"></script>
-    <!-- MODAL HỖ TRỢ & THÔNG BÁO CHUNG -->
+    <!-- MODAL THÔNG BÁO -->
     <div id="support-modal" class="modal-overlay hidden">
         <div class="modal-box" id="modal-box-content">
             <div class="modal-header">
                 <i id="modal-icon" class="fas fa-info-circle"></i>
                 <h2 id="modal-title">Tiêu đề</h2>
             </div>
-            <div id="modal-body" class="modal-body">
-                <!-- Nội dung -->
-            </div>
-            <!-- Nút bấm đóng modal -->
+            <div id="modal-body" class="modal-body"></div>
             <button id="modal-btn-action" class="close-modal-btn" onclick="closeSupportModal()">ĐÃ HIỂU</button>
         </div>
     </div>
+
+    <script src="script_altp.js"></script>
+    <script>
+        // Hàm ẩn hiện menu
+        function toggleMenu() {
+            const nav = document.getElementById('mainNav');
+            nav.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>
