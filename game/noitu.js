@@ -1,4 +1,5 @@
 /* --- noitu.js --- */
+
 /* --- KHO TỪ VỰNG TIN HỌC 600+ TỪ (LỚP 10, 11, 12) --- */
 const dictionary = {
     10: [
@@ -64,12 +65,16 @@ const dictionary = {
         "Thực tế ảo", "Ảo thuật", "Thuật lại", "Lại đây", "Đây mà", "Mà thôi", "Thôi xong", "Xong xuôi", "Xuôi dòng", "Dòng đời"
     ]
 };
-let currentWord = "";
+
+let currentLevel = 10;
+let lastWord = "";
+let usedWords = [];
 let score = 0;
 let timeLeft = 15;
 let timerInterval;
-let isPlaying = true;
+let isPlaying = false;
 
+// DOM Elements
 const elScore = document.getElementById("score");
 const elCurrentWord = document.getElementById("currentWord");
 const elInput = document.getElementById("userInput");
@@ -78,23 +83,37 @@ const elTimerBar = document.getElementById("timerBar");
 const btnSubmit = document.getElementById("btnSubmit");
 const btnRestart = document.getElementById("btnRestart");
 
+// Lắng nghe sự kiện chọn level từ các nút (nếu bạn đã thêm vào HTML)
+document.querySelectorAll(".btn-lvl").forEach(btn => {
+    btn.addEventListener("click", function() {
+        if (isPlaying) return; // Không cho đổi khi đang chơi
+        document.querySelectorAll(".btn-lvl").forEach(b => b.classList.remove("active"));
+        this.classList.add("active");
+        currentLevel = parseInt(this.dataset.lvl);
+        initGame();
+    });
+});
+
 function initGame() {
     isPlaying = true;
     score = 0;
+    usedWords = [];
     elScore.innerText = score;
     
     btnRestart.style.display = "none";
     btnSubmit.style.display = "inline-block";
-    
-    elMessage.innerText = "Bắt đầu thôi!";
-    elMessage.className = "";
-
-    currentWord = startWords[Math.floor(Math.random() * startWords.length)];
-    elCurrentWord.innerText = currentWord;
-
-    elInput.value = "";
     elInput.disabled = false;
+    elInput.value = "";
     elInput.focus();
+
+    // Máy chọn từ bắt đầu từ từ điển của lớp đã chọn
+    const pool = dictionary[currentLevel];
+    lastWord = pool[Math.floor(Math.random() * pool.length)];
+    usedWords.push(lastWord.toLowerCase());
+    
+    elCurrentWord.innerText = lastWord;
+    elMessage.innerText = "Đến lượt bạn nối từ: " + getLastName(lastWord);
+    elMessage.className = "text-success";
 
     resetTimer();
 }
@@ -108,7 +127,7 @@ function resetTimer() {
         timeLeft--;
         updateTimerBar();
         if (timeLeft <= 0) {
-            gameOver();
+            gameOver("Hết thời gian!");
         }
     }, 1000);
 }
@@ -116,82 +135,94 @@ function resetTimer() {
 function updateTimerBar() {
     const percent = (timeLeft / 15) * 100;
     elTimerBar.style.width = percent + "%";
-    
-    if (timeLeft <= 5) {
-        elTimerBar.style.background = "#d63031";
-    } else {
-        elTimerBar.style.background = "#ff4757";
-    }
+    elTimerBar.style.background = timeLeft <= 5 ? "#d63031" : "#ff4757";
 }
 
 function checkAnswer() {
     if (!isPlaying) return;
 
-    let text = elInput.value.trim();
-    text = text.replace(/\s+/g, ' ');
+    let userWord = elInput.value.trim();
+    userWord = userWord.replace(/\s+/g, ' ');
 
-    if (!text) {
-        showMessage("Bạn chưa nhập từ nào cả!", "text-error");
-        elInput.focus();
+    if (!userWord) return;
+
+    const parts = userWord.split(' ');
+    if (parts.length < 2) {
+        gameOver("Sai luật: Phải nhập từ ít nhất 2 tiếng!");
         return;
     }
 
-    const parts = text.split(' ');
+    const firstPart = parts[0].toLowerCase();
+    const requiredPart = getLastName(lastWord).toLowerCase();
 
-    if (parts.length !== 2) {
-        showMessage("Sai luật: Phải nhập từ ghép 2 tiếng!", "text-error");
+    // Kiểm tra xem từ người chơi nhập có nối đúng với từ trước không
+    if (firstPart !== requiredPart) {
+        gameOver(`Sai rồi! Phải bắt đầu bằng từ "${requiredPart}"`);
         return;
     }
 
-    const firstPart = parts[0];
-    const secondPart = parts[1];
-
-    if (firstPart.toLowerCase() !== currentWord.toLowerCase()) {
-        showMessage(`Sai rồi: Từ đầu tiên phải là "${currentWord}"`, "text-error");
+    // Kiểm tra xem từ này đã dùng chưa
+    if (usedWords.includes(userWord.toLowerCase())) {
+        gameOver("Từ này đã được sử dụng rồi!");
         return;
     }
 
+    // Chấp nhận từ của người chơi
     score++;
     elScore.innerText = score;
-    showMessage("Chính xác! Tiếp tục nào.", "text-success");
-
-    currentWord = capitalize(secondPart);
-    elCurrentWord.innerText = currentWord;
-
+    usedWords.push(userWord.toLowerCase());
     elInput.value = "";
-    elInput.focus();
-    
-    resetTimer();
+
+    // MÁY PHẢN CÔNG
+    const lastPartUser = parts[parts.length - 1].toLowerCase();
+    const machineResponse = findMachineWord(lastPartUser);
+
+    if (machineResponse) {
+        lastWord = machineResponse;
+        usedWords.push(lastWord.toLowerCase());
+        elCurrentWord.innerText = lastWord;
+        elMessage.innerText = "Máy đáp: " + lastWord;
+        resetTimer();
+    } else {
+        // Nếu máy không tìm được từ nối tiếp
+        score += 5;
+        elScore.innerText = score;
+        gameOver("Máy không tìm được từ nối! Bạn thắng cuộc! +5 điểm.");
+    }
 }
 
-function gameOver() {
+// Hàm tìm từ trong từ điển để máy đáp lại
+function findMachineWord(prefix) {
+    const pool = dictionary[currentLevel];
+    const choices = pool.filter(w => 
+        w.toLowerCase().startsWith(prefix) && 
+        !usedWords.includes(w.toLowerCase())
+    );
+    
+    if (choices.length > 0) {
+        return choices[Math.floor(Math.random() * choices.length)];
+    }
+    return null;
+}
+
+function getLastName(word) {
+    const p = word.split(' ');
+    return p[p.length - 1];
+}
+
+function gameOver(msg) {
     clearInterval(timerInterval);
     isPlaying = false;
     elInput.disabled = true;
-    
-    showMessage(`Hết giờ! Tổng điểm: ${score}`, "text-error");
-    
+    elMessage.innerText = msg + ` - Điểm: ${score}`;
+    elMessage.className = "text-error";
     btnSubmit.style.display = "none";
     btnRestart.style.display = "inline-block";
 }
 
-function showMessage(msg, cssClass) {
-    elMessage.innerText = msg;
-    elMessage.className = cssClass;
-}
-
-function capitalize(s) {
-    return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
-}
-
 btnSubmit.addEventListener("click", checkAnswer);
 btnRestart.addEventListener("click", initGame);
+elInput.addEventListener("keypress", (e) => { if (e.key === "Enter") checkAnswer(); });
 
-elInput.addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-        checkAnswer();
-    }
-});
-
-
+// Khởi động game mặc định lớp 10
 initGame();
