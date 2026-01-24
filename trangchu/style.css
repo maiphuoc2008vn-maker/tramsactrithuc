@@ -1,9 +1,9 @@
-/* --- BIẾN MÀU XANH NƯỚC BIỂN (OCEAN BLUE) --- */
+/* --- BIẾN MÀU SẮC --- */
 :root {
     --primary: #0077ff;
     --secondary: #00f2fe;
     --deep-blue: #001f3f;
-    --glass-bg: rgba(255, 255, 255, 0.4);
+    --glass-bg: rgba(255, 255, 255, 0.45);
     --glass-border: rgba(255, 255, 255, 0.5);
     --font-head: 'Montserrat', sans-serif;
     --font-main: 'Nunito', sans-serif;
@@ -17,7 +17,7 @@ body.dark-mode {
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: var(--font-main); background: #f0f7ff; overflow-x: hidden; transition: 0.4s; }
 
-/* --- 1. HIỆU ỨNG INTRO (LUÂN & RIPPLE) --- */
+/* --- 1. INTRO OVERLAY --- */
 #intro-overlay {
     position: fixed; inset: 0; 
     background: radial-gradient(circle at center, #001a33 0%, #00050a 100%);
@@ -26,17 +26,14 @@ body { font-family: var(--font-main); background: #f0f7ff; overflow-x: hidden; t
 }
 #intro-overlay.hidden { transform: translateY(-110%) scale(1.1); opacity: 0; filter: blur(15px); pointer-events: none; }
 
-.logo-box-intro { position: relative; width: 150px; height: 150px; margin: 0 auto 30px; }
-
-/* Hiệu ứng Luân (Vòng quay) */
+.logo-box-intro { position: relative; width: 140px; height: 140px; margin: 0 auto 30px; }
 .logo-box-intro::before {
-    content: ""; position: absolute; inset: -15px; border-radius: 50%;
+    content: ""; position: absolute; inset: -12px; border-radius: 50%;
     border: 3px solid transparent; border-top: 3px solid var(--secondary); border-bottom: 3px solid var(--primary);
     animation: rotateLuân 2s linear infinite;
 }
 @keyframes rotateLuân { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-/* Hiệu ứng Ripple (Sóng tỏa) */
 .ripple {
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
     width: 100%; height: 100%; border-radius: 50%; background: var(--primary);
@@ -44,83 +41,92 @@ body { font-family: var(--font-main); background: #f0f7ff; overflow-x: hidden; t
 }
 @keyframes rippleWave {
     0% { width: 120px; height: 120px; opacity: 0.5; }
-    100% { width: 450px; height: 450px; opacity: 0; }
+    100% { width: 400px; height: 400px; opacity: 0; }
 }
-
-.intro-logo { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255,255,255,0.1); box-shadow: 0 0 30px var(--primary); }
-.intro-title { color: white; font-family: var(--font-head); font-weight: 900; margin-top: 10px; }
+.intro-logo { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255,255,255,0.1); }
+.intro-title { color: white; font-family: var(--font-head); font-weight: 900; }
 .intro-title span { color: var(--secondary); font-style: italic; font-size: 3rem; }
-.intro-subtitle { color: #8ec5ff; letter-spacing: 3px; font-weight: 700; margin-bottom: 30px; }
 
-.btn-enter {
-    background: linear-gradient(45deg, var(--primary), var(--deep-blue));
-    color: white; border: none; padding: 16px 45px; border-radius: 50px;
-    font-weight: 800; cursor: pointer; box-shadow: 0 0 20px rgba(0, 119, 255, 0.5);
-    animation: pulseBtn 2s infinite; transition: 0.3s;
+/* --- 2. HERO SECTION (Sửa lỗi đè chữ) --- */
+.hero-section { 
+    min-height: 100vh; /* Dùng min-height để không bị gò bó không gian */
+    position: relative; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: white; 
+    text-align: center;
+    padding: 100px 20px 150px; /* Thêm padding dưới để đẩy Dashboard ra xa */
 }
-@keyframes pulseBtn { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); box-shadow: 0 0 30px var(--primary); } }
 
-/* --- 2. HERO & CHỮ CHINH PHỤC TƯƠNG LAI --- */
-.hero-section { height: 90vh; position: relative; display: flex; align-items: center; justify-content: center; color: white; text-align: center; }
 .hero-bg-container { position: absolute; inset: 0; z-index: -1; }
-.hero-bg-img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.6s ease; }
+.hero-bg-img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; /* Quan trọng: giúp ảnh lấp đầy không bị méo */
+    transition: opacity 0.6s ease; 
+}
 .hero-bg-img.fading { opacity: 0; }
 .overlay-dark { position: absolute; inset: 0; background: rgba(0, 15, 38, 0.55); z-index: 2; }
 
+.hero-content { position: relative; z-index: 3; width: 100%; max-width: 900px; }
+
 .hero-main-title {
-    font-family: var(--font-head); font-size: clamp(3rem, 10vw, 6.5rem);
-    font-weight: 950; text-transform: uppercase; line-height: 0.85; letter-spacing: -4px;
+    font-family: var(--font-head); 
+    font-size: clamp(2.5rem, 8vw, 6rem); /* Co giãn theo màn hình */
+    font-weight: 950; 
+    text-transform: uppercase; 
+    line-height: 1.1; 
+    letter-spacing: -2px;
     background: linear-gradient(to bottom, #ffffff 10%, var(--secondary) 50%, var(--primary) 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 10px 20px rgba(0, 119, 255, 0.6));
-    margin-bottom: 25px; animation: textFloat 4s ease-in-out infinite;
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 10px 20px rgba(0, 119, 255, 0.4));
+    margin-bottom: 25px;
 }
-@keyframes textFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-.hero-top-text { font-size: 1.3rem; font-weight: 700; letter-spacing: 6px; margin-bottom: 10px; }
-.hero-desc { max-width: 650px; margin: 0 auto 35px; font-size: 1.1rem; opacity: 0.9; }
+.hero-top-text { font-size: 1.2rem; font-weight: 700; letter-spacing: 5px; margin-bottom: 10px; }
+.hero-desc { max-width: 650px; margin: 0 auto 35px; font-size: 1.1rem; opacity: 0.9; line-height: 1.6; }
 
-/* --- 3. DASHBOARD TRONG SUỐT (GLASSMORPHISM) --- */
-.dashboard-section { padding: 80px 20px; max-width: 1200px; margin: -120px auto 50px; position: relative; z-index: 10; }
-.section-header h3 { font-size: 2.5rem; font-weight: 900; color: #002244; text-align: center; margin-bottom: 45px; }
-.subtitle-blue { color: var(--primary); font-weight: 800; text-align: center; letter-spacing: 2px; font-size: 0.8rem; margin-bottom: 5px; }
+/* --- 3. DASHBOARD TRUNG TÂM (Sửa lỗi khoảng cách) --- */
+.dashboard-section { 
+    padding: 60px 20px; 
+    max-width: 1240px; 
+    margin: -80px auto 80px; /* Giảm margin âm từ -120px xuống -80px */
+    position: relative; 
+    z-index: 10; 
+}
+
+.section-header { text-align: center; margin-bottom: 50px; }
+.section-header h3 { font-size: 2.5rem; font-weight: 900; color: #002244; margin-top: 5px; }
+.subtitle-blue { color: var(--primary); font-weight: 800; letter-spacing: 2px; font-size: 0.9rem; }
 
 .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
 .glass-card {
-    background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+    background: var(--glass-bg); 
+    backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
     border: 1px solid var(--glass-border); padding: 50px 30px; border-radius: 40px;
-    text-align: center; box-shadow: 0 25px 50px rgba(0, 30, 80, 0.1), inset 0 0 20px rgba(255,255,255,0.2);
-    cursor: pointer; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center; box-shadow: 0 25px 50px rgba(0, 30, 80, 0.1);
+    transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-.glass-card:hover { transform: translateY(-15px); background: rgba(255, 255, 255, 0.7); border-color: var(--primary); }
+.glass-card:hover { transform: translateY(-15px); background: rgba(255,255,255,0.7); }
 
 .card-icon { 
-    width: 80px; height: 80px; margin: 0 auto 25px; border-radius: 22px; 
+    width: 80px; height: 80px; margin: 0 auto 25px; border-radius: 20px; 
     display: flex; align-items: center; justify-content: center; font-size: 2.2rem;
     background: white; color: var(--primary); box-shadow: 0 10px 20px rgba(0, 119, 255, 0.15); 
 }
 
-/* --- THEME & BUTTONS --- */
+/* --- THEME & UTILS --- */
+.top-controls { position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 12px; }
+.btn-float { width: 45px; height: 45px; border-radius: 50%; background: rgba(0, 10, 30, 0.4); backdrop-filter: blur(10px); color: white; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.chatbot-float { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; cursor: pointer; box-shadow: 0 10px 30px rgba(0, 119, 255, 0.4); }
+
+/* Nút bấm Hero */
 .btn-glow { padding: 15px 35px; border: none; border-radius: 50px; background: linear-gradient(45deg, #0044cc, var(--primary)); color: white; font-weight: 700; cursor: pointer; box-shadow: 0 8px 25px rgba(0, 119, 255, 0.4); }
 .btn-outline { padding: 14px 35px; border: 2px solid white; border-radius: 50px; background: transparent; color: white; font-weight: 700; margin-left: 15px; cursor: pointer; transition: 0.3s; }
-.btn-outline:hover { background: white; color: var(--primary); }
-
-.top-controls { position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 12px; }
-.btn-float { width: 45px; height: 45px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); background: rgba(0, 10, 30, 0.4); backdrop-filter: blur(10px); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-
-.chatbot-float { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; cursor: pointer; box-shadow: 0 10px 30px rgba(0, 119, 255, 0.4); z-index: 999; }
 
 /* MODAL */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0, 5, 15, 0.7); backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; z-index: 11000; }
 .modal-overlay.active { display: flex; }
-.modal-content { background: white; padding: 40px; border-radius: 35px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-.modal-icon { font-size: 4rem; color: var(--primary); margin-bottom: 20px; }
-.modal-actions { display: flex; gap: 10px; margin-top: 25px; }
-.btn-confirm { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 50px; font-weight: 700; cursor: pointer; flex: 1; }
-.btn-cancel { background: #f0f2f5; color: #666; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; flex: 1; }
-
-@media (max-width: 768px) {
-    .hero-btns { flex-direction: column; gap: 10px; }
-    .btn-outline { margin-left: 0; }
-    .dashboard-section { margin-top: -60px; }
-}
+.modal-content { background: white; padding: 40px; border-radius: 35px; text-align: center; max-width: 400px; width: 90%; }
