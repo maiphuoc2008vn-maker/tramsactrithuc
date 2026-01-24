@@ -1,151 +1,135 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- 1. MÀN HÌNH CHÀO (INTRO) ---
-    const overlay = document.getElementById('intro-overlay');
+    // --- 1. CODE CŨ: MÀN HÌNH CHÀO ---
+    const introOverlay = document.getElementById('intro-overlay');
     const enterBtn = document.getElementById('enter-site-btn');
-    const userInfo = JSON.parse(localStorage.getItem('user_info_sql'));
-
-    if (enterBtn && overlay) {
-        if (userInfo && userInfo.username) {
-            enterBtn.innerHTML = `Chào, ${userInfo.username} <i class="fas fa-arrow-right"></i>`;
-        }
-        enterBtn.onclick = () => {
-            overlay.classList.add('hidden');
-            setTimeout(() => overlay.style.display = 'none', 800);
-            startBgSlider(); // Bắt đầu slide ảnh khi vào trang
-        };
+    if(enterBtn) {
+        enterBtn.addEventListener('click', () => {
+            introOverlay.style.opacity = '0';
+            setTimeout(() => { introOverlay.style.display = 'none'; }, 800);
+        });
     }
 
-    // --- 2. AVATAR USER ---
-    const topControls = document.querySelector('.top-controls');
-    if (userInfo && topControls) {
-        const userDiv = document.createElement('div');
-        userDiv.className = 'btn-float';
-        userDiv.style.overflow = 'hidden';
-        userDiv.innerHTML = `<img src="${userInfo.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}" style="width:100%;height:100%;object-fit:cover;">`;
-        userDiv.onclick = () => {
-            if(confirm('Đăng xuất tài khoản?')) { localStorage.removeItem('user_info_sql'); location.reload(); }
-        };
-        topControls.insertBefore(userDiv, topControls.firstChild);
-    }
-
-    // --- 3. DARK MODE ---
-    const themeBtn = document.getElementById('theme-toggle');
-    if(themeBtn) {
-        if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
-        themeBtn.onclick = () => {
+    // --- 2. CODE CŨ: DARK MODE ---
+    const themeToggle = document.getElementById('theme-toggle');
+    if(themeToggle) {
+        if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
+        themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('dark-mode');
             localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-        };
+        });
     }
 
-    // --- 4. BACKGROUND SLIDER ---
-    function startBgSlider() {
-        const bgImgs = ['../images/bg1.jpg', '../images/congtruong.jpg', 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1920'];
-        let idx = 0;
-        const heroBg = document.getElementById('hero-bg-slider');
-        if(!heroBg) return;
-
+    // --- 3. CODE CŨ: SLIDER ---
+    const backgrounds = ['../images/bg1.jpg', 'https://images.unsplash.com/photo-1497294815431-9365093b7331?q=80&w=1920'];
+    let currentBgIndex = 0;
+    const heroImg = document.getElementById('hero-bg-slider');
+    if(heroImg) {
         setInterval(() => {
-            idx = (idx + 1) % bgImgs.length;
-            heroBg.classList.add('fading');
+            currentBgIndex = (currentBgIndex + 1) % backgrounds.length;
+            heroImg.style.opacity = '0';
             setTimeout(() => {
-                heroBg.src = bgImgs[idx];
-                heroBg.onload = () => heroBg.classList.remove('fading');
-            }, 400);
+                heroImg.src = backgrounds[currentBgIndex];
+                heroImg.onload = () => { heroImg.style.opacity = '1'; };
+            }, 500);
         }, 5000);
     }
 
-    // --- 5. CHATBOT AI (LOGIC QUAN TRỌNG) ---
-    const chatToggle = document.getElementById('chatbot-toggle');
-    const chatWindow = document.getElementById('chat-window');
-    const closeChat = document.getElementById('close-chat');
-    const chatInput = document.getElementById('chat-input');
-    const chatSend = document.getElementById('chat-send');
-    const chatBody = document.getElementById('chat-body');
+    // --- 4. CODE CŨ: TILT CARD ---
+    const cards = document.querySelectorAll('.tilt-card');
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) - rect.width/2) / (rect.width/2) * 10;
+            const y = ((e.clientY - rect.top) - rect.height/2) / (rect.height/2) * -10;
+            card.style.transform = `perspective(1000px) rotateX(${y}deg) rotateY(${x}deg) scale(1.05)`;
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+        });
+    });
 
-    // Cấu hình Key API (Đã ghép lại để hoạt động)
+    // --- 5. CHATBOT AI (CODE CỦA BẠN ĐÃ ĐƯỢC TÍCH HỢP) ---
+    // Khai báo API Key ở đây (Lấy từ prompt trước của bạn)
     const p1 = "AIzaSy";
     const p2 = "CtWzrCrEwT_OsS69tpjbS-_vKWNnd2dGc";
-    const API_KEY = p1 + p2;
+    const GEMINI_API_KEY = p1 + p2;
 
-    if (chatToggle && chatWindow) {
-        // Mở Chat
-        chatToggle.onclick = () => {
-            chatWindow.classList.add('active');
-            chatToggle.style.transform = 'scale(0)'; // Ẩn nút tròn khi mở chat
-        };
+    const chatWin = document.getElementById('chat-window');
+    const chatBody = document.getElementById('chat-body');
+    const chatInput = document.getElementById('chat-input');
+    const btnSend = document.getElementById('chat-send');
 
-        // Đóng Chat
-        closeChat.onclick = () => {
-            chatWindow.classList.remove('active');
-            chatToggle.style.transform = 'scale(1)'; // Hiện lại nút tròn
-        };
+    // Nút mở chat
+    document.getElementById('chatbot-toggle').onclick = () => chatWin.classList.toggle('active');
 
-        // Hàm xử lý chat
-        async function handleChat() {
-            const txt = chatInput.value.trim();
-            if(!txt) return;
+    async function handleChat() {
+        const userText = chatInput.value.trim();
+        if (!userText) return;
 
-            // 1. Hiện tin nhắn User
-            addMsg(txt, 'user');
-            chatInput.value = '';
+        appendMsg(userText, 'user');
+        chatInput.value = "";
+        
+        // Tạo ID tạm cho tin nhắn Bot
+        const botId = "bot-" + Date.now();
+        appendMsg("AI đang trả lời...", 'bot', botId);
+
+        try {
+            // SỬA NHỎ: Dùng model gemini-1.5-flash để đảm bảo chạy được (v3 preview chưa public rộng rãi)
+            // Nếu bạn muốn dùng v3, hãy đổi lại dòng này thành: const modelName = "gemini-3-flash-preview";
+            const modelName = "gemini-1.5-flash"; 
             
-            // 2. Hiện trạng thái đang nhập...
-            const loadingId = 'loading-' + Date.now();
-            addMsg('<i class="fas fa-ellipsis-h"></i>', 'bot', loadingId);
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
+            
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: `Bạn là trợ lý 12A4 Nam Hà. Câu hỏi: ${userText}` }] }]
+                })
+            });
 
-            try {
-                // Gọi API Google Gemini
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ 
-                        contents: [{ parts: [{ text: "Trả lời ngắn gọn, thân thiện như bạn bè học sinh cấp 3 (có dùng icon): " + txt }] }] 
-                    })
-                });
-                
-                const data = await res.json();
-                
-                // Xóa hiệu ứng loading
-                document.getElementById(loadingId)?.remove();
+            const data = await response.json();
 
-                // 3. Hiện câu trả lời Bot
-                if (data.candidates && data.candidates.length > 0) {
-                    addMsg(data.candidates[0].content.parts[0].text, 'bot');
-                } else {
-                    addMsg("Mình đang hơi lag, hỏi lại sau nhé! 😵", 'bot');
-                }
-            } catch(e) {
-                document.getElementById(loadingId)?.remove();
-                addMsg("Lỗi mạng rồi bạn ơi! 🔌", 'bot');
+            if (!response.ok) {
+                throw new Error(data.error ? data.error.message : "Lỗi hệ thống AI");
             }
+
+            if (data.candidates && data.candidates.length > 0) {
+                const aiText = data.candidates[0].content.parts[0].text;
+                document.getElementById(botId).innerText = aiText;
+            } else {
+                document.getElementById(botId).innerText = "AI không phản hồi.";
+            }
+
+        } catch (error) {
+            document.getElementById(botId).innerText = "Lỗi: " + error.message;
         }
-
-        // Sự kiện click nút gửi
-        chatSend.onclick = handleChat;
-        chatInput.onkeypress = (e) => { if(e.key==='Enter') handleChat() };
+        chatBody.scrollTop = chatBody.scrollHeight;
     }
 
-    function addMsg(txt, sender, id) {
+    function appendMsg(t, s, id = "") {
         const d = document.createElement('div');
-        d.className = `msg ${sender}`;
-        if(id) d.id = id;
-        d.innerHTML = txt;
+        if (id) d.id = id;
+        d.className = `msg ${s}`;
+        d.innerText = t;
         chatBody.appendChild(d);
-        chatBody.scrollTop = chatBody.scrollHeight; // Tự cuộn xuống dưới
+        chatBody.scrollTop = chatBody.scrollHeight;
     }
+
+    if(btnSend) btnSend.onclick = handleChat;
+    if(chatInput) chatInput.onkeypress = (e) => { if (e.key === "Enter") handleChat(); };
 });
 
-// --- GLOBAL FUNCTIONS ---
-function protectAccess(folder, file) {
-    if (localStorage.getItem('user_info_sql')) {
-        window.location.href = `../${folder}/${file}`;
+// --- CODE CŨ: HÀM BẢO VỆ ---
+const loginModal = document.getElementById('login-modal');
+function protectAccess(type, link) {
+    if (type === 'tailieu') {
+        loginModal.classList.add('active');
     } else {
-        document.getElementById('login-modal').classList.add('active');
+        window.location.href = link;
     }
 }
-
 function closeLoginModal() {
-    document.getElementById('login-modal').classList.remove('active');
+    loginModal.classList.remove('active');
 }
