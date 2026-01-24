@@ -97,15 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if(themeIcon) themeIcon.classList.replace(isDark ? 'fa-moon' : 'fa-sun', isDark ? 'fa-sun' : 'fa-moon');
         });
     }
-
-    // --- 6. CHATBOT ---
-    const chatBtn = document.getElementById('chatbot-toggle');
-    if(chatBtn) {
-        chatBtn.addEventListener('click', () => {
-            alert("Xin chào! Tôi là trợ lý ảo của lớp 12A4. Hiện tại tôi đang học việc, quay lại sau nhé!");
-        });
-    }
-
     // --- 7. BACKGROUND SLIDESHOW (ẢNH NỀN TỰ ĐỔI) ---
     const bgImages = [];
     // Tự động load 10 ảnh từ bg1.jpg đến bg10.jpg
