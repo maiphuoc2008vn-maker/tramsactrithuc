@@ -17,26 +17,44 @@ const questions = {
         { q: "1 Byte bằng bao nhiêu bit?", a: ["4", "8", "16", "32"], c: 1 },
         { q: "Hệ điều hành là phần mềm gì?", a: ["Ứng dụng", "Hệ thống", "Tiện ích", "Đồ họa"], c: 1 },
         { q: "Phím tắt để Copy là gì?", a: ["Ctrl+V", "Ctrl+C", "Ctrl+X", "Ctrl+Z"], c: 1 }
-        // ... (Bạn copy các câu hỏi lớp 10, 11, 12 của bạn vào đây)
+        // ... (Bạn có thể thêm các câu hỏi khác vào đây)
     ],
     11: [],
     12: []
 };
-
-// Lưu ý: Hãy copy toàn bộ 60 câu hỏi mình đã gửi ở các lượt trước vào đây
 
 let pHP = 5, eHP = 5, currentQs = [], qIdx = 0;
 
 function startGame(lv) {
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('quiz-area').style.display = 'block';
-    currentQs = [...questions[lv]].sort(() => Math.random() - 0.5);
+    
+    // Nếu khối lớp chưa có câu hỏi, dùng tạm câu hỏi lớp 10 để test
+    const qs = questions[lv].length > 0 ? questions[lv] : questions[10];
+    
+    currentQs = [...qs].sort(() => Math.random() - 0.5);
     qIdx = 0; pHP = 5; eHP = 5;
+    
+    // Reset thanh máu về mặc định (xanh)
+    resetHP();
+    
     renderQuestion();
 }
 
+function resetHP() {
+    // Xóa class 'lost' ở tất cả các slot máu
+    const pSlots = document.getElementById('player-hp-slots').children;
+    const eSlots = document.getElementById('enemy-hp-slots').children;
+    for (let s of pSlots) s.classList.remove('lost');
+    for (let s of eSlots) s.classList.remove('lost');
+}
+
 function renderQuestion() {
-    if (qIdx >= currentQs.length) { alert("Hết câu hỏi!"); location.reload(); return; }
+    if (qIdx >= currentQs.length) { 
+        alert("Hết câu hỏi!"); 
+        location.reload(); 
+        return; 
+    }
     const q = currentQs[qIdx];
     document.getElementById('question').innerText = q.q;
     const btnBox = document.getElementById('answers');
@@ -55,6 +73,7 @@ function checkAnswer(isCorrect) {
     const pBox = document.getElementById('player-hp-slots'), eBox = document.getElementById('enemy-hp-slots');
 
     if (isCorrect) {
+        // Người chơi đánh
         play('punch');
         player.classList.add('player-punch');
         setTimeout(() => {
@@ -66,6 +85,7 @@ function checkAnswer(isCorrect) {
             setTimeout(() => { enemy.classList.remove('hit-shake'); eBox.classList.remove('damaged'); checkEnd(); }, 300);
         }, 200);
     } else {
+        // Robot đánh
         play('hit');
         enemy.classList.add('enemy-punch');
         setTimeout(() => {
@@ -81,7 +101,10 @@ function checkAnswer(isCorrect) {
 
 function updateHP(id, val) {
     const slots = document.getElementById(id).children;
-    for (let i = 4; i >= val; i--) { if(slots[i]) slots[i].classList.add('lost'); }
+    // Cập nhật các ô máu bị mất
+    for (let i = 4; i >= val; i--) { 
+        if(slots[i]) slots[i].classList.add('lost'); 
+    }
 }
 
 function checkEnd() {
@@ -93,17 +116,23 @@ function checkEnd() {
 function showResult(status) {
     const screen = document.getElementById('result-screen');
     document.getElementById('quiz-area').style.display = 'none';
+    
+    const resultImg = document.getElementById('result-img');
+    const resultTitle = document.getElementById('result-title');
+    const resultMsg = document.getElementById('result-msg');
 
     if (status === "win") {
         play('win');
-        document.getElementById('result-title').innerText = "BẠN CHIẾN THẮNG!";
-        document.getElementById('result-img').src = "../images/hocsinh.jpeg";
-        document.getElementById('result-msg').innerText = "HỌC SINH ĐÃ ĐÁNH BẠI ROBOT!";
+        resultTitle.innerText = "BẠN CHIẾN THẮNG!";
+        // Ảnh Học sinh (.jpeg)
+        resultImg.src = "../images/hocsinh.jpeg";
+        resultMsg.innerText = "HỌC SINH ĐÃ ĐÁNH BẠI ROBOT!";
     } else {
         play('lose');
-        document.getElementById('result-title').innerText = "THẤT BẠI!";
-        document.getElementById('result-img').src = "../images/robot-win.jpeg";
-        document.getElementById('result-msg').innerText = "ROBOT ĐÃ CHIẾN THẮNG!";
+        resultTitle.innerText = "THẤT BẠI!";
+        // Ảnh Robot (.jpeg) - Dùng ảnh robot thường nếu không có ảnh robot-win
+        resultImg.src = "../images/robot.jpeg";
+        resultMsg.innerText = "ROBOT ĐÃ CHIẾN THẮNG!";
     }
     screen.style.display = "flex";
 }
