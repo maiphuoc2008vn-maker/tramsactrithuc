@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 1. CẤU HÌNH ---
     const CLOUD_NAME = "dbmh7rkrx"; 
     const UPLOAD_PRESET = "weblop12a4"; 
-    const GEMINI_API_KEY = "AIzaSyAvyPpso1f0-csKIwMNjk5GlIE53K9jJDY"; 
+    const GEMINI_API_KEY = "AIzaSyCtWzrCrEwT_OsS69tpjbS-_vKWNnd2dGc"; 
 
     // Chờ Firebase khởi tạo
     const checkDB = setInterval(() => {
