@@ -3,102 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trạm Sạc Tri Thức - 12A4</title>
-    <!-- Icon FontAwesome & Google Fonts -->
+    <title>STEAM 12A4 - Trang Chủ</title>
+    <!-- Icon FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font chữ đẹp -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- KẾT NỐI FILE CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- --- 1. MÀN HÌNH CHÀO (INTRO) --- -->
+    <!-- --- 1. MÀN HÌNH CHÀO --- -->
     <div id="intro-overlay">
         <div class="intro-content">
             <div class="logo-box-intro">
-                <div class="ripple"></div> <!-- Sóng tỏa -->
                 <img src="../images/logotruongdung.jpg" alt="Logo" class="intro-logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+                <div class="ripple"></div>
             </div>
             <h1 class="intro-title">Chào mừng đến với <br> <span>Trạm Sạc Tri Thức</span></h1>
-            <p class="intro-subtitle">KẾT NỐI TRI THỨC - CHINH PHỤC TƯƠNG LAI</p>
+            <p class="intro-subtitle">Kết nối tri thức - Chinh phục tương lai</p>
+            
             <button id="enter-site-btn" class="btn-enter">
                 Truy Cập Ngay <i class="fas fa-arrow-right"></i>
             </button>
         </div>
     </div>
 
-    <!-- --- 2. NÚT ĐIỀU KHIỂN GÓC PHẢI --- -->
+    <!-- --- 2. NỀN ĐỘNG --- -->
+    <div class="background-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- --- 3. CÁC NÚT ĐIỀU KHIỂN GÓC PHẢI --- -->
     <div class="top-controls">
-        <!-- Avatar sẽ tự động chèn vào đây bằng JS -->
-        <button id="theme-toggle" class="btn-float"><i class="fas fa-moon"></i></button>
+        <!-- Avatar sẽ tự động hiện ở đây bằng Javascript nếu đã đăng nhập -->
+        <button id="theme-toggle" class="btn-float glass-btn"><i class="fas fa-moon"></i></button>
     </div>
 
-    <!-- --- 3. HERO SECTION (SLIDER & CHỮ ĐẸP) --- -->
+    <!-- --- 4. HERO SECTION --- -->
     <section class="hero-section">
-        <div class="hero-bg-container">
-            <div class="overlay-dark"></div>
-            <!-- Slider ảnh từ bg1 đến bg10 -->
-            <img id="hero-bg-slider" src="../images/bg1.jpg" alt="Background" class="hero-bg-img">
+        <div class="hero-bg-wrapper">
+            <div class="overlay-gradient"></div>
+            <!-- Ảnh nền Slider -->
+            <img id="hero-bg-slider" src="../images/bg1.jpg" onerror="this.src='../images/congtruong.jpg'" alt="Background" class="hero-bg-img">
         </div>
 
-        <div class="hero-content">
-            <div class="hero-logo-box">
-                <img src="../images/logotruongdung.jpg" alt="Logo" class="hero-logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+        <div class="hero-content reveal-text centered-content">
+            <div class="hero-logo-area">
+                <img src="../images/logotruongdung.jpg" alt="Logo Trường" class="big-hero-logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
             </div>
-            <h2 class="hero-top-text">KẾT NỐI TRI THỨC</h2>
-            <h1 class="hero-main-title">CHINH PHỤC TƯƠNG LAI</h1>
-            <p class="hero-desc">Không gian số dành riêng cho Bạn. Nơi lưu trữ tài liệu, giải trí đỉnh cao và vinh danh những cá nhân xuất sắc của tập thể 12A4.</p>
-            
+
+            <h1 class="hero-title big-title">
+                Kết Nối Tri Thức <br> <span class="gradient-text-bright">Chinh Phục Tương Lai</span>
+            </h1>
+            <p class="hero-desc white-text">
+                Không gian số dành riêng cho Bạn. Nơi lưu trữ tài liệu, giải trí đỉnh cao và vinh danh những cá nhân xuất sắc.
+            </p>
             <div class="hero-btns">
-                <button class="btn-glow" onclick="protectAccess('game', 'hub.html')">Khám Phá Ngay <i class="fas fa-paper-plane"></i></button>
-                <button class="btn-outline">Tìm Hiểu Thêm</button>
+                <!-- Nút này gọi hàm protectAccess trong script.js -->
+                <button class="btn-primary-glow" onclick="protectAccess('game', 'hub.html')">
+                    Khám Phá Ngay <i class="fas fa-arrow-right"></i>
+                </button>
+                <button class="btn-glass-light">Tìm Hiểu Thêm</button>
             </div>
         </div>
     </section>
 
-    <!-- --- 4. TRUNG TÂM ĐIỀU KHIỂN (GLASSMORPHISM) --- -->
-    <section class="dashboard-section">
-        <div class="section-header">
-            <p class="subtitle-blue">DASHBOARD UTILITIES</p>
-            <h3><i class="fas fa-th-large"></i> Trung Tâm Điều Khiển</h3>
-        </div>
-
+    <!-- --- 5. FEATURES --- -->
+    <section class="features-section">
+        <div class="section-header reveal">
+            <!-- Thêm style="text-align: center; margin-bottom: 40px;" -->
+<div class="section-header reveal" style="text-align: center; margin-bottom: 40px;">
+    <h3><i class="fas fa-layer-group"></i> Trung Tâm Điều Khiển</h3>
+    <p>Truy cập nhanh mọi tiện ích bạn cần</p>
+</div>
         <div class="cards-grid">
-            <div class="glass-card tilt-card" onclick="protectAccess('game', 'hub.html')">
-                <div class="card-icon"><i class="fas fa-gamepad"></i></div>
-                <h4>Game Hub</h4>
-                <p>Kho giải trí mini-games xả stress sau giờ học.</p>
+            
+            <!-- GAME HUB (CÓ BẢO VỆ) -->
+            <div class="tilt-card" onclick="protectAccess('game', 'hub.html')" style="cursor: pointer;">
+                <div class="card-content">
+                    <div class="card-icon color-1"><i class="fas fa-gamepad"></i></div>
+                    <h4>Game Hub</h4>
+                    <p>Kho giải trí mini-games xả stress sau giờ học.</p>
+                    <div class="shine"></div>
+                </div>
             </div>
-            <div class="glass-card tilt-card" onclick="protectAccess('vinhdanh', 'vinhdanh.html')">
-                <div class="card-icon"><i class="fas fa-trophy"></i></div>
-                <h4>Vinh Danh</h4>
-                <p>Bảng xếp hạng thi đua tuần & tháng của lớp.</p>
+
+            <!-- VINH DANH (CÓ BẢO VỆ) -->
+            <div class="tilt-card" onclick="protectAccess('game', 'vinhdanh.html')" style="cursor: pointer;">
+                <div class="card-content">
+                    <div class="card-icon color-2"><i class="fas fa-trophy"></i></div>
+                    <h4>Vinh Danh</h4>
+                    <p>Bảng xếp hạng thi đua tuần & tháng.</p>
+                    <div class="shine"></div>
+                </div>
             </div>
-            <div class="glass-card tilt-card" onclick="protectAccess('tailieu', 'tailieu.html')">
-                <div class="card-icon"><i class="fas fa-book-open"></i></div>
-                <h4>Tài Liệu</h4>
-                <p>Ngân hàng đề thi và bài giảng các môn học.</p>
+
+            <!-- TÀI LIỆU (CÓ BẢO VỆ) -->
+            <div class="tilt-card" onclick="protectAccess('tailieu', 'tailieu.html')" style="cursor: pointer;">
+                <div class="card-content">
+                    <div class="card-icon color-3"><i class="fas fa-book-open"></i></div>
+                    <h4>Tài Liệu</h4>
+                    <p>Ngân hàng đề thi và bài giảng các môn.</p>
+                    <div class="shine"></div>
+                </div>
             </div>
+            
         </div>
     </section>
-
-    <!-- NÚT CHATBOT -->
+    <!-- --- 7. CHATBOT --- -->
     <div class="chatbot-float" id="chatbot-toggle">
-        <i class="fas fa-comment-dots"></i>
+        <div class="chat-waves"></div>
+        <i class="fas fa-comment"></i>
     </div>
 
-    <!-- --- 5. MODAL ĐĂNG NHẬP --- -->
+    <!-- --- [MODAL] HỘP THOẠI YÊU CẦU ĐĂNG NHẬP --- -->
     <div id="login-modal" class="modal-overlay">
         <div class="modal-content">
-            <div class="modal-icon"><i class="fas fa-user-lock"></i></div>
+            <div class="modal-icon">
+                <i class="fas fa-user-lock"></i>
+            </div>
             <h3>Yêu cầu quyền truy cập</h3>
-            <p>Vui lòng đăng nhập để sử dụng tính năng này.</p>
+            <p>Tính năng này dành riêng cho thành viên <br> Vui lòng đăng nhập để tiếp tục!</p>
+            
             <div class="modal-actions">
                 <button class="btn-cancel" onclick="closeLoginModal()">Để sau</button>
-                <button class="btn-confirm">Đăng nhập ngay</button>
+                <button class="btn-confirm" onclick="window.location.href='../login/login.html'">
+                    Đăng nhập <i class="fas fa-arrow-right"></i>
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- KẾT NỐI SCRIPT -->
     <script src="script.js"></script>
 </body>
 </html>
