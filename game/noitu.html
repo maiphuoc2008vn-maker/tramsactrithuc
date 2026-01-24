@@ -3,46 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nối Từ Sinh Tồn - Tramsactrithuc</title>
-    <!-- ĐÃ SỬA: Liên kết tới file noitu.css -->
+    <title>Nối Từ Tin Học - Trạm Sạc Tri Thức</title>
     <link rel="stylesheet" href="noitu.css">
+    <style>
+        /* CSS bổ sung cho phần chọn Level */
+        .level-selector { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; }
+        .btn-lvl { 
+            padding: 8px 15px; border: none; border-radius: 10px; cursor: pointer;
+            background: #fff; color: #333; font-weight: bold; transition: 0.3s;
+        }
+        .btn-lvl.active { background: #c2185b; color: #fff; }
+    </style>
 </head>
 <body>
 
-    <!-- Nút quay về trang Hub -->
-    <a href="../index.html" class="btn-home">⬅ Kho Game</a>
+    <a href="hub.html" class="btn-home">⬅ Kho Game</a>
 
     <div class="game-card">
-        <h1>Nối Từ Sinh Tồn</h1>
+        <h1>Nối Từ Tin Học</h1>
         
+        <!-- Chọn khối lớp -->
+        <div class="level-selector" id="levelSelector">
+            <button class="btn-lvl active" data-lvl="10">Lớp 10</button>
+            <button class="btn-lvl" data-lvl="11">Lớp 11</button>
+            <button class="btn-lvl" data-lvl="12">Lớp 12</button>
+        </div>
+
         <div class="score" id="score">0</div>
 
-        <!-- Thanh đếm ngược -->
         <div class="timer-container">
             <div class="timer-bar" id="timerBar"></div>
         </div>
 
         <div class="word-area">
-            <!-- Ô hiển thị từ của máy -->
             <div class="box">
-                <span id="currentWord" style="font-size: 22px; font-weight: bold;">...</span>
-                <span class="label">Từ trước</span>
+                <span id="currentWord" style="font-size: 20px; font-weight: bold; color: #c2185b;">Bắt đầu</span>
+                <span class="label">Máy đã ra từ</span>
             </div>
 
-            <!-- Ô người chơi nhập -->
             <div class="box highlight-box">
-                <input type="text" id="userInput" placeholder="Nhập từ..." autocomplete="off">
-                <span class="label">Lượt bạn</span>
+                <input type="text" id="userInput" placeholder="Đợi lượt..." autocomplete="off">
+                <span class="label">Lượt bạn nối</span>
             </div>
         </div>
 
-        <button class="btn-action" id="btnSubmit">Gửi Trả Lời</button>
+        <button class="btn-action" id="btnSubmit">Gửi Đáp Án</button>
         <button class="btn-action btn-restart" id="btnRestart">Chơi Lại</button>
 
-        <div id="message">Bạn có 15 giây cho mỗi lượt!</div>
+        <div id="message">Chọn khối lớp và bắt đầu!</div>
     </div>
 
-    <!-- ĐÃ SỬA: Liên kết tới file noitu.js -->
     <script src="noitu.js"></script>
 </body>
 </html>
