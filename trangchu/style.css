@@ -1,126 +1,76 @@
+/* --- COPY TOÀN BỘ CSS CŨ CỦA BẠN VÀO ĐÂY --- */
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700&display=swap');
 
 :root {
-    --font-heading: 'Montserrat', sans-serif;
-    --font-body: 'Nunito', sans-serif;
-    --font-script: 'Dancing Script', cursive;
-    --primary: #4361ee; --secondary: #3f37c9; --accent: #4895ef; --success: #4cc9f0;
-    --text-main: #2b2d42; --text-light: #6c757d; --bg-body: #f8f9fa;
-    --glass-bg: rgba(255, 255, 255, 0.75); --glass-border: rgba(255, 255, 255, 0.6);
-    --card-shadow: 0 15px 35px rgba(67, 97, 238, 0.12);
+    --primary-color: #4facfe; --secondary-color: #00f2fe; --accent-color: #ff0080;
+    --text-color: #333; --bg-color: #f0f2f5; --card-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.5); --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --font-main: 'Montserrat', sans-serif; --font-hand: 'Dancing Script', cursive;
 }
 
 body.dark-mode {
-    --text-main: #edf2f4; --text-light: #a8dadc; --bg-body: #0b0c10;
-    --glass-bg: rgba(20, 25, 40, 0.85); --glass-border: rgba(255, 255, 255, 0.1);
-    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    --text-color: #fff; --bg-color: #0f172a; --card-bg: rgba(30, 41, 59, 0.7);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1); --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }
+body { font-family: var(--font-main); background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; }
 
-body {
-    font-family: var(--font-body); background: var(--bg-body); color: var(--text-main);
-    overflow-x: hidden; transition: background 0.4s ease; line-height: 1.6; font-size: 16px;
-}
+/* INTRO */
+#intro-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: linear-gradient(135deg, #1a1a2e, #16213e); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s; }
+.intro-content { text-align: center; color: white; animation: fadeInUp 1s ease forwards; }
+.intro-logo { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--secondary-color); margin-bottom: 20px; object-fit: cover; }
+.intro-title span { font-family: var(--font-hand); color: var(--secondary-color); font-size: 3.5rem; }
+.btn-enter { padding: 12px 35px; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); border: none; border-radius: 30px; color: white; cursor: pointer; font-weight: 700; margin-top: 20px; }
 
-/* --- HEADER & HERO --- */
-#intro-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-    background: linear-gradient(135deg, #050505, #1a1a2e, #16213e);
-    z-index: 99999; display: flex; justify-content: center; align-items: center;
-    text-align: center; transition: all 0.8s; padding: 20px;
-}
-#intro-overlay.hidden { transform: translateY(-100%); opacity: 0; pointer-events: none; }
-.intro-content { animation: fadeInUp 1s ease-out; }
+/* HERO */
+.hero-section { position: relative; height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; }
+.hero-bg-wrapper { position: absolute; inset: 0; z-index: -1; }
+.hero-bg-img { width: 100%; height: 100%; object-fit: cover; }
+.hero-content { z-index: 2; padding: 20px; }
+.hero-title { font-size: 3rem; font-weight: 900; margin-bottom: 15px; color: #fff; }
+.gradient-text-bright { background: linear-gradient(90deg, #00f2fe, #4facfe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.btn-primary-glow { padding: 15px 40px; background: white; color: var(--primary-color); border: none; border-radius: 50px; cursor: pointer; font-weight: 800; margin-top: 20px; }
 
-.logo-box-intro { width: 120px; height: 120px; margin: 0 auto 20px; position: relative; }
-.intro-logo { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,0.2); }
-.intro-title span { font-family: var(--font-script); font-size: 3rem; color: #4cc9f0; display: block; }
-.btn-enter { background: linear-gradient(45deg, #4361ee, #3f37c9); color: white; border: none; padding: 12px 30px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 20px; }
-.btn-enter:hover { transform: scale(1.05); }
+/* FEATURES */
+.features-section { padding: 80px 20px; background: var(--bg-color); }
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+.tilt-card { background: var(--card-bg); border: var(--glass-border); padding: 40px 20px; border-radius: 20px; text-align: center; box-shadow: var(--shadow); cursor: pointer; transition: 0.3s; }
+.tilt-card:hover { transform: translateY(-10px); }
+.card-icon { font-size: 3rem; margin-bottom: 20px; }
+.color-1 i { color: #ff512f; } .color-2 i { color: #f09819; } .color-3 i { color: #11998e; }
 
-/* --- HERO --- */
-.hero-section { position: relative; width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-.hero-bg-wrapper { position: absolute; inset: 0; z-index: 1; }
-.hero-bg-img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); transition: 0.4s; }
-.hero-bg-img.fading { opacity: 0.8; }
-.hero-content { position: relative; z-index: 3; text-align: center; color: white; padding: 20px; }
-.big-hero-logo { width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; margin-bottom: 20px; animation: floatLogo 6s infinite; }
-@keyframes floatLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-.gradient-text-bright { font-family: var(--font-script); font-size: 3rem; background: linear-gradient(to right, #00f260, #4cc9f0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; }
-.btn-primary-glow { padding: 15px 35px; border-radius: 50px; background: linear-gradient(45deg, #4361ee, #3f37c9); color: white; border: none; font-weight: bold; cursor: pointer; margin-top: 20px; }
-.btn-glass-light { padding: 15px 35px; border-radius: 50px; background: rgba(255,255,255,0.2); border: 2px solid white; color: white; font-weight: bold; cursor: pointer; margin-left: 10px; }
+/* CONTROLS */
+.top-controls { position: fixed; top: 20px; right: 20px; z-index: 100; }
+.btn-float { width: 50px; height: 50px; border-radius: 50%; border: none; background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); color: var(--text-color); cursor: pointer; }
 
-/* --- FEATURES --- */
-.features-section { padding: 60px 20px; position: relative; z-index: 2; margin-top: -50px; background: var(--bg-body); border-radius: 30px 30px 0 0; }
-.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
-.tilt-card { background: var(--glass-bg); padding: 30px; border-radius: 20px; text-align: center; box-shadow: var(--card-shadow); cursor: pointer; transition: 0.2s; border: 1px solid var(--glass-border); }
-.card-icon { width: 60px; height: 60px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; border-radius: 15px; font-size: 24px; }
-.color-1 { background: rgba(67, 97, 238, 0.1); color: var(--primary); }
-.color-2 { background: rgba(72, 149, 239, 0.1); color: var(--accent); }
-.color-3 { background: rgba(76, 201, 240, 0.1); color: var(--success); }
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; }
+.modal-overlay.active { opacity: 1; visibility: visible; }
+.modal-content { background: var(--bg-color); padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; }
+.btn-confirm { background: var(--primary-color); color: white; padding: 10px 20px; border:none; border-radius: 8px; cursor: pointer; }
+.btn-cancel { background: #ccc; padding: 10px 20px; border:none; border-radius: 8px; cursor: pointer; margin-right: 10px; }
 
-/* --- CHATBOT STYLE (QUAN TRỌNG: STYLE CHO KHUNG CHAT) --- */
-.chatbot-float {
-    position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    color: white; font-size: 26px; cursor: pointer; 
-    box-shadow: 0 10px 25px rgba(67, 97, 238, 0.5); z-index: 999;
-    transition: transform 0.3s;
-}
-.chatbot-float:hover { transform: scale(1.1); }
+/* --- CSS MỚI CHO CHATBOX CỦA BẠN --- */
+.bot-area { position: fixed; bottom: 30px; right: 30px; z-index: 200; }
+.chatbot-float { width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 1.5rem; cursor: pointer; box-shadow: 0 10px 25px rgba(79, 172, 254, 0.5); }
 
 .chat-card {
-    position: fixed; bottom: 100px; right: 30px; width: 350px; height: 480px;
-    background: white; border-radius: 20px; 
-    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    position: fixed; bottom: 100px; right: 30px; width: 320px; height: 450px;
+    background: var(--card-bg); backdrop-filter: blur(15px); border-radius: 20px;
+    box-shadow: var(--shadow); border: var(--glass-border);
     display: flex; flex-direction: column; overflow: hidden;
-    transform: scale(0); opacity: 0; transform-origin: bottom right;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 9999; border: 1px solid rgba(0,0,0,0.1);
+    transform: scale(0); transition: 0.3s; transform-origin: bottom right; z-index: 9999;
 }
-.chat-card.active { transform: scale(1); opacity: 1; }
+.chat-card.active { transform: scale(1); }
 
-.chat-header {
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    padding: 15px; color: white; display: flex; justify-content: space-between; align-items: center;
-}
-.chat-header h4 { font-size: 1rem; margin-bottom: 2px; }
-.chat-header p { font-size: 0.8rem; opacity: 0.9; }
-#close-chat { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; }
+.chat-header { background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); padding: 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
+.chat-msgs { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+.msg { padding: 10px; border-radius: 10px; max-width: 80%; word-wrap: break-word; }
+.msg.bot { background: rgba(0,0,0,0.05); align-self: flex-start; }
+.msg.user { background: var(--primary-color); color: white; align-self: flex-end; }
+.dark-mode .msg.bot { background: rgba(255,255,255,0.1); }
 
-.chat-msgs {
-    flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #f8f9fa;
-}
-.msg { max-width: 80%; padding: 10px 14px; border-radius: 12px; font-size: 0.95rem; line-height: 1.4; word-wrap: break-word; }
-.msg.bot { background: white; border: 1px solid #e9ecef; color: #333; align-self: flex-start; border-bottom-left-radius: 2px; }
-.msg.user { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
-
-.chat-footer {
-    padding: 12px; background: white; border-top: 1px solid #eee; display: flex; gap: 8px;
-}
-#chat-input {
-    flex: 1; padding: 10px 15px; border-radius: 20px; border: 1px solid #ddd; outline: none; font-family: var(--font-body);
-}
-#chat-send {
-    width: 40px; height: 40px; background: var(--primary); color: white; border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
-}
-
-/* Dark Mode cho Chat */
-body.dark-mode .chat-card { background: #1a1a2e; border-color: #333; }
-body.dark-mode .chat-msgs { background: #16213e; }
-body.dark-mode .msg.bot { background: #252a41; color: #fff; border-color: #333; }
-body.dark-mode .chat-footer { background: #1a1a2e; border-color: #333; }
-body.dark-mode #chat-input { background: #16213e; border-color: #333; color: white; }
-
-/* --- MODAL & CONTROLS --- */
-.top-controls { position: fixed; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 1000; }
-.btn-float { width: 45px; height: 45px; border-radius: 50%; border: none; background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); cursor: pointer; color: var(--text-main); display: flex; align-items: center; justify-content: center; }
-
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 10000; }
-.modal-overlay.active { display: flex; }
-.modal-content { background: white; padding: 30px; border-radius: 20px; text-align: center; max-width: 350px; width: 90%; }
-.modal-actions button { margin: 5px; padding: 10px 20px; border-radius: 20px; border: none; cursor: pointer; }
-.btn-confirm { background: var(--primary); color: white; }
-.btn-cancel { background: #e0e0e0; }
+.chat-footer { padding: 10px; display: flex; border-top: 1px solid rgba(0,0,0,0.05); }
+#chat-input { flex: 1; padding: 10px; border-radius: 20px; border: none; background: rgba(0,0,0,0.05); outline: none; color: var(--text-color); }
+#chat-send { background: none; border: none; color: var(--primary-color); font-size: 1.2rem; margin-left: 10px; cursor: pointer; }
