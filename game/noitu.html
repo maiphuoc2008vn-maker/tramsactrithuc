@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nối Từ Tin Học - Trạm Sạc Tri Thức</title>
+    <title>Nối Từ Tin Học - STEAM 12A4</title>
     <link rel="stylesheet" href="noitu.css">
     <style>
-        /* CSS bổ sung cho phần chọn Level */
+        /* CSS cho nút chọn lớp */
         .level-selector { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; }
         .btn-lvl { 
-            padding: 8px 15px; border: none; border-radius: 10px; cursor: pointer;
-            background: #fff; color: #333; font-weight: bold; transition: 0.3s;
+            padding: 8px 18px; border: 2px solid #c2185b; border-radius: 12px; 
+            cursor: pointer; background: #fff; color: #c2185b; font-weight: bold; transition: 0.3s;
         }
-        .btn-lvl.active { background: #c2185b; color: #fff; }
+        .btn-lvl:hover { background: #fce4ec; }
+        .btn-lvl.active { background: #c2185b; color: #fff; box-shadow: 0 4px 10px rgba(194, 24, 91, 0.3); }
     </style>
 </head>
 <body>
@@ -23,7 +24,7 @@
         <h1>Nối Từ Tin Học</h1>
         
         <!-- Chọn khối lớp -->
-        <div class="level-selector" id="levelSelector">
+        <div class="level-selector">
             <button class="btn-lvl active" data-lvl="10">Lớp 10</button>
             <button class="btn-lvl" data-lvl="11">Lớp 11</button>
             <button class="btn-lvl" data-lvl="12">Lớp 12</button>
@@ -37,12 +38,12 @@
 
         <div class="word-area">
             <div class="box">
-                <span id="currentWord" style="font-size: 20px; font-weight: bold; color: #c2185b;">Bắt đầu</span>
-                <span class="label">Máy đã ra từ</span>
+                <span id="currentWord" style="font-size: 20px; font-weight: bold; color: #c2185b;">...</span>
+                <span class="label">Máy đã ra</span>
             </div>
 
             <div class="box highlight-box">
-                <input type="text" id="userInput" placeholder="Đợi lượt..." autocomplete="off">
+                <input type="text" id="userInput" placeholder="Nhập từ..." autocomplete="off">
                 <span class="label">Lượt bạn nối</span>
             </div>
         </div>
@@ -50,7 +51,7 @@
         <button class="btn-action" id="btnSubmit">Gửi Đáp Án</button>
         <button class="btn-action btn-restart" id="btnRestart">Chơi Lại</button>
 
-        <div id="message">Chọn khối lớp và bắt đầu!</div>
+        <div id="message">Đang khởi tạo...</div>
     </div>
 
     <script src="noitu.js"></script>
