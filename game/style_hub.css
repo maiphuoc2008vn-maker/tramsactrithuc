@@ -104,7 +104,7 @@ a { text-decoration: none; color: inherit; }
 .card-info p { font-size: 0.95rem; color: var(--text-sub); margin-bottom: 25px; min-height: 45px; }
 .btn-play { padding: 10px 30px; border-radius: 50px; color: white; font-weight: 800; font-size: 0.85rem; text-transform: uppercase; }
 
-/* --- COLOR CLASSES --- */
+/* --- MÀU CÁC GAME --- */
 .card-dhbc { border-bottom: 4px solid #3498db; }
 .card-dhbc .card-icon, .card-dhbc .btn-play { background: linear-gradient(135deg, #3498db, #2980b9); }
 
@@ -117,9 +117,12 @@ a { text-decoration: none; color: inherit; }
 .card-nv { border-bottom: 4px solid #9b59b6; }
 .card-nv .card-icon, .card-nv .btn-play { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
 
-/* MÀU CHO GAME ĐẤM BỐC (MỚI) */
 .card-db { border-bottom: 4px solid #e67e22; }
 .card-db .card-icon, .card-db .btn-play { background: linear-gradient(135deg, #e67e22, #d35400); }
+
+/* MÀU CHO GAME NỐI TỪ (MỚI THÊM) */
+.card-nt { border-bottom: 4px solid #ff4757; }
+.card-nt .card-icon, .card-nt .btn-play { background: linear-gradient(135deg, #ff4757, #ff6b81); }
 
 /* --- MODAL --- */
 .modal-overlay { position: fixed; inset: 0; background: var(--modal-overlay); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 2000; }
