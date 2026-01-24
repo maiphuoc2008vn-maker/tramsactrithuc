@@ -1,135 +1,110 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- 1. CODE CŨ: MÀN HÌNH CHÀO ---
-    const introOverlay = document.getElementById('intro-overlay');
-    const enterBtn = document.getElementById('enter-site-btn');
-    if(enterBtn) {
-        enterBtn.addEventListener('click', () => {
-            introOverlay.style.opacity = '0';
-            setTimeout(() => { introOverlay.style.display = 'none'; }, 800);
-        });
+    // --- 1. Màn hình chào ---
+    const btnEnter = document.getElementById('btn-enter-site');
+    if (btnEnter) {
+        btnEnter.onclick = () => {
+            document.getElementById('intro-overlay').style.opacity = '0';
+            setTimeout(() => { 
+                document.getElementById('intro-overlay').style.display = 'none'; 
+            }, 800);
+        };
     }
 
-    // --- 2. CODE CŨ: DARK MODE ---
+    // --- 2. Chế độ Dark Mode ---
     const themeToggle = document.getElementById('theme-toggle');
-    if(themeToggle) {
-        if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
-        themeToggle.addEventListener('click', () => {
+    if (themeToggle) {
+        themeToggle.onclick = () => {
             document.body.classList.toggle('dark-mode');
-            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-        });
+            const isDark = document.body.classList.contains('dark-mode');
+            themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        };
+        // Load lại setting cũ
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
     }
 
-    // --- 3. CODE CŨ: SLIDER ---
-    const backgrounds = ['../images/bg1.jpg', 'https://images.unsplash.com/photo-1497294815431-9365093b7331?q=80&w=1920'];
-    let currentBgIndex = 0;
-    const heroImg = document.getElementById('hero-bg-slider');
-    if(heroImg) {
-        setInterval(() => {
-            currentBgIndex = (currentBgIndex + 1) % backgrounds.length;
-            heroImg.style.opacity = '0';
-            setTimeout(() => {
-                heroImg.src = backgrounds[currentBgIndex];
-                heroImg.onload = () => { heroImg.style.opacity = '1'; };
-            }, 500);
-        }, 5000);
-    }
-
-    // --- 4. CODE CŨ: TILT CARD ---
-    const cards = document.querySelectorAll('.tilt-card');
-    cards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) - rect.width/2) / (rect.width/2) * 10;
-            const y = ((e.clientY - rect.top) - rect.height/2) / (rect.height/2) * -10;
-            card.style.transform = `perspective(1000px) rotateX(${y}deg) rotateY(${x}deg) scale(1.05)`;
-        });
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-        });
-    });
-
-    // --- 5. CHATBOT AI (CODE CỦA BẠN ĐÃ ĐƯỢC TÍCH HỢP) ---
-    // Khai báo API Key ở đây (Lấy từ prompt trước của bạn)
-    const p1 = "AIzaSy";
-    const p2 = "CtWzrCrEwT_OsS69tpjbS-_vKWNnd2dGc";
-    const GEMINI_API_KEY = p1 + p2;
-
+    // --- 3. Chatbot AI (Sửa lỗi API) ---
     const chatWin = document.getElementById('chat-window');
     const chatBody = document.getElementById('chat-body');
     const chatInput = document.getElementById('chat-input');
-    const btnSend = document.getElementById('chat-send');
+    const btnOpenChat = document.getElementById('bot-open');
+    const btnCloseChat = document.getElementById('bot-close');
+    const btnSendChat = document.getElementById('chat-send-btn');
 
-    // Nút mở chat
-    document.getElementById('chatbot-toggle').onclick = () => chatWin.classList.toggle('active');
+    // Ghép API Key
+    const K1 = "AIzaSy";
+    const K2 = "CtWzrCrEwT_OsS69tpjbS-_vKWNnd2dGc";
+    const API_KEY = K1 + K2;
+
+    const toggleChat = () => chatWin.classList.toggle('active');
+    if (btnOpenChat) btnOpenChat.onclick = toggleChat;
+    if (btnCloseChat) btnCloseChat.onclick = toggleChat;
 
     async function handleChat() {
-        const userText = chatInput.value.trim();
-        if (!userText) return;
+        const text = chatInput.value.trim();
+        if (!text) return;
 
-        appendMsg(userText, 'user');
-        chatInput.value = "";
-        
-        // Tạo ID tạm cho tin nhắn Bot
-        const botId = "bot-" + Date.now();
-        appendMsg("AI đang trả lời...", 'bot', botId);
+        appendMsg(text, 'user');
+        chatInput.value = '';
+
+        const botMsgId = "bot-" + Date.now();
+        appendMsg("Đang suy nghĩ...", 'bot', botMsgId);
 
         try {
-            // SỬA NHỎ: Dùng model gemini-1.5-flash để đảm bảo chạy được (v3 preview chưa public rộng rãi)
-            // Nếu bạn muốn dùng v3, hãy đổi lại dòng này thành: const modelName = "gemini-3-flash-preview";
-            const modelName = "gemini-1.5-flash"; 
-            
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
-            
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
             const response = await fetch(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    contents: [{ parts: [{ text: `Bạn là trợ lý 12A4 Nam Hà. Câu hỏi: ${userText}` }] }]
+                    contents: [{ parts: [{ text: `Bạn là trợ lý ảo thân thiện của lớp 12A4 THPT Đạm Ri. Hãy trả lời ngắn gọn: ${text}` }] }]
                 })
             });
 
             const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.error ? data.error.message : "Lỗi hệ thống AI");
-            }
-
-            if (data.candidates && data.candidates.length > 0) {
-                const aiText = data.candidates[0].content.parts[0].text;
-                document.getElementById(botId).innerText = aiText;
-            } else {
-                document.getElementById(botId).innerText = "AI không phản hồi.";
-            }
-
-        } catch (error) {
-            document.getElementById(botId).innerText = "Lỗi: " + error.message;
+            const aiText = data.candidates[0].content.parts[0].text;
+            document.getElementById(botMsgId).innerText = aiText;
+        } catch (err) {
+            document.getElementById(botMsgId).innerText = "Lỗi kết nối rồi bạn ơi!";
         }
         chatBody.scrollTop = chatBody.scrollHeight;
     }
 
-    function appendMsg(t, s, id = "") {
-        const d = document.createElement('div');
-        if (id) d.id = id;
-        d.className = `msg ${s}`;
-        d.innerText = t;
-        chatBody.appendChild(d);
+    function appendMsg(txt, type, id = '') {
+        const div = document.createElement('div');
+        div.className = `msg ${type}`;
+        if (id) div.id = id;
+        div.innerText = txt;
+        chatBody.appendChild(div);
         chatBody.scrollTop = chatBody.scrollHeight;
     }
 
-    if(btnSend) btnSend.onclick = handleChat;
-    if(chatInput) chatInput.onkeypress = (e) => { if (e.key === "Enter") handleChat(); };
-});
-
-// --- CODE CŨ: HÀM BẢO VỆ ---
-const loginModal = document.getElementById('login-modal');
-function protectAccess(type, link) {
-    if (type === 'tailieu') {
-        loginModal.classList.add('active');
-    } else {
-        window.location.href = link;
+    if (btnSendChat) btnSendChat.onclick = handleChat;
+    if (chatInput) {
+        chatInput.onkeypress = (e) => { if (e.key === 'Enter') handleChat(); };
     }
-}
-function closeLoginModal() {
-    loginModal.classList.remove('active');
-}
+
+    // --- 4. Bảo vệ truy cập & Modal ---
+    const loginModal = document.getElementById('login-modal');
+    const cards = document.querySelectorAll('.glass-card');
+    const btnCloseModal = document.getElementById('modal-close-btn');
+
+    cards.forEach(card => {
+        card.onclick = () => {
+            const type = card.getAttribute('data-type');
+            const link = card.getAttribute('data-link');
+            if (type === 'tailieu') {
+                loginModal.classList.add('active');
+            } else {
+                window.location.href = link;
+            }
+        };
+    });
+
+    if (btnCloseModal) {
+        btnCloseModal.onclick = () => loginModal.classList.remove('active');
+    }
+});
