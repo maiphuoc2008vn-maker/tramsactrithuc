@@ -1,13 +1,12 @@
 /* 
-   tailieu.js - BẢN FIX TRIỆT ĐỂ LỖI "MODEL NOT FOUND"
-   Sử dụng Model: gemini-1.5-flash-latest
-   API Key: AIzaSyAvyPpso1f0-csKIwMNjk5GlIE53K9jJDY
+   tailieu.js - BẢN SỬA LỖI THEO ĐÚNG MODEL GEMINI 3 
+   Model: gemini-3-flash-preview
 */
 
 import { collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- 1. THÔNG TIN CẤU HÌNH ---
+    // --- 1. CẤU HÌNH ---
     const CLOUD_NAME = "dbmh7rkrx"; 
     const UPLOAD_PRESET = "weblop12a4"; 
     const GEMINI_API_KEY = "AIzaSyAvyPpso1f0-csKIwMNjk5GlIE53K9jJDY"; 
@@ -26,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const uploadForm = document.getElementById('uploadForm');
     const btnSubmit = document.getElementById('btnSubmitUpload');
 
-    // MỞ/ĐÓNG MODAL TẢI FILE
     document.getElementById('btnOpenUpload').onclick = () => uploadModal.classList.add('active');
     document.getElementById('btnCloseUpload').onclick = () => {
         uploadModal.classList.remove('active');
@@ -38,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (this.files.length > 0) filePreview.innerHTML = `<b>Đã chọn:</b> ${this.files[0].name}`;
     };
 
-    // --- 2. HÀM TẢI TÀI LIỆU LÊN ---
+    // --- 2. HÀM TẢI TÀI LIỆU ---
     uploadForm.onsubmit = async (e) => {
         e.preventDefault();
         const file = fileInput.files[0];
@@ -68,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         finally { btnSubmit.disabled = false; btnSubmit.innerHTML = 'Bắt đầu tải lên'; }
     };
 
-    // --- 3. HÀM HIỂN THỊ DANH SÁCH TÀI LIỆU ---
+    // --- 3. HÀM HIỂN THỊ DANH SÁCH ---
     async function loadDocuments() {
         const container = document.getElementById('doc-list-container');
         if (!container) return;
@@ -89,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { console.error(e); }
     }
 
-    // --- 4. LOGIC BỘ LỌC MÔN HỌC ---
+    // --- 4. BỘ LỌC ---
     document.querySelectorAll('.pill').forEach(btn => {
         btn.onclick = function() {
             document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
@@ -101,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
-    // --- 5. TRỢ LÝ AI (SỬA LỖI MODEL NOT FOUND) ---
+    // --- 5. CHATBOT AI (SỬA LỖI MODEL NOT FOUND DÙNG GEMINI 3 FLASH) ---
     const chatWin = document.getElementById('chat-window');
     const chatBody = document.getElementById('chat-body');
     const chatInput = document.getElementById('chat-input');
@@ -119,12 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
         appendMsg("AI đang trả lời...", 'bot', botId);
 
         try {
-            /* 
-               SỬA LỖI TẠI ĐÂY: 
-               Dùng 'gemini-1.5-flash-latest' thay vì 'gemini-1.5-flash' 
-               để Google nhận diện đúng phiên bản ổn định nhất.
-            */
-            const modelName = "gemini-1.5-flash-latest";
+            // ĐÃ SỬA: Dùng chính xác model gemini-3-flash-preview và endpoint v1beta
+            const modelName = "gemini-3-flash-preview";
             const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
             
             const response = await fetch(url, {
@@ -138,7 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (!response.ok) {
-                // Nếu vẫn lỗi, thử dùng model Gemini 3 Flash mà bạn thấy trong ảnh
                 throw new Error(data.error ? data.error.message : "Lỗi hệ thống AI");
             }
 
@@ -147,7 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             document.getElementById(botId).innerText = "Lỗi: " + error.message;
-            console.error("Chi tiết lỗi:", error);
         }
         chatBody.scrollTop = chatBody.scrollHeight;
     }
