@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tài Liệu - Trạm Sạc Tri Thức</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -10,20 +10,21 @@
 </head>
 <body>
 
-    <!-- Nền loang màu cũ của bạn -->
+    <!-- Nền loang màu nghệ thuật -->
     <div class="bg-art">
         <div class="circle c1"></div>
         <div class="circle c2"></div>
     </div>
 
+    <!-- Hệ thống thông báo Toast -->
+    <div id="toast-container" class="toast-container"></div>
+
     <header class="main-nav">
         <div class="nav-wrapper">
-            <!-- LOGO GỐC CỦA BẠN -->
             <div class="logo">
                 <img src="../images/logotruongdung.jpg" alt="Logo" class="logo-img">
-                <div class="logo-text">Trạm Sạc Tri Thức</div>
+                <div class="logo-text"> <span>Trạm Sạc Tri Thức</span></div>
             </div>
-            
             <nav>
                 <a href="../trangchu/index.html">Trang chủ</a>
                 <a href="../game/vinhdanh.html">Vinh danh</a>
@@ -38,18 +39,16 @@
             <p>Tìm kiếm và chia sẻ tài liệu ôn thi của lớp 12A4.</p>
         </section>
 
-        <!-- Thanh tìm kiếm -->
         <div class="search-bar-container">
             <div class="search-input-group">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Tìm đề thi...">
+                <input type="text" id="searchInput" placeholder="Tìm đề thi, bài giảng, bí kíp...">
             </div>
             <button class="upload-trigger" id="btnOpenUpload">
                 <i class="fas fa-plus"></i> Đóng góp file
             </button>
         </div>
 
-        <!-- Bộ lọc -->
         <div class="filter-pills">
             <button class="pill active" data-filter="all">Tất cả</button>
             <button class="pill" data-filter="toan">Toán học</button>
@@ -59,23 +58,22 @@
             <button class="pill" data-filter="van">Ngữ văn</button>
         </div>
 
-        <!-- Danh sách tài liệu -->
         <div class="doc-container" id="doc-list-container">
-            <!-- JS sẽ load dữ liệu vào đây -->
+            <!-- Tài liệu sẽ tự động hiện ở đây từ Database -->
         </div>
     </main>
 
-    <!-- Modal Upload (Giữ nguyên) -->
+    <!-- Modal Upload -->
     <div id="upload-modal" class="modal-blur">
         <div class="modal-box">
             <div class="modal-head">
                 <h3>Đóng góp tài liệu</h3>
-                <span id="btnCloseUpload" style="cursor:pointer; float:right; font-size:1.5rem;">&times;</span>
+                <p>File sẽ được lưu trữ vĩnh viễn trên thư viện lớp</p>
             </div>
             <form id="uploadForm">
                 <div class="field">
-                    <label>Tên tài liệu</label>
-                    <input type="text" name="title" required placeholder="VD: Đề cương...">
+                    <label>Tiêu đề tài liệu</label>
+                    <input type="text" name="title" required placeholder="VD: Đề cương Lý HK2...">
                 </div>
                 <div class="field">
                     <label>Môn học</label>
@@ -90,15 +88,59 @@
                 </div>
                 <div class="upload-zone" id="dropZone" onclick="document.getElementById('docFile').click()">
                     <input type="file" id="docFile" name="file" required hidden>
-                    <p><i class="fas fa-cloud-upload-alt"></i> Chọn file tải lên</p>
-                    <div id="fileListPreview"></div>
+                    <div class="zone-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <p>Nhấn để chọn file tài liệu</p>
+                    <div id="fileListPreview" class="preview-text" style="margin-top:10px; color:var(--primary); font-weight:700;"></div>
                 </div>
-                <button type="submit" id="btnSubmitUpload" class="btn-main">Tải lên</button>
+                <div class="modal-actions">
+                    <button type="button" id="btnCloseUpload" class="btn-ghost">Hủy</button>
+                    <button type="submit" id="btnSubmitUpload" class="btn-main">Bắt đầu tải lên</button>
+                </div>
             </form>
         </div>
     </div>
 
-    <!-- Giữ nguyên phần script -->
+    <!-- Chatbot Robot -->
+    <div class="bot-area">
+        <button id="chatbot-toggle" class="bot-btn">
+            <i class="fas fa-robot"></i>
+        </button>
+        <div id="chat-window" class="chat-card">
+            <div class="chat-header">Trợ lý 12A4</div>
+            <div id="chat-body" class="chat-msgs"></div>
+            <div class="chat-footer">
+                <input type="text" id="chat-input" placeholder="Hỏi gì đó...">
+                <button id="chat-send"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FIREBASE CHUẨN - DÀNH CHO DỰ ÁN FINAL -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Cấu hình từ dự án tram-sac-12a4-final
+        const firebaseConfig = {
+            apiKey: "AIzaSyB04Z7X3t_1NiUOG11A74mYlbfcamzxP-s",
+            authDomain: "tram-sac-12a4-final.firebaseapp.com",
+            projectId: "tram-sac-12a4-final",
+            storageBucket: "tram-sac-12a4-final.firebasestorage.app",
+            messagingSenderId: "81252342287",
+            appId: "1:81252342287:web:475bc6898d58565f3ca17a"
+        };
+
+        // Khởi tạo Firebase
+        const app = initializeApp(firebaseConfig);
+        
+        // Xuất Database ra biến toàn cục để tailieu.js sử dụng
+        window.fb_db = getFirestore(app);
+        
+        console.log("Firebase Database Final đã sẵn sàng!");
+    </script>
+
+    <!-- File xử lý logic (Cloudinary + hiển thị danh sách) -->
     <script type="module" src="tailieu.js"></script>
+
 </body>
 </html>
