@@ -1,3 +1,5 @@
+/* --- FILE: script_nv.js --- */
+// (Dán toàn bộ nội dung file JS mà bạn đã gửi ở tin nhắn trước vào đây)
 // CƠ SỞ DỮ LIỆU ĐÁP ÁN
 const database = {
     "10": [
@@ -20,6 +22,10 @@ const database = {
     ]
 };
 
+// ... (Copy tiếp phần còn lại của file JS bạn đã có)
+// Code Logic: startGame, playQuestionAudio, checkAnswer...
+// Đảm bảo hàm startGame, playQuestionAudio, checkAnswer có trong file này.
+
 // Biến toàn cục
 let currentGrade = "10";
 let currentIndices = [];
@@ -27,9 +33,8 @@ let currentIndexPtr = 0;
 let score = 0;
 let currentAudio = new Audio();
 let isPlaying = false;
-let modalCallback = null; // Callback cho modal
+let modalCallback = null; 
 
-// --- KHỞI TẠO GAME ---
 function startGame() {
     currentGrade = document.getElementById('grade-select').value;
     let indices = Array.from({length: 40}, (_, i) => i);
@@ -47,7 +52,6 @@ function startGame() {
     document.getElementById('status-text').innerText = "Nhấn nút để nghe câu hỏi...";
 }
 
-// --- XỬ LÝ ÂM THANH ---
 function playQuestionAudio() {
     if (isPlaying) {
         currentAudio.pause();
@@ -55,7 +59,7 @@ function playQuestionAudio() {
     }
 
     let realIndex = currentIndices[currentIndexPtr];
-    // Đường dẫn file âm thanh: sounds/Lớp_ThứTự.mp3
+    // QUAN TRỌNG: File âm thanh phải nằm trong thư mục sounds và có tên đúng (VD: 10_5.mp3)
     let audioPath = `sounds/${currentGrade}_${realIndex}.mp3`;
     
     currentAudio.src = audioPath;
@@ -81,7 +85,6 @@ function playQuestionAudio() {
     currentAudio.play();
 }
 
-// --- KIỂM TRA ĐÁP ÁN ---
 function checkAnswer() {
     const userInp = document.getElementById('answer-input').value.trim();
     if (!userInp) {
@@ -93,7 +96,6 @@ function checkAnswer() {
     const correctAns = database[currentGrade][realIndex];
 
     if (userInp.toLowerCase() === correctAns.toLowerCase()) {
-        // TRẢ LỜI ĐÚNG
         score += 10;
         document.getElementById('score').innerText = score;
         new Audio('sounds/correct.mp3').play().catch(()=>{});
@@ -103,19 +105,15 @@ function checkAnswer() {
         });
 
     } else {
-        // TRẢ LỜI SAI
         new Audio('sounds/wrong.mp3').play().catch(()=>{});
-        
         showModal("lose", "SAI RỒI!", `Đáp án đúng phải là: <b style="color:#c0392b">${correctAns}</b><br>Rất tiếc!`, "Đi Tiếp", () => {
             nextQuestion();
         });
     }
 }
 
-// --- CHUYỂN CÂU HỎI ---
 function nextQuestion() {
     currentIndexPtr++;
-    
     if (currentIndexPtr >= 40) {
         showModal("win", "HOÀN THÀNH!", `Chúc mừng bạn đã hoàn thành tất cả câu hỏi!<br>Tổng điểm: <b>${score}</b>`, "Chơi Lại", () => {
             location.reload();
@@ -127,13 +125,11 @@ function nextQuestion() {
     document.getElementById('answer-input').value = "";
     document.getElementById('answer-input').focus();
     document.getElementById('status-text').innerText = "Nhấn nút để nghe câu tiếp theo...";
-    
     currentAudio.pause();
     currentAudio.currentTime = 0;
     document.getElementById('visualizer').classList.remove('playing');
 }
 
-// --- HỆ THỐNG MODAL ---
 function showModal(type, title, msg, btnText = "Đóng", callback = null) {
     const modal = document.getElementById('custom-modal');
     const box = document.getElementById('modal-box-content');
@@ -142,11 +138,9 @@ function showModal(type, title, msg, btnText = "Đóng", callback = null) {
     const msgEl = document.getElementById('modal-msg');
     const btn = document.getElementById('modal-btn');
 
-    // Reset class màu
     box.classList.remove('win', 'lose', 'info');
     box.classList.add(type);
 
-    // Set Icon & Nội dung
     if(type === 'win') icon.className = "fas fa-check-circle";
     else if(type === 'lose') icon.className = "fas fa-times-circle";
     else icon.className = "fas fa-info-circle";
@@ -167,7 +161,6 @@ function closeModal() {
     }
 }
 
-// Cho phép ấn Enter
 document.getElementById('answer-input').addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
         event.preventDefault();
