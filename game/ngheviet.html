@@ -7,41 +7,47 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Link 2 file CSS -->
+    <!-- Link file CSS -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style_nv.css">
+
+    <!-- 🔥 CODE CHỮA CHÁY: Buộc logo phải nhỏ lại dù file CSS có lỗi -->
+    <style>
+        .logo-img { width: 45px !important; height: 45px !important; border-radius: 50%; overflow: hidden; }
+        .logo-img img { width: 100% !important; height: 100% !important; object-fit: cover; }
+    </style>
 </head>
 <body>
 
-    <!-- PHẦN 1: MENU TRÊN CÙNG (HEADER) -->
-    <header class="main-header">
-        <div class="brand-section">
-            <div class="logo-img">
-                <img src="../images/logotruongdung.jpg" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+    <!-- PHẦN HEADER (MENU TRÊN CÙNG) -->
+    <header class="main-header" style="position: fixed; top: 0; left: 0; width: 100%; height: 70px; background: white; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; box-sizing: border-box; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        
+        <div class="brand-section" style="display: flex; align-items: center; gap: 10px;">
+            <!-- 👇 ĐÃ THÊM STYLE TRỰC TIẾP TẠI ĐÂY ĐỂ CHỐNG LỖI TO LOGO 👇 -->
+            <div class="logo-img" style="width: 45px; height: 45px; border-radius: 50%; overflow: hidden; border: 2px solid #3498db;">
+                <img src="../images/logotruongdung.jpg" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
             </div>
-            <h2 class="brand-text">STEAM 12A4</h2>
+            <h2 class="brand-text" style="font-size: 20px; font-weight: 800; color: #2c3e50; margin: 0;">STEAM 12A4</h2>
         </div>
 
-        <nav class="header-nav">
-            <button class="nav-btn" onclick="location.href='hub.html'">
+        <nav class="header-nav" style="display: flex; gap: 10px;">
+            <button class="nav-btn" onclick="location.href='hub.html'" style="padding: 8px 15px; border: none; background: #f8f9fa; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 5px;">
                 <i class="fas fa-gamepad"></i> <span class="btn-text">Kho Game</span>
             </button>
-            <button class="nav-btn active" onclick="location.reload()">
+            <button class="nav-btn active" onclick="location.reload()" style="padding: 8px 15px; border: none; background: #3498db; color: white; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 5px;">
                 <i class="fas fa-redo"></i> <span class="btn-text">Chơi Lại</span>
             </button>
         </nav>
     </header>
 
-    <!-- PHẦN 2: KHUNG GAME -->
+    <!-- PHẦN NỘI DUNG GAME -->
     <main class="main-content nv-bg">
         <div class="game-container">
-            <!-- Thông tin điểm số -->
             <div class="game-header">
                 <div class="level-badge" id="level-display">Khối 10</div>
                 <div class="score-badge">Điểm: <span id="score">0</span></div>
             </div>
 
-            <!-- Sóng nhạc & Nút nghe -->
             <div class="audio-section">
                 <div class="visualizer" id="visualizer">
                     <div class="bar"></div><div class="bar"></div><div class="bar"></div>
@@ -53,21 +59,20 @@
                 <p class="hint-text" id="status-text">Nhấn nút để nghe câu hỏi...</p>
             </div>
 
-            <!-- Ô nhập đáp án -->
             <div class="input-section">
                 <input type="text" id="answer-input" placeholder="Nhập câu trả lời..." autocomplete="off">
                 <button id="submit-btn" onclick="checkAnswer()">Gửi</button>
             </div>
             
-            <!-- Màn hình Bắt đầu (Overlay) -->
+            <!-- Overlay Bắt đầu -->
             <div id="start-overlay" class="overlay">
                 <h1>THÍNH GIẢ TÀI BA</h1>
-                <p>Nghe câu hỏi và nhập đáp án chính xác</p>
+                <p>Nghe và điền đáp án đúng</p>
                 <div class="select-wrapper">
                     <select id="grade-select">
                         <option value="10">Khối 10 (Hệ thống & Word)</option>
                         <option value="11">Khối 11 (Python)</option>
-                        <option value="12">Khối 12 (CSDL & Mạng)</option>
+                        <option value="12">Khối 12 (CSDL)</option>
                     </select>
                 </div>
                 <button class="start-btn" onclick="startGame()">BẮT ĐẦU</button>
@@ -79,7 +84,7 @@
     <div id="custom-modal" class="modal-overlay">
         <div class="modal-box" id="modal-box-content">
             <div class="modal-icon"><i id="modal-icon-i" class="fas fa-check-circle"></i></div>
-            <h2 class="modal-title" id="modal-title">Thông báo</h2>
+            <h2 class="modal-title" id="modal-title">Tiêu đề</h2>
             <div class="modal-body" id="modal-msg">Nội dung...</div>
             <button class="modal-btn" id="modal-btn" onclick="closeModal()">Đóng</button>
         </div>
