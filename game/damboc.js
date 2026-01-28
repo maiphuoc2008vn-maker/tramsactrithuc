@@ -1,4 +1,4 @@
-// ÂM THANH: Thư mục sounds nằm trong game/ nên chỉ cần gọi sounds/
+/* --- FILE: damboc.js --- */
 const snd = {
     punch: new Audio('sounds/punch.mp3'),
     hit: new Audio('sounds/hit.mp3'),
@@ -11,7 +11,6 @@ function play(name) {
     snd[name].play().catch(() => {});
 }
 
-// BỘ CÂU HỎI 40 CÂU
 const questions = {
     10: [
         { q: "Thiết bị nào là 'não bộ' của máy tính?", a: ["RAM", "CPU", "Chuột", "Loa"], c: 1 },
@@ -119,7 +118,6 @@ function checkAnswer(isCorrect) {
     const pBox = document.getElementById('player-hp-slots'), eBox = document.getElementById('enemy-hp-slots');
 
     if (isCorrect) {
-        // Người chơi đánh
         play('punch');
         player.classList.add('player-punch');
         setTimeout(() => {
@@ -131,7 +129,6 @@ function checkAnswer(isCorrect) {
             setTimeout(() => { enemy.classList.remove('hit-shake'); eBox.classList.remove('damaged'); checkEnd(); }, 300);
         }, 200);
     } else {
-        // Robot đánh
         play('hit');
         enemy.classList.add('enemy-punch');
         setTimeout(() => {
@@ -166,15 +163,13 @@ function showResult(status) {
     const resultTitle = document.getElementById('result-title');
     const resultMsg = document.getElementById('result-msg');
 
-    // TÍNH ĐIỂM SỐ
     let finalScore = (5 - eHP) * 20; 
     if(status === "win") finalScore = 100;
 
     // --- LƯU ĐIỂM ---
-    if (typeof window.saveGameScore === "function") {
-        window.saveGameScore("Đấm Bốc Kiểu Úc", finalScore);
+    if (typeof window.saveScoreToFirebase === "function") {
+        window.saveScoreToFirebase(finalScore);
     }
-    // ----------------
 
     if (status === "win") {
         play('win');
