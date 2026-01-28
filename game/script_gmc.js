@@ -1,3 +1,4 @@
+/* --- FILE: script_gmc.js --- */
 const questions = [
     {
         code: `<span class="kwd">if</span> x = 5:\n    <span class="func">print</span>(<span class="str">"Hello"</span>)`,
@@ -114,6 +115,12 @@ function nextQuestion() {
 
 function showEndGame(title) {
     clearInterval(timerInterval);
+
+    // --- LƯU ĐIỂM ---
+    if (typeof window.saveScoreToFirebase === "function") {
+        window.saveScoreToFirebase(score);
+    }
+
     document.getElementById('feedback-overlay').classList.remove('hidden');
     document.getElementById('feedback-icon').innerHTML = '🏆';
     document.getElementById('feedback-title').innerText = title;
@@ -123,5 +130,4 @@ function showEndGame(title) {
     nextBtn.onclick = () => location.href = "hub.html";
 }
 
-// Chạy game
 initGame();
