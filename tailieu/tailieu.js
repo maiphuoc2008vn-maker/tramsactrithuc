@@ -1,15 +1,9 @@
-/* 
-   tailieu.js - BẢN SỬA LỖI THEO ĐÚNG MODEL GEMINI 3 
-   Model: gemini-3-flash-preview
-*/
-
 import { collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- 1. CẤU HÌNH ---
     const CLOUD_NAME = "dbmh7rkrx"; 
     const UPLOAD_PRESET = "weblop12a4"; 
-    const GEMINI_API_KEY = "AIzaSyC3WLjDRwWl756s-_jBwI-BJwM7pAfMgNA"; 
 
     // Chờ Firebase khởi tạo
     const checkDB = setInterval(() => {
@@ -25,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const uploadForm = document.getElementById('uploadForm');
     const btnSubmit = document.getElementById('btnSubmitUpload');
 
+    // Mở/Đóng Modal
     document.getElementById('btnOpenUpload').onclick = () => uploadModal.classList.add('active');
     document.getElementById('btnCloseUpload').onclick = () => {
         uploadModal.classList.remove('active');
@@ -36,11 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (this.files.length > 0) filePreview.innerHTML = `<b>Đã chọn:</b> ${this.files[0].name}`;
     };
 
-    // --- 2. HÀM TẢI TÀI LIỆU ---
+    // --- 2. HÀM TẢI TÀI LIỆU (Cloudinary + Firebase) ---
     uploadForm.onsubmit = async (e) => {
         e.preventDefault();
         const file = fileInput.files[0];
         if (!file) return alert("Vui lòng chọn file!");
+        
         btnSubmit.disabled = true;
         btnSubmit.innerHTML = 'Đang tải...';
 
@@ -48,8 +44,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData();
             formData.append('file', file);
             formData.append('upload_preset', UPLOAD_PRESET);
-            const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`, { method: 'POST', body: formData });
+
+            const cloudRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`, { 
+                method: 'POST', 
+                body: formData 
+            });
             const cloudData = await cloudRes.json();
+
+            if (!cloudRes.ok) throw new Error(cloudData.error.message);
 
             await addDoc(collection(window.fb_db, "documents"), {
                 title: uploadForm.title.value || file.name,
@@ -59,11 +61,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 createdAt: new Date(),
                 uploader: "Thành viên 12A4"
             });
+
             alert("Tải lên thành công!");
             uploadModal.classList.remove('active');
+            uploadForm.reset();
+            filePreview.innerHTML = "";
             loadDocuments(); 
-        } catch (err) { alert("Lỗi: " + err.message); }
-        finally { btnSubmit.disabled = false; btnSubmit.innerHTML = 'Bắt đầu tải lên'; }
+        } catch (err) { 
+            alert("Lỗi: " + err.message); 
+            console.error(err);
+        } finally { 
+            btnSubmit.disabled = false; 
+            btnSubmit.innerHTML = 'Bắt đầu tải lên'; 
+        }
     };
 
     // --- 3. HÀM HIỂN THỊ DANH SÁCH ---
@@ -98,3 +108,4 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
     });
+}); // <--- Dấu này cực kỳ quan trọng, thiếu nó là lỗi toàn trang
