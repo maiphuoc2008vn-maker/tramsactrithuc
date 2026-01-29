@@ -1,5 +1,4 @@
-/* --- FILE: script.js (Đuổi hình bắt chữ) --- */
-/* 1. KHO DỮ LIỆU CÂU HỎI (Cập nhật theo hình ảnh thực tế) */
+/* --- FILE: script.js (Đuổi hình bắt chữ - Đã sửa khớp ảnh) --- */
 const questionDatabase = {
     // KHỐI 10: Phần cứng, Hệ điều hành, Phần mềm văn phòng
     "10a1": [
@@ -12,7 +11,7 @@ const questionDatabase = {
         { image: "../images/19.jpg", answer: "USB", hint: "Thiết bị lưu trữ di động nhỏ gọn (3 ký tự)" },
         { image: "../images/28.jpg", answer: "WEBCAM", hint: "Camera gắn trên máy tính (6 ký tự)" },
         { image: "../images/43.jpg", answer: "RAM", hint: "Bộ nhớ truy cập ngẫu nhiên (3 ký tự)" },
-        { image: "../images/44.jpg", answer: "OCUNG", hint: "Nơi lưu trữ dữ liệu lâu dài (5 ký tự)" }, // HDD
+        { image: "../images/44.jpg", answer: "OCUNG", hint: "Nơi lưu trữ dữ liệu lâu dài (5 ký tự)" }, 
         { image: "../images/40.jpg", answer: "THUNGRAC", hint: "Nơi chứa các file đã xóa (8 ký tự)" },
         { image: "../images/12.jpg", answer: "WIFI", hint: "Mạng không dây (4 ký tự)" }
     ],
@@ -26,7 +25,7 @@ const questionDatabase = {
         { image: "../images/18.jpg", answer: "BUG", hint: "Lỗi phần mềm (Con bọ) (3 ký tự)" },
         { image: "../images/67.jpg", answer: "IF", hint: "Câu lệnh kiểm tra điều kiện (2 ký tự)" },
         { image: "../images/68.jpg", answer: "VONGLAP", hint: "Thực hiện lặp lại một công việc (7 ký tự)" },
-        { image: "../images/53.jpg", answer: "THUATTOAN", hint: "Các bước giải quyết vấn đề (9 ký tự)" }, // Flowchart
+        { image: "../images/53.jpg", answer: "THUATTOAN", hint: "Các bước giải quyết vấn đề (9 ký tự)" }, 
         { image: "../images/31.jpg", answer: "PRINT", hint: "Lệnh in ra màn hình (5 ký tự)" }
     ],
     // KHỐI 12: CSDL, Mạng, AI
@@ -39,14 +38,13 @@ const questionDatabase = {
         { image: "../images/106.jpg", answer: "AI", hint: "Trí tuệ nhân tạo (2 ký tự)" },
         { image: "../images/107.jpg", answer: "HOCMAY", hint: "Machine Learning (6 ký tự)" },
         { image: "../images/102.jpg", answer: "SERVER", hint: "Máy chủ (6 ký tự)" },
-        { image: "../images/110.jpg", answer: "TUONGLUA", hint: "Hệ thống bảo vệ mạng (8 ký tự)" }, // Firewall
+        { image: "../images/110.jpg", answer: "TUONGLUA", hint: "Hệ thống bảo vệ mạng (8 ký tự)" }, 
         { image: "../images/11.jpg", answer: "INTERNET", hint: "Mạng toàn cầu (8 ký tự)" },
         { image: "../images/26.jpg", answer: "DAMMAY", hint: "Điện toán ... (Cloud) (6 ký tự)" },
         { image: "../images/101.jpg", answer: "LIENKET", hint: "Kết nối giữa các trang web (7 ký tự)" }
     ]
 };
 
-/* 2. CÁC BIẾN ĐIỀU KHIỂN */
 let currentQuestions = [];
 let currentIndex = 0;
 let userAnswer = [];
@@ -64,7 +62,6 @@ const els = {
     timer: document.getElementById("timer")
 };
 
-/* 3. HÀM KHỞI TẠO */
 function init() {
     score = 0;
     if(els.score) els.score.innerText = score;
@@ -76,7 +73,6 @@ function init() {
 
 function loadGrade(grade) {
     if (!questionDatabase[grade]) return;
-    // Xáo trộn thứ tự câu hỏi để mỗi lần chơi mỗi khác
     currentQuestions = [...questionDatabase[grade]].sort(() => Math.random() - 0.5);
     currentIndex = 0;
     loadQuestion();
@@ -97,7 +93,6 @@ function loadQuestion() {
     renderKeyboard();
     startTimer();
 
-    // Hiển thị ảnh với hiệu ứng mờ dần
     if(els.img) {
         els.img.style.opacity = 0;
         els.img.src = q.image;
@@ -110,7 +105,6 @@ function loadQuestion() {
     }
 }
 
-/* 4. VẼ GIAO DIỆN */
 function renderSlots() {
     els.slots.innerHTML = "";
     userAnswer.forEach((char, i) => {
@@ -140,7 +134,6 @@ function renderKeyboard() {
         els.keyboard.appendChild(btn);
     });
 
-    // Nút Xóa
     const del = document.createElement("button");
     del.innerHTML = "Xóa";
     del.className = "key-btn";
@@ -153,7 +146,6 @@ function renderKeyboard() {
     els.keyboard.appendChild(del);
 }
 
-/* 5. XỬ LÝ THẮNG/THUA */
 function checkWin() {
     const correct = currentQuestions[currentIndex].answer;
     if (userAnswer.join("") === correct) {
