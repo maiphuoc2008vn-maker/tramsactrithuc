@@ -4,21 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập - Trạm Sạc Tri Thức</title>
-    <!-- Fonts & Icons -->
+    <!-- Font & Icon -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <!-- ĐẢM BẢO TÊN FILE NÀY KHỚP VỚI FILE CSS CỦA BẠN -->
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
 
     <div class="login-container">
-        <!-- BÊN TRÁI: HIỆU ỨNG ẢNH NÂNG LÊN (CHỈ DÙNG CSS) -->
+        <!-- BÊN TRÁI: HIỆU ỨNG ẢNH NÂNG LÊN -->
         <div class="left-panel">
             <div class="illustration-box">
-                <!-- Ảnh minh họa của bạn -->
-                <img src="input_file_3.jpeg" alt="Trạm Sạc Tri Thức" class="main-img">
-                
-                <!-- Bóng đổ giả lập dưới sàn -->
+                <img src="input_file_3.jpeg" alt="Minh họa" class="main-img">
                 <div class="shadow-ellipse"></div>
 
                 <div class="brand-info">
@@ -26,15 +24,13 @@
                     <p class="slogan">Kết Nối Đam Mê - Chắp Cánh Ước Mơ</p>
                 </div>
             </div>
-            <!-- Trang trí nền -->
             <div class="bg-decoration"></div>
         </div>
 
-        <!-- BÊN PHẢI: CÁC FORM NHẬP LIỆU -->
+        <!-- BÊN PHẢI: CÁC FORM -->
         <div class="right-panel">
             <div class="form-card">
                 
-                <!-- Nút Về Trang Chủ -->
                 <a href="../trangchu/index.html" class="btn-back">
                     <i class="fas fa-arrow-left"></i> Trang chủ
                 </a>
@@ -45,7 +41,7 @@
                     <p class="form-subtitle">Chào mừng chiến binh quay trở lại!</p>
 
                     <div class="input-group">
-                        <label>Email / Tên đăng nhập</label>
+                        <label>Email</label>
                         <div class="input-field">
                             <i class="fas fa-envelope"></i>
                             <input type="email" id="login-name" placeholder="vidu@gmail.com" required>
@@ -96,9 +92,9 @@
         </div>
     </div>
 
-    <!-- Script chuyển đổi Login/Register -->
     <script>
-        function switchTab(mode) {
+        // Hàm chuyển đổi form
+        window.switchTab = function(mode) {
             const login = document.getElementById('loginForm');
             const register = document.getElementById('registerForm');
             if(mode === 'register'){
@@ -110,122 +106,6 @@
             }
         }
     </script>
-    <!-- Script Firebase xử lý logic -->
-    <script type="module" src="login.js"></script>
-</body>
-</html><!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập - Trạm Sạc Tri Thức</title>
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <div class="login-container">
-        <!-- BÊN TRÁI: HIỆU ỨNG ẢNH NÂNG LÊN (CHỈ DÙNG CSS) -->
-        <div class="left-panel">
-            <div class="illustration-box">
-                <!-- Ảnh minh họa của bạn -->
-                <img src="input_file_3.jpeg" alt="Trạm Sạc Tri Thức" class="main-img">
-                
-                <!-- Bóng đổ giả lập dưới sàn -->
-                <div class="shadow-ellipse"></div>
-
-                <div class="brand-info">
-                    <h1>Trạm Sạc Tri Thức</h1>
-                    <p class="slogan">Kết Nối Đam Mê - Chắp Cánh Ước Mơ</p>
-                </div>
-            </div>
-            <!-- Trang trí nền -->
-            <div class="bg-decoration"></div>
-        </div>
-
-        <!-- BÊN PHẢI: CÁC FORM NHẬP LIỆU -->
-        <div class="right-panel">
-            <div class="form-card">
-                
-                <!-- Nút Về Trang Chủ -->
-                <a href="../trangchu/index.html" class="btn-back">
-                    <i class="fas fa-arrow-left"></i> Trang chủ
-                </a>
-
-                <!-- FORM ĐĂNG NHẬP -->
-                <form id="loginForm" class="auth-form active">
-                    <h2 class="form-title">ĐĂNG NHẬP</h2>
-                    <p class="form-subtitle">Chào mừng chiến binh quay trở lại!</p>
-
-                    <div class="input-group">
-                        <label>Email / Tên đăng nhập</label>
-                        <div class="input-field">
-                            <i class="fas fa-envelope"></i>
-                            <input type="email" id="login-name" placeholder="vidu@gmail.com" required>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label>Mật khẩu</label>
-                        <div class="input-field">
-                            <i class="fas fa-lock"></i>
-                            <input type="password" id="login-pass" placeholder="Nhập mật khẩu" required>
-                        </div>
-                    </div>
-
-                    <button type="submit" id="btn-login" class="btn-primary">VÀO LỚP NGAY</button>
-
-                    <p class="toggle-text">
-                        Chưa có tài khoản? <span onclick="switchTab('register')">Đăng ký ngay</span>
-                    </p>
-                </form>
-
-                <!-- FORM ĐĂNG KÝ -->
-                <form id="registerForm" class="auth-form">
-                    <h2 class="form-title">TẠO TÀI KHOẢN</h2>
-                    <p class="form-subtitle">Gia nhập biệt đội 12A4</p>
-
-                    <div class="input-group">
-                        <label>Tên hiển thị</label>
-                        <div class="input-field"><i class="fas fa-user"></i><input type="text" id="reg-name" placeholder="Biệt danh"></div>
-                    </div>
-                    <div class="input-group">
-                        <label>Email</label>
-                        <div class="input-field"><i class="fas fa-at"></i><input type="email" id="reg-email" placeholder="Email của bạn"></div>
-                    </div>
-                    <div class="input-group">
-                        <label>Mật khẩu</label>
-                        <div class="input-field"><i class="fas fa-key"></i><input type="password" id="reg-pass" placeholder="Trên 6 ký tự"></div>
-                    </div>
-
-                    <button type="submit" id="btn-register" class="btn-primary btn-purple">ĐĂNG KÝ THÀNH VIÊN</button>
-
-                    <p class="toggle-text">
-                        Đã có tài khoản? <span onclick="switchTab('login')">Đăng nhập</span>
-                    </p>
-                </form>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- Script chuyển đổi Login/Register -->
-    <script>
-        function switchTab(mode) {
-            const login = document.getElementById('loginForm');
-            const register = document.getElementById('registerForm');
-            if(mode === 'register'){
-                login.classList.remove('active');
-                register.classList.add('active');
-            } else {
-                register.classList.remove('active');
-                login.classList.add('active');
-            }
-        }
-    </script>
-    <!-- Script Firebase xử lý logic -->
     <script type="module" src="login.js"></script>
 </body>
 </html>
