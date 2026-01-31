@@ -1,96 +1,53 @@
-/* RESET CSS */
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-
 body { background: #fff; height: 100vh; overflow: hidden; }
-
 .login-container { display: flex; height: 100vh; width: 100%; }
 
-/* --- PANEL TRÁI --- */
+/* --- BÊN TRÁI: HIỆU ỨNG NÂNG --- */
 .left-panel {
-    flex: 1.2;
-    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    position: relative;
+    flex: 1.2; background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+    display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative;
 }
+.illustration-box { position: relative; z-index: 10; text-align: center; display: flex; flex-direction: column; align-items: center; }
 
-.illustration-box {
-    position: relative; z-index: 10;
-    text-align: center; display: flex; flex-direction: column; align-items: center;
-}
-
-/* HIỆU ỨNG NÂNG ẢNH */
 .main-img {
-    width: 100%; max-width: 500px;
-    border-radius: 20px;
+    width: 100%; max-width: 500px; border-radius: 20px;
     filter: drop-shadow(0 20px 40px rgba(0,0,0,0.1));
-    animation: liftEffect 4s ease-in-out infinite;
+    animation: liftEffect 4s ease-in-out infinite; /* Hiệu ứng nâng logo */
 }
 
 .shadow-ellipse {
-    width: 300px; height: 15px;
-    background: rgba(0, 0, 0, 0.08);
+    width: 300px; height: 15px; background: rgba(0, 0, 0, 0.08);
     border-radius: 50%; filter: blur(8px); margin-top: -10px;
-    animation: shadowScale 4s ease-in-out infinite;
+    animation: shadowScale 4s ease-in-out infinite; /* Hiệu ứng bóng đổ co giãn */
 }
 
-@keyframes liftEffect {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-30px); }
-}
-
-@keyframes shadowScale {
-    0%, 100% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.3); opacity: 0.1; }
-}
+@keyframes liftEffect { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
+@keyframes shadowScale { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.3); opacity: 0.1; } }
 
 .brand-info h1 { font-size: 36px; color: #0369a1; margin-top: 25px; font-weight: 800; }
 .slogan { font-size: 18px; color: #0ea5e9; font-weight: 500; }
+.bg-decoration { position: absolute; width: 600px; height: 600px; background: rgba(255, 255, 255, 0.3); border-radius: 50%; top: -100px; left: -100px; z-index: 1; }
 
-.bg-decoration {
-    position: absolute; width: 600px; height: 600px;
-    background: rgba(255, 255, 255, 0.3); border-radius: 50%;
-    top: -100px; left: -100px; z-index: 1;
-}
-
-/* --- PANEL PHẢI --- */
+/* --- BÊN PHẢI: FORM --- */
 .right-panel { flex: 0.8; display: flex; justify-content: center; align-items: center; background: #fff; }
-
 .form-card { width: 100%; max-width: 400px; padding: 20px; position: relative; }
-
-.btn-back { position: absolute; top: -20px; left: 20px; text-decoration: none; color: #94a3b8; font-size: 14px; font-weight: 600; }
-
+.btn-back { position: absolute; top: -30px; left: 20px; text-decoration: none; color: #94a3b8; font-size: 14px; font-weight: 600; }
 .auth-form { display: none; }
 .auth-form.active { display: block; animation: fadeIn 0.4s ease; }
-
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 .form-title { font-size: 28px; font-weight: 800; color: #1e293b; margin-bottom: 5px; }
 .form-subtitle { font-size: 14px; color: #64748b; margin-bottom: 30px; }
-
 .input-group { margin-bottom: 20px; }
 .input-group label { display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 8px; }
-
 .input-field { position: relative; }
 .input-field i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #94a3b8; }
-.input-field input {
-    width: 100%; padding: 13px 15px 13px 45px;
-    border: 2px solid #f1f5f9; border-radius: 12px;
-    outline: none; background: #f8fafc; transition: 0.3s;
-}
+.input-field input { width: 100%; padding: 13px 15px 13px 45px; border: 2px solid #f1f5f9; border-radius: 12px; outline: none; background: #f8fafc; transition: 0.3s; }
 .input-field input:focus { border-color: #3b82f6; background: #fff; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
-
-.btn-primary {
-    width: 100%; padding: 15px; border: none; border-radius: 12px;
-    background: #3b82f6; color: white; font-weight: 700; font-size: 16px;
-    cursor: pointer; transition: 0.3s; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
+.btn-primary { width: 100%; padding: 15px; border: none; border-radius: 12px; background: #3b82f6; color: white; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.3s; }
 .btn-primary:hover { background: #2563eb; transform: translateY(-2px); }
 .btn-purple { background: #8b5cf6; }
-
 .toggle-text { text-align: center; margin-top: 25px; color: #64748b; font-size: 14px; }
 .toggle-text span { color: #3b82f6; font-weight: 700; cursor: pointer; }
 
-@media (max-width: 1024px) {
-    .left-panel { display: none; }
-    .right-panel { flex: 1; }
-}
+@media (max-width: 1024px) { .left-panel { display: none; } .right-panel { flex: 1; } }
