@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 2. XỬ LÝ AVATAR VÀ BẢNG THÔNG TIN MỚI ---
+    // --- 2. XỬ LÝ AVATAR VÀ BẢNG THÔNG TIN ---
     const topControls = document.querySelector('.top-controls');
     if (userInfo && topControls) {
         const userDiv = document.createElement('div');
@@ -33,15 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const btnLogout = document.getElementById('confirm-logout-btn');
 
             if(logoutModal) {
-                // Điền thông tin vào bảng
                 modalAvatar.src = avatarUrl;
                 modalName.innerText = userInfo.username;
                 modalEmail.innerText = userInfo.email;
                 
-                // Hiện bảng
                 logoutModal.classList.add('active');
 
-                // Xử lý nút Đăng xuất bên trong bảng
                 btnLogout.onclick = function() {
                     localStorage.removeItem('user_info_sql');
                     window.location.reload(); 
@@ -51,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         topControls.insertBefore(userDiv, topControls.firstChild);
     }
 
-    // --- 3. SLIDESHOW ẢNH NỀN (SIÊU MƯỢT) ---
+    // --- 3. SLIDESHOW ẢNH NỀN (NHANH & MƯỢT) ---
     const bgImages = [];
     for (let i = 1; i <= 10; i++) bgImages.push(`../images/bg${i}.jpg`);
 
@@ -60,10 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (heroBg && bgImages.length > 0) {
         setInterval(() => {
-            // Bước 1: Làm mờ ảnh cũ (Fade Out)
+            // Bước 1: Mờ đi
             heroBg.classList.add('fading'); 
 
-            // Bước 2: Chờ 1 giây cho mờ hẳn rồi mới đổi src
+            // Bước 2: Chờ 0.6 giây (nhanh hơn)
             setTimeout(() => {
                 bgIndex = (bgIndex + 1) % bgImages.length;
                 
@@ -71,18 +68,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 tempImg.src = bgImages[bgIndex];
                 
                 tempImg.onload = () => {
-                    heroBg.src = bgImages[bgIndex]; // Đổi ảnh khi đang ẩn
-                    heroBg.classList.remove('fading'); // Hiện lại (Fade In)
+                    heroBg.src = bgImages[bgIndex];
+                    heroBg.classList.remove('fading'); 
                 };
                 
                 tempImg.onerror = () => heroBg.classList.remove('fading');
 
-            }, 1000); // Khớp với transition 1s trong CSS
+            }, 600); // Khớp với 0.6s transition CSS
 
-        }, 6000); // 6 giây đổi 1 lần
+        }, 4000); // Đổi ảnh mỗi 4 giây (nhanh hơn, trước là 6s)
     }
 
-    // --- 4. CÁC HIỆU ỨNG KHÁC (SCROLL, TILT, DARKMODE) ---
+    // --- 4. CÁC HIỆU ỨNG KHÁC ---
     const reveals = document.querySelectorAll('.reveal, .reveal-text');
     window.addEventListener('scroll', () => {
         const windowHeight = window.innerHeight;
@@ -122,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// --- CÁC HÀM GLOBAL (ĐỂ HTML GỌI ĐƯỢC) ---
+// --- CÁC HÀM GLOBAL ---
 
 function protectAccess(folder, file) {
     const userStr = localStorage.getItem('user_info_sql');
@@ -151,7 +148,6 @@ function closeLoginModal() {
     if(modal) modal.classList.remove('active');
 }
 
-// Hàm đóng Modal Profile/Logout
 function closeLogoutModal() {
     const modal = document.getElementById('logout-modal');
     if(modal) modal.classList.remove('active');
