@@ -12,7 +12,7 @@ function resetBtn(btn, text) {
     btn.disabled = false;
 }
 
-// Xử lý Đăng nhập
+// --- ĐĂNG NHẬP ---
 const btnLogin = document.getElementById('btn-login');
 if (btnLogin) {
     btnLogin.addEventListener('click', async (e) => {
@@ -32,20 +32,20 @@ if (btnLogin) {
             if (docSnap.exists()) {
                 localStorage.setItem('user_info_sql', JSON.stringify({ uid: user.uid, ...docSnap.data() }));
                 document.body.style.opacity = '0';
-                document.body.style.transition = 'opacity 0.8s';
+                document.body.style.transition = 'opacity 0.6s';
                 setTimeout(() => {
                     const dest = new URLSearchParams(window.location.search).get('den');
                     window.location.href = dest ? `../${dest}` : "../trangchu/index.html";
-                }, 800);
+                }, 600);
             }
         } catch (error) {
-            alert("Đăng nhập thất bại!");
+            alert("Đăng nhập thất bại! Vui lòng kiểm tra lại Email/Mật khẩu.");
             resetBtn(btnLogin, originalText);
         }
     });
 }
 
-// Xử lý Đăng ký
+// --- ĐĂNG KÝ ---
 const btnRegister = document.getElementById('btn-register');
 if (btnRegister) {
     btnRegister.addEventListener('click', async (e) => {
@@ -54,19 +54,21 @@ if (btnRegister) {
         btnRegister.innerHTML = 'Đang xử lý...';
         btnRegister.disabled = true;
 
-        const name = document.getElementById('reg-name').value;
-        const email = document.getElementById('reg-email').value;
-        const pass = document.getElementById('reg-pass').value;
+        const name = document.getElementById('reg-name').value.trim();
+        const email = document.getElementById('reg-email').value.trim();
+        const pass = document.getElementById('reg-pass').value.trim();
 
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
             await setDoc(doc(db, "users", userCredential.user.uid), {
-                username: name, email: email, score: 0, createdAt: new Date()
+                username: name, email: email, score: 0, 
+                avatar: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+                createdAt: new Date()
             });
             alert("Đăng ký thành công!");
-            window.switchTab('login'); // Chuyển sang form đăng nhập
+            window.switchTab('login');
         } catch (error) {
-            alert("Lỗi đăng ký!");
+            alert("Lỗi: " + error.message);
         } finally {
             resetBtn(btnRegister, originalText);
         }
