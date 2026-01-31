@@ -1,11 +1,11 @@
-/* RESET */
+/* RESET CSS */
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
 body { background: #fff; height: 100vh; overflow: hidden; }
 
 .login-container { display: flex; height: 100vh; width: 100%; }
 
-/* --- PANEL TRÁI: HIỆU ỨNG CHUYỂN ĐỘNG NÂNG --- */
+/* --- PANEL TRÁI --- */
 .left-panel {
     flex: 1.2;
     background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
@@ -14,42 +14,33 @@ body { background: #fff; height: 100vh; overflow: hidden; }
 }
 
 .illustration-box {
-    position: relative;
-    z-index: 10;
-    text-align: center;
-    display: flex; flex-direction: column; align-items: center;
+    position: relative; z-index: 10;
+    text-align: center; display: flex; flex-direction: column; align-items: center;
 }
 
 /* HIỆU ỨNG NÂNG ẢNH */
 .main-img {
-    width: 100%;
-    max-width: 500px;
+    width: 100%; max-width: 500px;
     border-radius: 20px;
     filter: drop-shadow(0 20px 40px rgba(0,0,0,0.1));
-    /* Gán hiệu ứng nâng lên hạ xuống */
     animation: liftEffect 4s ease-in-out infinite;
 }
 
-/* BÓNG ĐỔ CO GIÃN THEO NHỊP NÂNG */
 .shadow-ellipse {
     width: 300px; height: 15px;
     background: rgba(0, 0, 0, 0.08);
-    border-radius: 50%;
-    filter: blur(8px);
-    margin-top: -10px;
-    /* Gán hiệu ứng bóng đổ */
+    border-radius: 50%; filter: blur(8px); margin-top: -10px;
     animation: shadowScale 4s ease-in-out infinite;
 }
 
-/* KEYFRAMES CHUYỂN ĐỘNG */
 @keyframes liftEffect {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-30px); } /* Nâng lên cao 30px */
+    50% { transform: translateY(-30px); }
 }
 
 @keyframes shadowScale {
     0%, 100% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.3); opacity: 0.1; } /* Bóng to ra và mờ đi khi ảnh ở trên cao */
+    50% { transform: scale(1.3); opacity: 0.1; }
 }
 
 .brand-info h1 { font-size: 36px; color: #0369a1; margin-top: 25px; font-weight: 800; }
@@ -61,13 +52,12 @@ body { background: #fff; height: 100vh; overflow: hidden; }
     top: -100px; left: -100px; z-index: 1;
 }
 
-/* --- PANEL PHẢI: FORM --- */
+/* --- PANEL PHẢI --- */
 .right-panel { flex: 0.8; display: flex; justify-content: center; align-items: center; background: #fff; }
 
 .form-card { width: 100%; max-width: 400px; padding: 20px; position: relative; }
 
 .btn-back { position: absolute; top: -20px; left: 20px; text-decoration: none; color: #94a3b8; font-size: 14px; font-weight: 600; }
-.btn-back:hover { color: #3b82f6; }
 
 .auth-form { display: none; }
 .auth-form.active { display: block; animation: fadeIn 0.4s ease; }
@@ -95,12 +85,11 @@ body { background: #fff; height: 100vh; overflow: hidden; }
     cursor: pointer; transition: 0.3s; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 .btn-primary:hover { background: #2563eb; transform: translateY(-2px); }
-.btn-purple { background: #8b5cf6; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3); }
+.btn-purple { background: #8b5cf6; }
 
 .toggle-text { text-align: center; margin-top: 25px; color: #64748b; font-size: 14px; }
 .toggle-text span { color: #3b82f6; font-weight: 700; cursor: pointer; }
 
-/* Mobile */
 @media (max-width: 1024px) {
     .left-panel { display: none; }
     .right-panel { flex: 1; }
