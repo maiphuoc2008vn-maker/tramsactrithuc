@@ -7,6 +7,12 @@ import {
     doc, setDoc, getDoc 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+// --- HÀM RESET NÚT (Giữ nguyên của bạn) ---
+function resetBtn(btn, text) {
+    btn.innerHTML = text;
+    btn.disabled = false;
+}
+
 // --- 1. XỬ LÝ ĐĂNG KÝ ---
 const btnRegister = document.getElementById('btn-register');
 if (btnRegister) {
@@ -31,7 +37,6 @@ if (btnRegister) {
             const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
             const user = userCredential.user;
 
-            // Lưu thông tin user mới vào Firestore
             await setDoc(doc(db, "users", user.uid), {
                 username: name,
                 email: email,
@@ -42,7 +47,14 @@ if (btnRegister) {
             });
 
             alert("Đăng ký thành công! Hãy đăng nhập ngay.");
-            window.switchForm('login'); 
+            
+            // Sửa tại đây: Gọi hàm switchTab (theo HTML ở trên)
+            if (typeof window.switchTab === 'function') {
+                window.switchTab('login'); 
+            } else {
+                location.reload(); // Nếu không tìm thấy hàm thì reload trang
+            }
+            
             document.getElementById('login-name').value = email;
             
         } catch (error) {
@@ -56,7 +68,7 @@ if (btnRegister) {
     });
 }
 
-// --- 2. XỬ LÝ ĐĂNG NHẬP (QUAN TRỌNG) ---
+// --- 2. XỬ LÝ ĐĂNG NHẬP ---
 const btnLogin = document.getElementById('btn-login');
 if (btnLogin) {
     btnLogin.addEventListener('click', async (e) => {
@@ -79,7 +91,6 @@ if (btnLogin) {
             const userCredential = await signInWithEmailAndPassword(auth, email, pass);
             const user = userCredential.user;
 
-            // Lấy thông tin chi tiết từ Firestore
             const docRef = doc(db, "users", user.uid);
             const docSnap = await getDoc(docRef);
 
@@ -87,42 +98,27 @@ if (btnLogin) {
                 const userData = docSnap.data();
                 const userInfo = { uid: user.uid, ...userData };
                 
-                // Lưu vào LocalStorage
                 localStorage.setItem('user_info_sql', JSON.stringify(userInfo));
 
-                // Hiệu ứng chuyển trang mượt
+                // Hiệu ứng mờ dần khi chuyển trang
                 document.body.style.opacity = '0';
                 document.body.style.transition = 'opacity 0.8s';
 
-                // --- LOGIC CHUYỂN HƯỚNG ---
                 setTimeout(() => {
-                    // Kiểm tra xem có cần đi đến trang cụ thể nào không (Game/Tài liệu)
                     const urlParams = new URLSearchParams(window.location.search);
                     const destination = urlParams.get('den');
-
-                    if (destination) {
-                        // Nếu có đích đến (VD: game/hub.html)
-                        window.location.href = `../${destination}`;
-                    } else {
-                        // Nếu không -> Về trang chủ
-                        window.location.href = "../trangchu/index.html";
-                    }
+                    window.location.href = destination ? `../${destination}` : "../trangchu/index.html";
                 }, 800);
 
             } else {
-                alert("Lỗi dữ liệu: Không tìm thấy hồ sơ người dùng này!");
+                alert("Lỗi dữ hiệu: Không tìm thấy hồ sơ người dùng!");
+                resetBtn(btnLogin, originalText);
             }
 
         } catch (error) {
             console.error(error);
-            alert("Đăng nhập thất bại! Kiểm tra lại Email/Mật khẩu.");
-        } finally {
+            alert("Đăng nhập thất bại! Kiểm tra lại tài khoản.");
             resetBtn(btnLogin, originalText);
         }
     });
-}
-
-function resetBtn(btn, text) {
-    btn.innerHTML = text;
-    btn.disabled = false;
 }
