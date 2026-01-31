@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập - Trạm Sạc Tri Thức</title>
-    <!-- Font & Icon -->
+    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="login.css">
@@ -12,11 +12,23 @@
 <body>
 
     <div class="login-container">
-        <!-- BÊN TRÁI: HIỆU ỨNG NÂNG ẢNH -->
+        <!-- BÊN TRÁI: MINH HỌA VÀ HIỆU ỨNG ĐỘNG -->
         <div class="left-panel">
+            <!-- Các khối trang trí nền (giúp hết trống) -->
+            <div class="bg-shape circle-1"></div>
+            <div class="bg-shape circle-2"></div>
+            <div class="bg-shape circle-3"></div>
+
             <div class="illustration-box">
-                <!-- ĐƯỜNG DẪN ẢNH MỚI CỦA BẠN -->
-                <img src="../images/nanglogo.jpg" alt="Trạm Sạc Tri Thức" class="main-img" onerror="this.src='https://via.placeholder.com/500x400?text=Khong+tim+thay+nanglogo.jpg'">
+                <div class="image-wrapper">
+                    <!-- Ảnh của bạn -->
+                    <img src="../images/nanglogo.jpg" alt="Trạm Sạc Tri Thức" class="main-img">
+                    
+                    <!-- Hiệu ứng hạt sáng quanh Logo trường -->
+                    <div class="glow-point p1"></div>
+                    <div class="glow-point p2"></div>
+                    <div class="glow-point p3"></div>
+                </div>
                 
                 <!-- Bóng đổ lơ lửng -->
                 <div class="shadow-ellipse"></div>
@@ -26,14 +38,14 @@
                     <p class="slogan">Kết Nối Đam Mê - Chắp Cánh Ước Mơ</p>
                 </div>
             </div>
-            <div class="bg-decoration"></div>
         </div>
 
-        <!-- BÊN PHẢI: FORM ĐĂNG NHẬP / ĐĂNG KÝ -->
+        <!-- BÊN PHẢI: FORM ĐĂNG NHẬP/ĐĂNG KÝ -->
         <div class="right-panel">
             <div class="form-card">
+                <!-- Nút về trang chủ -->
                 <a href="../trangchu/index.html" class="btn-back">
-                    <i class="fas fa-arrow-left"></i> Trang chủ
+                    <i class="fas fa-chevron-left"></i> Về Trang chủ
                 </a>
 
                 <!-- FORM ĐĂNG NHẬP -->
@@ -42,7 +54,7 @@
                     <p class="form-subtitle">Chào mừng chiến binh quay trở lại!</p>
 
                     <div class="input-group">
-                        <label>Email</label>
+                        <label>Email / Tài khoản</label>
                         <div class="input-field">
                             <i class="fas fa-envelope"></i>
                             <input type="email" id="login-name" placeholder="vidu@gmail.com" required>
@@ -58,28 +70,27 @@
                     </div>
 
                     <button type="submit" id="btn-login" class="btn-primary">VÀO LỚP NGAY</button>
-
-                    <p class="toggle-text">
-                        Chưa có tài khoản? <span onclick="switchTab('register')">Đăng ký ngay</span>
-                    </p>
+                    <p class="toggle-text">Chưa có tài khoản? <span onclick="switchTab('register')">Đăng ký ngay</span></p>
                 </form>
 
                 <!-- FORM ĐĂNG KÝ -->
                 <form id="registerForm" class="auth-form">
                     <h2 class="form-title">TẠO TÀI KHOẢN</h2>
                     <p class="form-subtitle">Gia nhập biệt đội 12A4</p>
+
                     <div class="input-group">
                         <label>Tên hiển thị</label>
-                        <div class="input-field"><i class="fas fa-user"></i><input type="text" id="reg-name" placeholder="Biệt danh"></div>
+                        <div class="input-field"><i class="fas fa-user"></i><input type="text" id="reg-name" placeholder="Biệt danh của bạn"></div>
                     </div>
                     <div class="input-group">
-                        <label>Email</label>
-                        <div class="input-field"><i class="fas fa-at"></i><input type="email" id="reg-email" placeholder="Email của bạn"></div>
+                        <label>Email đăng ký</label>
+                        <div class="input-field"><i class="fas fa-at"></i><input type="email" id="reg-email" placeholder="email@gmail.com"></div>
                     </div>
                     <div class="input-group">
-                        <label>Mật khẩu</label>
-                        <div class="input-field"><i class="fas fa-key"></i><input type="password" id="reg-pass" placeholder="Trên 6 ký tự"></div>
+                        <label>Mật khẩu mới</label>
+                        <div class="input-field"><i class="fas fa-key"></i><input type="password" id="reg-pass" placeholder="Tối thiểu 6 ký tự"></div>
                     </div>
+
                     <button type="submit" id="btn-register" class="btn-primary btn-purple">ĐĂNG KÝ THÀNH VIÊN</button>
                     <p class="toggle-text">Đã có tài khoản? <span onclick="switchTab('login')">Đăng nhập</span></p>
                 </form>
@@ -87,11 +98,18 @@
         </div>
     </div>
 
+    <!-- Script Chuyển đổi tab -->
     <script>
-        // Chuyển đổi giữa Đăng nhập và Đăng ký
         window.switchTab = function(mode) {
-            document.getElementById('loginForm').classList.toggle('active', mode === 'login');
-            document.getElementById('registerForm').classList.toggle('active', mode === 'register');
+            const login = document.getElementById('loginForm');
+            const register = document.getElementById('registerForm');
+            if(mode === 'register'){
+                login.classList.remove('active');
+                register.classList.add('active');
+            } else {
+                register.classList.remove('active');
+                login.classList.add('active');
+            }
         }
     </script>
     <script type="module" src="login.js"></script>
