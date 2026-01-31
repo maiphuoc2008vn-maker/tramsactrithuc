@@ -7,16 +7,18 @@
     <!-- Font & Icon -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- ĐẢM BẢO TÊN FILE NÀY KHỚP VỚI FILE CSS CỦA BẠN -->
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
 
     <div class="login-container">
-        <!-- BÊN TRÁI: HIỆU ỨNG ẢNH NÂNG LÊN -->
+        <!-- BÊN TRÁI: HIỆU ỨNG NÂNG ẢNH -->
         <div class="left-panel">
             <div class="illustration-box">
-                <img src="nanglogo.jpg" alt="Minh họa" class="main-img">
+                <!-- ĐƯỜNG DẪN ẢNH MỚI CỦA BẠN -->
+                <img src="../images/nanglogo.jpg" alt="Trạm Sạc Tri Thức" class="main-img" onerror="this.src='https://via.placeholder.com/500x400?text=Khong+tim+thay+nanglogo.jpg'">
+                
+                <!-- Bóng đổ lơ lửng -->
                 <div class="shadow-ellipse"></div>
 
                 <div class="brand-info">
@@ -27,10 +29,9 @@
             <div class="bg-decoration"></div>
         </div>
 
-        <!-- BÊN PHẢI: CÁC FORM -->
+        <!-- BÊN PHẢI: FORM ĐĂNG NHẬP / ĐĂNG KÝ -->
         <div class="right-panel">
             <div class="form-card">
-                
                 <a href="../trangchu/index.html" class="btn-back">
                     <i class="fas fa-arrow-left"></i> Trang chủ
                 </a>
@@ -66,8 +67,7 @@
                 <!-- FORM ĐĂNG KÝ -->
                 <form id="registerForm" class="auth-form">
                     <h2 class="form-title">TẠO TÀI KHOẢN</h2>
-                    <p class="form-subtitle">Gia nhập </p>
-
+                    <p class="form-subtitle">Gia nhập biệt đội 12A4</p>
                     <div class="input-group">
                         <label>Tên hiển thị</label>
                         <div class="input-field"><i class="fas fa-user"></i><input type="text" id="reg-name" placeholder="Biệt danh"></div>
@@ -80,30 +80,18 @@
                         <label>Mật khẩu</label>
                         <div class="input-field"><i class="fas fa-key"></i><input type="password" id="reg-pass" placeholder="Trên 6 ký tự"></div>
                     </div>
-
                     <button type="submit" id="btn-register" class="btn-primary btn-purple">ĐĂNG KÝ THÀNH VIÊN</button>
-
-                    <p class="toggle-text">
-                        Đã có tài khoản? <span onclick="switchTab('login')">Đăng nhập</span>
-                    </p>
+                    <p class="toggle-text">Đã có tài khoản? <span onclick="switchTab('login')">Đăng nhập</span></p>
                 </form>
-
             </div>
         </div>
     </div>
 
     <script>
-        // Hàm chuyển đổi form
+        // Chuyển đổi giữa Đăng nhập và Đăng ký
         window.switchTab = function(mode) {
-            const login = document.getElementById('loginForm');
-            const register = document.getElementById('registerForm');
-            if(mode === 'register'){
-                login.classList.remove('active');
-                register.classList.add('active');
-            } else {
-                register.classList.remove('active');
-                login.classList.add('active');
-            }
+            document.getElementById('loginForm').classList.toggle('active', mode === 'login');
+            document.getElementById('registerForm').classList.toggle('active', mode === 'register');
         }
     </script>
     <script type="module" src="login.js"></script>
