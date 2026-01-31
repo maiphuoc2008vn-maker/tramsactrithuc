@@ -4,153 +4,138 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập - Trạm Sạc Tri Thức</title>
-    <!-- Font chữ hiện đại, sạch sẽ -->
+    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="login-container">
-        <!-- BÊN TRÁI: GIỚI THIỆU (Thay vì ảnh hoạt hình, ta để Logo & Slogan của lớp) -->
+        <!-- BÊN TRÁI: MINH HỌA VỚI HIỆU ỨNG NÂNG ẢNH -->
         <div class="left-panel">
-            <div class="brand-content">
-                <div class="logo-circle">
-                    <!-- Logo của bạn -->
-                    <img src="../images/logotruongdung.jpg" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+            <div class="animation-box">
+                <!-- Vùng chứa ảnh chính -->
+                <div class="main-image-wrapper">
+                    <img src="input_file_3.jpeg" alt="Trạm Sạc Tri Thức" class="floating-img">
+                    
+                    <!-- Các hạt lấp lánh xung quanh Logo -->
+                    <div class="sparkle sp-1"></div>
+                    <div class="sparkle sp-2"></div>
+                    <div class="sparkle sp-3"></div>
                 </div>
-                <h1>Trạm Sạc Tri Thức</h1>
-                <p class="slogan">Kết Nối Đam Mê</p>
-                <p class="description">
-                    Nơi lưu trữ tài liệu, giải trí đỉnh cao và vinh danh những cá nhân xuất sắc nhất 
-                </p>
+
+                <div class="text-content">
+                    <h1>Trạm Sạc Tri Thức</h1>
+                    <p class="slogan">Kết Nối Đam Mê - Chắp Cánh Ước Mơ</p>
+                </div>
             </div>
             
-            <!-- Hình trang trí mây/sao cho giống style Hoclieu -->
-            <div class="deco-shape cloud-1"></div>
-            <div class="deco-shape cloud-2"></div>
-            <div class="deco-circle"></div>
+            <!-- Trang trí nền -->
+            <div class="bg-circle"></div>
         </div>
 
-        <!-- BÊN PHẢI: FORM NHẬP LIỆU -->
+        <!-- BÊN PHẢI: FORM ĐĂNG NHẬP & ĐĂNG KÝ -->
         <div class="right-panel">
-            <div class="form-wrapper">
-                
-                <!-- Nút Back Home -->
-                <a href="../trangchu/index.html" class="back-link">
-                    <i class="fas fa-arrow-left"></i> Về Trang Chủ
+            <div class="form-card">
+                <a href="../trangchu/index.html" class="back-home">
+                    <i class="fas fa-chevron-left"></i> Trang chủ
                 </a>
 
-                <!-- FORM LOGIN -->
-                <form id="loginForm" class="active-form">
-                    <h2 class="form-title">ĐĂNG NHẬP</h2>
-                    <p class="sub-title">Chào mừng chiến binh quay trở lại!</p>
+                <!-- Form Đăng Nhập -->
+                <form id="loginForm" class="auth-form active">
+                    <h2 class="title">Đăng Nhập</h2>
+                    <p class="subtitle">Chào mừng bạn quay trở lại lớp học!</p>
 
-                    <!-- Input Email -->
                     <div class="input-group">
-                        <label>Email / Tên đăng nhập</label>
-                        <div class="input-field">
-                            <i class="fas fa-envelope icon-input"></i>
-                            <input type="email" id="login-name" placeholder="vidu@gmail.com" required>
+                        <label>Email</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="login-name" placeholder="email@gmail.com" required>
                         </div>
                     </div>
 
-                    <!-- Input Password -->
                     <div class="input-group">
                         <label>Mật khẩu</label>
-                        <div class="input-field">
-                            <i class="fas fa-lock icon-input"></i>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
                             <input type="password" id="login-pass" placeholder="Nhập mật khẩu" required>
-                            <div class="toggle-pass" onclick="togglePass('login-pass', this)">
+                            <span class="toggle-eye" onclick="togglePass('login-pass', this)">
                                 <i class="fas fa-eye"></i>
-                            </div>
+                            </span>
                         </div>
                     </div>
 
-                    <div class="form-options">
-                        <label class="checkbox-container">
-                            <input type="checkbox"> 
-                            <span class="checkmark"></span>
-                            Nhớ tôi
-                        </label>
-                        <a href="#" class="forgot-link">Quên mật khẩu?</a>
-                    </div>
+                    <button type="submit" id="btn-login" class="btn-submit">VÀO LỚP NGAY</button>
 
-                    <!-- Nút đăng nhập style phẳng -->
-                    <button type="submit" id="btn-login" class="btn-primary">
-                        VÀO LỚP NGAY
-                    </button>
-
-                    <div class="switch-account">
-                        Chưa có tài khoản? <span onclick="switchMode('register')">Đăng ký ngay</span>
-                    </div>
+                    <p class="switch-text">
+                        Chưa có tài khoản? <span onclick="switchForm('register')">Đăng ký ngay</span>
+                    </p>
                 </form>
 
-                <!-- FORM REGISTER -->
-                <form id="registerForm" class="hidden-form">
-                    <h2 class="form-title">TẠO TÀI KHOẢN</h2>
-                    <p class="sub-title">Gia nhập biệt đội 12A4</p>
+                <!-- Form Đăng Ký (Mặc định ẩn) -->
+                <form id="registerForm" class="auth-form">
+                    <h2 class="title">Tạo Tài Khoản</h2>
+                    <p class="subtitle">Gia nhập cộng đồng 12A4</p>
 
                     <div class="input-group">
                         <label>Tên hiển thị</label>
-                        <div class="input-field">
-                            <i class="fas fa-user-astronaut icon-input"></i>
-                            <input type="text" id="reg-name" placeholder="Nickname của bạn" required>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user-tag"></i>
+                            <input type="text" id="reg-name" placeholder="Biệt danh của bạn">
                         </div>
                     </div>
 
                     <div class="input-group">
                         <label>Email</label>
-                        <div class="input-field">
-                            <i class="fas fa-envelope icon-input"></i>
-                            <input type="email" id="reg-email" placeholder="Email sử dụng" required>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="reg-email" placeholder="email@gmail.com">
                         </div>
                     </div>
 
                     <div class="input-group">
                         <label>Mật khẩu</label>
-                        <div class="input-field">
-                            <i class="fas fa-key icon-input"></i>
-                            <input type="password" id="reg-pass" placeholder="Tự tạo mật khẩu" required>
-                            <div class="toggle-pass" onclick="togglePass('reg-pass', this)">
-                                <i class="fas fa-eye"></i>
-                            </div>
+                        <div class="input-wrapper">
+                            <i class="fas fa-key"></i>
+                            <input type="password" id="reg-pass" placeholder="Tối thiểu 6 ký tự">
                         </div>
                     </div>
 
-                    <button type="submit" id="btn-register" class="btn-primary btn-purple">
-                        ĐĂNG KÝ THÀNH VIÊN
-                    </button>
+                    <button type="submit" id="btn-register" class="btn-submit btn-alt">ĐĂNG KÝ THÀNH VIÊN</button>
 
-                    <div class="switch-account">
-                        Đã có tài khoản? <span onclick="switchMode('login')">Đăng nhập</span>
-                    </div>
+                    <p class="switch-text">
+                        Đã có tài khoản? <span onclick="switchForm('login')">Đăng nhập</span>
+                    </p>
                 </form>
-
             </div>
         </div>
     </div>
 
-    <!-- Script cũ của bạn -->
-    <script type="module" src="login.js"></script>
-    
-    <!-- Script UI -->
+    <!-- Script Xử lý giao diện -->
     <script>
         function togglePass(id, el) {
             const input = document.getElementById(id);
             const icon = el.querySelector('i');
-            if(input.type === 'password'){
-                input.type = 'text';
-                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            input.type = input.type === 'password' ? 'text' : 'password';
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+        }
+
+        function switchForm(mode) {
+            const login = document.getElementById('loginForm');
+            const register = document.getElementById('registerForm');
+            if(mode === 'register') {
+                login.classList.remove('active');
+                setTimeout(() => register.classList.add('active'), 300);
             } else {
-                input.type = 'password';
-                icon.classList.replace('fa-eye-slash', 'fa-eye');
+                register.classList.remove('active');
+                setTimeout(() => login.classList.add('active'), 300);
             }
         }
-        function switchMode(mode) {
-            document.getElementById('loginForm').style.display = mode === 'login' ? 'block' : 'none';
-            document.getElementById('registerForm').style.display = mode === 'register' ? 'block' : 'none';
-        }
     </script>
+    
+    <!-- Script Firebase (File login.js của bạn) -->
+    <script type="module" src="login.js"></script>
 </body>
 </html>
